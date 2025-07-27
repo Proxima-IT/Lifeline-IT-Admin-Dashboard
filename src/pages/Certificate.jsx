@@ -1,0 +1,107 @@
+import React, { useState } from "react";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+
+const Certificate = ({ data }) => {
+  const [btnLoading, setBtnLoading] = useState(false);
+  const { register, handleSubmit } = useForm();
+
+  const handleDownload = async (studentId, courseRoute, Grade) => {
+    setBtnLoading(true);
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/dashboard/certificate`,
+        { studentId, courseId: courseRoute, grade:Grade },
+        {
+          headers: { "Content-Type": "application/json" },
+          responseType: "blob", // expect PDF
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${studentId}-certificate.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setBtnLoading(false);
+    }
+  };
+
+  const onSubmit = (formData) => {
+    const { sid, courseRoute, grade } = formData;
+    handleDownload(sid, courseRoute, grade); // assuming courseRoute is also title
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <h1 className="text-xl text-blue-500 font-bold text-center mb-3">Certificate</h1>
+        {/* Course Route */}
+        <div className="mb-4">
+          <label
+            htmlFor="courseRoute"
+            className="block text-sm font-medium text-left text-gray-700"
+          >
+            Course Route
+          </label>
+          <input
+            type="text"
+            id="courseRoute"
+            {...register("courseRoute", { required: true })}
+            placeholder="Enter course route"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          />
+        </div>
+
+        {/* Student ID */}
+        <div className="mb-4">
+          <label
+            htmlFor="sid"
+            className="block text-sm font-medium text-left text-gray-700"
+          >
+            Student ID
+          </label>
+          <input
+            type="text"
+            id="sid"
+            {...register("sid", { required: true })}
+            placeholder="Enter Student ID"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          />
+        </div>
+         {/* Student Grade */}
+        <div className="mb-4">
+          <label
+            htmlFor="grade"
+            className="block text-sm font-medium text-left text-gray-700"
+          >
+            Student Grade
+          </label>
+          <input
+            type="text"
+            id="grade"
+            {...register("grade", { required: true })}
+            placeholder="Enter Student Grade"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={btnLoading}
+          className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
+        >
+          {btnLoading ? "Downloading..." : "Download Certificate"}
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default Certificate;
