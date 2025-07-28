@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react"
+import axios from "axios"
+import { useForm } from "react-hook-form"
+import Swal from "sweetalert2"
+import { useNavigate } from "react-router-dom"
 
 const RegistrationCard = ({ data }) => {
-  const [btnLoading, setBtnLoading] = useState(false);
-  const { register, handleSubmit } = useForm();
-
+  const [btnLoading, setBtnLoading] = useState(false)
+  const { register, handleSubmit } = useForm()
+  const navigate = useNavigate()
   const handleDownload = async (studentId, courseId) => {
-    setBtnLoading(true);
+    setBtnLoading(true)
     try {
-
       console.log(studentId, courseId)
 
       const res = await axios.post(
@@ -19,27 +20,41 @@ const RegistrationCard = ({ data }) => {
           headers: { "Content-Type": "application/json" },
           responseType: "blob", // expect PDF
         }
-      );
-      console.log(res);
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${studentId}-registration-card.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
+      )
+      console.log(res)
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+      const a = document.createElement("a")
+      a.href = url
+      a.download = `${studentId}-registration-card.pdf`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      window.URL.revokeObjectURL(url)
     } catch (error) {
-      console.error(error);
+      console.log(error)
+      if (
+        error.response?.status !== 200 &&
+        error.response?.data instanceof Blob
+      ) {
+        const text = await error.response.data.text() // Convert blob to text
+        const json = JSON.parse(text)
+
+        console.log(json.error)
+        return Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: json.error,
+        })
+      }
     } finally {
-      setBtnLoading(false);
+      setBtnLoading(false)
     }
-  };
+  }
 
   const onSubmit = (formData) => {
-    const { sid, courseRoute } = formData;
-    handleDownload(sid, courseRoute); // assuming courseRoute is also title
-  };
+    const { sid, courseRoute } = formData
+    handleDownload(sid, courseRoute) // assuming courseRoute is also title
+  }
 
   return (
     <div>
@@ -90,7 +105,7 @@ const RegistrationCard = ({ data }) => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default RegistrationCard;
+export default RegistrationCard
