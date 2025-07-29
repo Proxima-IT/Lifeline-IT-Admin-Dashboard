@@ -16,9 +16,16 @@ const ViewStudent = () => {
         setStudentDetails(res.data.user);
       });
   }, []);
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+  };
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#285599] mb-4"> Student Information</h1>
+      <h1 className="text-2xl font-bold text-[#285599] mb-4">
+        {" "}
+        Student Information
+      </h1>
       <div className="bg-white border grid grid-cols-2 gap-3 border-amber-400 rounded-md shadow-md w-full p-5 text-left">
         <div>
           <img
@@ -30,17 +37,35 @@ const ViewStudent = () => {
         </div>
         <div>
           <p className="font-bold text-2xl">{studentDetails.name}</p>
-          <p> <span className="font-bold text-lg mr-3">Father:</span>{studentDetails.father}</p>
-          <p> <span className="font-bold text-lg mr-3">Mother:</span>{studentDetails.mother}</p>
-          <p> <span className="font-bold text-lg mr-3">Date of Birth:</span>{studentDetails.dateOfBirth}</p>
-          <p> <span className="font-bold text-lg mr-3">Gender:</span>{studentDetails.gender}</p>
-
+          <p>
+            {" "}
+            <span className="font-bold text-lg mr-3">Father:</span>
+            {studentDetails.father}
+          </p>
+          <p>
+            {" "}
+            <span className="font-bold text-lg mr-3">Mother:</span>
+            {studentDetails.mother}
+          </p>
+          <p>
+            {" "}
+            <span className="font-bold text-lg mr-3">Date of Birth:</span>
+            {studentDetails.dateOfBirth}
+          </p>
+          <p>
+            {" "}
+            <span className="font-bold text-lg mr-3">Gender:</span>
+            {studentDetails.gender}
+          </p>
         </div>
       </div>
+      
       <div className="max-w-4xl mx-auto mt-5  p-6 bg-white rounded-xl shadow-md border border-gray-200">
-        <h1 className="text-2xl font-bold text-[#285599] mb-4">Update Student Information</h1>
+        <h1 className="text-2xl font-bold text-[#285599] mb-4">
+          Update Student Information
+        </h1>
         <form
-          //   onSubmit={handleChangeProfile}
+          onSubmit={handleUpdate}
           className="flex flex-col justify-center  md:flex-row gap-10"
         >
           {/* Profile Picture */}
@@ -51,14 +76,12 @@ const ViewStudent = () => {
             <input
               type="hidden"
               name="image"
-            //   value={uploadedImageUrl || data?.image}
+              //   value={uploadedImageUrl || data?.image}
             />
           </div>
 
           {/* Info Section */}
           <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-6 text-left">
-
-
             {/* Email */}
             <div className="">
               <label className="block text-sm font-medium text-gray-600 mb-1">
@@ -68,12 +91,10 @@ const ViewStudent = () => {
                 type="email"
                 name="email"
                 // value={data.email}
-                readOnly
-                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium cursor-not-allowed"
+
+                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
               />
             </div>
-
-
 
             {/* phone  */}
             <div>
@@ -87,8 +108,6 @@ const ViewStudent = () => {
                 className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-800 font-medium "
               />
             </div>
-
-
 
             <input
               type="submit"

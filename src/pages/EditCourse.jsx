@@ -9,6 +9,9 @@ const EditCourse = () => {
   const [type, setType] = useState(courseData?.type || "");
   const [instructor, setInstructor] = useState([]);
   const [fblinks, setFbLinks] = useState([]);
+
+  const [thumbnail, setThumbnail] = useState("");
+  const [instructorImage, setInstructorImage] = useState("");
   console.log(fblinks);
 
   const { route } = useParams();
@@ -102,6 +105,45 @@ const EditCourse = () => {
         });
       });
   }, []);
+
+  async function uploadImage(file, type) {
+    // setLoading(true); // start loading spinner
+
+    try {
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 1, // Compress to 1MB or less
+        maxWidthOrHeight: 1024, // Resize if too large
+        useWebWorker: true,
+      });
+
+      const formData = new FormData();
+      formData.append("image", compressedFile);
+
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (data?.data?.url) {
+        if (type === "thumbnail") {
+          setThumbnail(data.data.url); // ✅ Only update thumbnail
+        } else if (type === "instructor") {
+          setInstructorImage(data.data.url); // ✅ Only update instructor image
+        }
+
+        console.log("Image URL:", data.data.url);
+      }
+    } catch (error) {
+      console.error("Image upload failed:", error);
+    } finally {
+      setLoading(false); // stop loading spinner regardless of success/failure
+    }
+  }
 
   const onSubmit = (data) => {
     // console.log(data);
@@ -369,6 +411,7 @@ const EditCourse = () => {
             />
           </div>
 
+          <div></div>
           {/* Thumbnail */}
           <div className="mb-4">
             <label
@@ -377,15 +420,28 @@ const EditCourse = () => {
             >
               Thumbnail
             </label>
+
             <input
-              type="text"
               id="thumbnail"
+              type="file"
+              accept="image/*"
               {...register("thumbnail", { required: true })}
-              defaultValue={courseData.thumbnail}
+              // defaultValue={courseData.thumbnail}
               placeholder="Enter thumbnail URL"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  uploadImage(file, "thumbnail");
+                }
+              }}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
+          <img
+            src={courseData?.thumbnail || thumbnail}
+            alt="thumbnail"
+            className="w-36 h-20 object-cover border border-black shadow"
+          />
 
           {/* Course Instructor */}
           <h1 className="text-left text-lg font-fold text-blue-800 font-bold">
@@ -421,17 +477,35 @@ const EditCourse = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-left text-gray-700">
+                  <label
+                    htmlFor="instructorImage"
+                    className="block text-sm font-medium text-left text-gray-700"
+                  >
                     Image
                   </label>
                   <input
+                    id="instructorImage"
+                    type="file"
+                    accept="image/*"
                     {...register(`instructors.${index}.image`, {
                       required: true,
                     })}
                     placeholder="Enter instructor image URL"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        uploadImage(file, "instructor");
+                      }
+                    }}
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   />
                 </div>
+                <img
+                  src={instructorImage || courseData?.instructors?.[index]?.image}
+                  alt="thumbnail"
+                  className="w-36 h-20 object-cover border border-black shadow"
+                />
+
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-left text-gray-700">
                     Signature
@@ -444,6 +518,7 @@ const EditCourse = () => {
                     className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   />
                 </div>
+                <div></div>
                 {/* Show Remove button only if index > 0 */}
                 {index > 0 && (
                   <button

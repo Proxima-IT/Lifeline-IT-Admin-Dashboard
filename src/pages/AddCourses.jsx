@@ -1,13 +1,18 @@
 // testing
 
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import imageCompression from "browser-image-compression";
 
 const AddCourses = () => {
   const navigate = useNavigate();
+
+  const [thumbnail, setThumbnail] = useState("");
+  const [instructorImage, setInstructorImage] = useState("");
+
   const {
     register,
     control,
@@ -65,15 +70,6 @@ const AddCourses = () => {
     remove: removeModule,
   } = useFieldArray({ control, name: "modules" });
 
-  //   const onError = (errors) => {
-  //   const firstErrorField = Object.keys(errors)[0];
-  //   const errorElement = document.querySelector(`[name="${firstErrorField}"]`);
-  //   if (errorElement) {
-  //     errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
-  //     errorElement.focus();
-  //   }
-  // };
-
   const onError = (errors) => {
     const firstErrorField = Object.keys(errors)[0];
     Object.keys(errors).forEach((field) => {
@@ -92,7 +88,48 @@ const AddCourses = () => {
     }
   };
 
+  async function uploadImage(file, type) {
+    // setLoading(true); // start loading spinner
+
+    try {
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 1, // Compress to 1MB or less
+        maxWidthOrHeight: 1024, // Resize if too large
+        useWebWorker: true,
+      });
+
+      const formData = new FormData();
+      formData.append("image", compressedFile);
+
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (data?.data?.url) {
+        if (type === "thumbnail") {
+          setThumbnail(data.data.url); // ✅ Only update thumbnail
+        } else if (type === "instructor") {
+          setInstructorImage(data.data.url); // ✅ Only update instructor image
+        }
+
+        console.log("Image URL:", data.data.url);
+      }
+    } catch (error) {
+      console.error("Image upload failed:", error);
+    } finally {
+      // setLoading(false); // stop loading spinner regardless of success/failure
+    }
+  }
+
   const onSubmit = (data) => {
+    data.thumbnail = thumbnail;
+    data.instructor = instructor;
     console.log(data);
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/courses/add`, data)
@@ -320,6 +357,7 @@ const AddCourses = () => {
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
+          <div></div>
 
           {/* Thumbnail */}
           <div className="mb-4">
@@ -329,14 +367,27 @@ const AddCourses = () => {
             >
               Thumbnail
             </label>
+
             <input
-              type="text"
               id="thumbnail"
+              type="file"
+              accept="image/*"
               {...register("thumbnail", { required: true })}
               placeholder="Enter thumbnail URL"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  uploadImage(file, "thumbnail");
+                }
+              }}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
+          <img
+            src={thumbnail}
+            alt="thumbnail"
+            className="w-36 h-20 object-cover border border-black shadow"
+          />
 
           {/* Course Instructor */}
           <h1 className="text-left text-lg font-fold text-blue-800 font-bold">
@@ -369,17 +420,35 @@ const AddCourses = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-left text-gray-700">
+                <label
+                  htmlFor="instructorImage"
+                  className="block text-sm font-medium text-left text-gray-700"
+                >
                   Image
                 </label>
                 <input
+                  id="instructorImage"
+                  type="file"
+                  accept="image/*"
                   {...register(`instructors.${index}.image`, {
                     required: true,
                   })}
                   placeholder="Enter instructor image URL"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      uploadImage(file, "instructor");
+                    }
+                  }}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
               </div>
+              <img
+                src={instructorImage}
+                alt="thumbnail"
+                className="w-36 h-20 object-cover border border-black shadow"
+              />
+
               <div className="mb-4">
                 <label className="block text-sm font-medium text-left text-gray-700">
                   Signature
@@ -545,7 +614,6 @@ const AddCourses = () => {
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                 />
               </div>
-              
 
               {/* Resources inside Module */}
               <div className="mb-4">

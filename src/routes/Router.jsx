@@ -21,6 +21,10 @@ const Router = createBrowserRouter([
     element: <MainLayout></MainLayout>,
     children: [
       {
+        path: "/",
+        element: <Navigate to="/admin" replace />,
+      },
+      {
         path: "/admin",
         element: <AdminPanel></AdminPanel>,
       },
