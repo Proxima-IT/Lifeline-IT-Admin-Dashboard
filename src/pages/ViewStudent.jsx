@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 
 const ViewStudent = () => {
   const [studentDetails, setStudentDetails] = useState({});
+  const [totalOrders, setTotalOrders] = useState([]);
 
   const { sid } = useParams();
   // console.log(sid);
@@ -12,13 +13,56 @@ const ViewStudent = () => {
     axios
       .get(`${import.meta.env.VITE_API_URL}/api/student/${sid}`)
       .then((res) => {
-        // console.log(res.data.user);
-        setStudentDetails(res.data.user);
+        console.log(res.data.student);
+        setStudentDetails(res.data.student);
+        setTotalOrders(res.data.student.totalOrders);
       });
   }, []);
 
+  console.log(studentDetails?.totalOrders);
+
+  useEffect(() => {
+    if (!studentDetails?.totalOrders) return;
+
+    const fetchOrders = async () => {
+      const responses = await Promise.all(
+        studentDetails.totalOrders.map((order) =>
+          axios.get(
+            `${import.meta.env.VITE_API_URL}/api/courses/id/${order._id}`
+          )
+        )
+      );
+
+      const ordersData = responses.map((res) => res.data);
+
+      setTotalOrders(ordersData); // ✅ now set full orders
+    };
+
+    fetchOrders();
+  }, [studentDetails]);
+
+  console.log(studentDetails.sid);
+  // https://api.lifelineitinstitute.com/api/courses/id/688748959802d0cef1244124
+  // {  name,
+  //     email,
+  //     phone,
+  //     password  }
+
   const handleUpdate = (e) => {
     e.preventDefault();
+
+    const form = e.target;
+    const email = form.email.value;
+    const phone = form.phone.value;
+    const courseRoute = form.courseRoute.value;
+    const studentData = { email, phone, courseRoute };
+    console.log(studentData);
+    axios
+      .patch(
+        `${import.meta.env.VITE_API_URL}/api/student/update/${studentDetails.sid}`,
+        studentData
+      )
+      .then((res) => console.log(res.data));
   };
   return (
     <div>
@@ -28,12 +72,10 @@ const ViewStudent = () => {
       </h1>
       <div className="bg-white border grid grid-cols-2 gap-3 border-amber-400 rounded-md shadow-md w-full p-5 text-left">
         <div>
-          <img
-            src={studentDetails.image}
-            alt=""
-            className="w-1/4 rounded-full mb-3"
-          />
-          <span className="ml-4">{studentDetails.sid}</span>
+          <img src={studentDetails.image} alt="" className="w-1/3  mb-3" />
+          <span className="ml-5 font-bold text-center text-blue-900">
+            {studentDetails.sid}
+          </span>
         </div>
         <div>
           <p className="font-bold text-2xl">{studentDetails.name}</p>
@@ -59,7 +101,7 @@ const ViewStudent = () => {
           </p>
         </div>
       </div>
-      
+
       <div className="max-w-4xl mx-auto mt-5  p-6 bg-white rounded-xl shadow-md border border-gray-200">
         <h1 className="text-2xl font-bold text-[#285599] mb-4">
           Update Student Information
@@ -91,7 +133,7 @@ const ViewStudent = () => {
                 type="email"
                 name="email"
                 // value={data.email}
-
+                defaultValue={studentDetails.email}
                 className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
               />
             </div>
@@ -104,8 +146,21 @@ const ViewStudent = () => {
               <input
                 type="text"
                 name="phone"
-                // defaultValue={data.phone}
-                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-800 font-medium "
+                defaultValue={studentDetails.phone}
+                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
+              />
+            </div>
+            {/* phone  */}
+            <div>
+              <label className=" block text-sm font-medium text-gray-600 mb-1">
+                Course Route
+              </label>
+              <input
+                type="text"
+                name="courseRoute"
+                // defaultValue={studentDetails?.totalOrders}
+
+                className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
               />
             </div>
 

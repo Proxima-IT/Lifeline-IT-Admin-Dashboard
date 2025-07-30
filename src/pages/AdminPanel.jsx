@@ -4,9 +4,8 @@ import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 const AdminPanel = () => {
-
   const [banner, setBanner] = useState("");
-   const {
+  const {
     register,
     control,
     handleSubmit,
@@ -47,11 +46,10 @@ const AdminPanel = () => {
     } catch (error) {
       console.error("Image upload failed:", error);
     } finally {
-    //   setLoading(false); // stop loading spinner regardless of success/failure
+      //   setLoading(false); // stop loading spinner regardless of success/failure
     }
   }
 
- 
   const onSubmit = (data) => {
     data.bannerImage = banner;
     console.log(data);
@@ -65,19 +63,20 @@ const AdminPanel = () => {
           theme: "dark",
         });
         reset();
-       
       });
   };
   return (
     <div>
+      <h1>Add Content from Admin</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center  md:flex-row gap-10"
+        className="flex flex-col justify-center  md:flex-row gap-10 mt-3"
       >
         {/* Info Section */}
         <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-6 text-left">
           {/* total */}
-          <div className="">
+
+            <div className="">
             <label className="block text-sm font-medium text-gray-600 mb-1">
               Total Student
             </label>
@@ -85,11 +84,10 @@ const AdminPanel = () => {
               type="text"
               {...register("totalStudents", { required: true })}
               // value={data.email}
+              placeholder="Enter your website's total student"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
           </div>
-          <div></div>
-
           {/* Thumbnail */}
           <div className="mb-4">
             <label
@@ -114,11 +112,86 @@ const AdminPanel = () => {
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
+          <div></div>
           <img
-            src={banner}
-            alt="thumbnail"
+            src={
+              banner ||
+              "https://bestmedia.lk/wp-content/uploads/2024/09/Large-Format-Flex-Banner-Print.jpg"
+            }
+            alt="banner"
             className="w-36 h-20 object-cover border border-black shadow"
           />
+
+        
+
+          <div className="">
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Contact Number 1
+            </label>
+            <input
+              type="text"
+              {...register("contact1", { required: true })}
+              // value={data.email}
+              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+            />
+          </div>
+          <div className="">
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Available Time
+            </label>
+            <input
+              type="text"
+              {...register("available1", { required: true })}
+              // value={data.email}
+              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+            />
+          </div>
+          <div className="">
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Contact Number 2
+            </label>
+            <input
+              type="text"
+              {...register("contact2", { required: true })}
+              // value={data.email}
+              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+            />
+          </div>
+          <div className="">
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Available Time
+            </label>
+            <input
+              type="text"
+              {...register("available2", { required: true })}
+              // value={data.email}
+              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+            />
+          </div>
+          <div className="">
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Contact Number 3
+            </label>
+            <input
+              type="text"
+              {...register("contact3", { required: true })}
+              // value={data.email}
+              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+            />
+          </div>
+          <div className="">
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Available Time
+            </label>
+            <input
+              type="text"
+              {...register("available3", { required: true })}
+              // value={data.email}
+              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+            />
+          </div>
+
+        
 
           <input
             type="submit"

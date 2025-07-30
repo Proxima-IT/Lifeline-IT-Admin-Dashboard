@@ -27,7 +27,9 @@ const Notice = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${import.meta.env.VITE_API_URL}/api/dashboard/notices/delete/${id}`)
+          .delete(
+            `${import.meta.env.VITE_API_URL}/api/dashboard/notices/delete/${id}`
+          )
           .then(
             Swal.fire({
               title: "Deleted!",
