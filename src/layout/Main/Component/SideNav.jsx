@@ -105,6 +105,15 @@ const SideNav = () => {
   //     </div>
   //   )
 
+   const [notices, setNotices] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/dashboard/notices`)
+      .then((res) => {
+        console.log(res.data);
+        setNotices(res.data);
+      });
+  }, []);
   return (
     <div>
       {/* <!-- Navigation --> */}
@@ -201,7 +210,7 @@ const SideNav = () => {
                   >
                     <MdOutlineInsertComment /> Notice Board
                     <span className="ml-auto text-xs bg-red-300 text-red-900 font-bold px-2 py-0.5 rounded-full">
-                      {/* {notices?.length} */}
+                      {notices?.length}
                     </span>
                   </NavLink>
                 </li>
@@ -308,7 +317,7 @@ const SideNav = () => {
                 >
                   <MdOutlineInsertComment /> Notice Board
                   <span className="ml-auto text-xs bg-red-300 text-red-900 font-bold px-2 py-0.5 rounded-full">
-                    {/* {notices?.length} */}
+                    {notices?.length}
                   </span>
                 </NavLink>
               </li>

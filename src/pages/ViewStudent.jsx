@@ -1,12 +1,13 @@
 import axios from "axios";
 import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const ViewStudent = () => {
   const [studentDetails, setStudentDetails] = useState({});
   const [totalOrders, setTotalOrders] = useState([]);
+  const navigate = useNavigate()
 
   const { sid } = useParams();
   // console.log(sid);
@@ -88,7 +89,7 @@ const ViewStudent = () => {
               text: "Your Course has been deleted.",
               icon: "success",
             }),
-            navigate("/courses")
+            navigate("/student")
           );
       }
     });
