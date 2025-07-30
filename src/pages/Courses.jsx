@@ -80,18 +80,11 @@ const Courses = () => {
                     </Link> */}
                     <Link to={`/courses/update/${course.route}`}>
                       <button className="bg-[#0b2a53] px-5 py-2 rounded-md text-white flex items-center gap-3">
-                        Edit
+                        View Course
                       </button>
                     </Link>
 
-                    <button
-                      onClick={() => {
-                        handleDelete(course.route);
-                      }}
-                      className="bg-[#b96c16] px-3 py-2 rounded-md text-white flex items-center gap-3"
-                    >
-                      Delete
-                    </button>
+                    
                   </div>
                 </div>
               </div>
