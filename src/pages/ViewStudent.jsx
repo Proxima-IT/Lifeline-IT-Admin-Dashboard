@@ -1,6 +1,8 @@
 import axios from "axios";
+import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ViewStudent = () => {
   const [studentDetails, setStudentDetails] = useState({});
@@ -59,10 +61,37 @@ const ViewStudent = () => {
     console.log(studentData);
     axios
       .patch(
-        `${import.meta.env.VITE_API_URL}/api/student/update/${studentDetails.sid}`,
+        `${import.meta.env.VITE_API_URL}/api/student/update/${
+          studentDetails.sid
+        }`,
         studentData
       )
       .then((res) => console.log(res.data));
+  };
+
+  const handleDelete = (sid) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${import.meta.env.VITE_API_URL}/api/student/delete/${sid}`)
+          .then(
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your Course has been deleted.",
+              icon: "success",
+            }),
+            navigate("/courses")
+          );
+      }
+    });
   };
   return (
     <div>
@@ -92,7 +121,9 @@ const ViewStudent = () => {
           <p>
             {" "}
             <span className="font-bold text-lg mr-3">Date of Birth:</span>
-            {studentDetails.dateOfBirth}
+            {studentDetails.dateOfBirth
+              ? moment(studentDetails.dateOfBirth).format("MMMM Do YYYY")
+              : "N/A"}
           </p>
           <p>
             {" "}
@@ -169,6 +200,14 @@ const ViewStudent = () => {
               value="Edit"
               className="w-full col-span-2 bg-[#285599] border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
             />
+            <button
+              onClick={() => {
+                handleDelete(sid);
+              }}
+              className="bg-[#b96c16] col-span-2 hover:bg-[#b96d16e0] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 w-full"
+            >
+              Delete
+            </button>
           </div>
         </form>
       </div>
