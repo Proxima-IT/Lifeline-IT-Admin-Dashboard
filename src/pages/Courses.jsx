@@ -42,14 +42,14 @@ const Courses = () => {
   return (
     <div>
       {/* <!-- Main Content --> */}
-      <main class="flex-1">
+      <main class="flex-1 my-5 p-3">
         <div class="">
           <div className="flex justify-between">
-            <h2 class="text-2xl font-bold mb-4 text-left text-[#0b2a53]">
+            <h2 class="lg:text-2xl text-lg font-bold mb-4 text-left text-[#0b2a53]">
               All Courses
             </h2>
             <Link to="/add-courses">
-              <button className="bg-[#0b2a53] px-3 py-2 rounded-md text-white flex items-center gap-3">
+              <button className="bg-[#0b2a53] px-2 lg:px-3 text-sm lg:text-lg py-2 rounded-md text-white flex items-center gap-3">
                 <FaPlus />
                 Add New Course
               </button>

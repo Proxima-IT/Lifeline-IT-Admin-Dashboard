@@ -59,7 +59,7 @@ const Certificate = ({ data }) => {
   }
 
   return (
-    <div>
+    <div className="p-4">
       <form onSubmit={handleSubmit(onSubmit)}>
         <h1 className="text-xl text-blue-500 font-bold text-center mb-3">
           Certificate

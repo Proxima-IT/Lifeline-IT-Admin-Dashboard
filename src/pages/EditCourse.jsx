@@ -190,12 +190,12 @@ const EditCourse = () => {
     });
   };
   return (
-    <div>
+    <div className="my-5">
       <h1 className="text-center text-xl font-fold text-blue-800 font-bold">
         Edit the form with Course Information
       </h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 p-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:p-10 p-4">
           <h1 className="text-left text-lg font-fold text-blue-800 font-bold">
             Basic Course Information
           </h1>
@@ -501,7 +501,9 @@ const EditCourse = () => {
                   />
                 </div>
                 <img
-                  src={instructorImage || courseData?.instructors?.[index]?.image}
+                  src={
+                    instructorImage || courseData?.instructors?.[index]?.image
+                  }
                   alt="thumbnail"
                   className="w-36 h-20 object-cover border border-black shadow"
                 />
@@ -736,7 +738,7 @@ const EditCourse = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="bg-[#0b2a53] hover:bg-[#21579e] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 my-3 w-full"
+          className="bg-[#0b2a53] hover:bg-[#21579e] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 my-3 w-[80%]"
         >
           Edit Course
         </button>
@@ -745,7 +747,7 @@ const EditCourse = () => {
         onClick={() => {
           handleDelete(route);
         }}
-        className="bg-[#b96c16] hover:bg-[#b96d16e0] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 my-3 w-full"
+        className="bg-[#b96c16] hover:bg-[#b96d16e0] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 my-3 w-[80%]"
       >
         Delete
       </button>

@@ -13,6 +13,8 @@ import AddNotice from "../pages/AddNotice";
 import AdminPanel from "../pages/AdminPanel";
 import RegistrationCard from "../pages/RegistrationCard";
 import Certificate from "../pages/Certificate";
+import ChangePassword from "../pages/ChangePassword";
+import AdminRoute from "./AdminRoute";
 
 
 const Router = createBrowserRouter([
@@ -26,51 +28,55 @@ const Router = createBrowserRouter([
       },
       {
         path: "/admin",
-        element: <AdminPanel></AdminPanel>,
+        element: <AdminRoute><AdminPanel></AdminPanel></AdminRoute>,
       },
       {
         path: "/courses",
-        element: <Courses></Courses>,
+        element: <AdminRoute><Courses></Courses></AdminRoute>,
       },
       {
         path: "/add-courses",
-        element: <AddCourses></AddCourses>,
+        element: <AdminRoute><AddCourses></AddCourses></AdminRoute>,
       },
       {
         path: "/courses/:route",
-        element: <CourseDetails></CourseDetails>,
+        element: <AdminRoute><CourseDetails></CourseDetails></AdminRoute>,
       },
       {
         path: "/courses/update/:route",
-        element: <EditCourse></EditCourse>,
+        element: <AdminRoute><EditCourse></EditCourse></AdminRoute>,
       },
       {
         path: "/payment",
-        element: <PaymentReport></PaymentReport>,
+        element: <AdminRoute><PaymentReport></PaymentReport></AdminRoute>,
       },
       {
         path: "/student",
-        element: <ManageStudent></ManageStudent>,
+        element: <AdminRoute><ManageStudent></ManageStudent></AdminRoute>,
       },
       {
         path: "/student/:sid",
-        element: <ViewStudent></ViewStudent>,
+        element: <AdminRoute><ViewStudent></ViewStudent></AdminRoute>,
       },
       {
         path: "/notice",
-        element: <Notice></Notice>,
+        element: <AdminRoute><Notice></Notice></AdminRoute>,
       },
       {
         path: "/add-notice",
-        element: <AddNotice></AddNotice>,
+        element: <AdminRoute><AddNotice></AddNotice></AdminRoute>,
       },
       {
         path: "/registration",
-        element: <RegistrationCard></RegistrationCard>,
+        element: <AdminRoute><RegistrationCard></RegistrationCard></AdminRoute>,
       },
       {
         path: "/certificate",
-        element: <Certificate></Certificate>,
+        element: <AdminRoute><Certificate></Certificate></AdminRoute>,
+      },
+      {
+        path: "/password-reset",
+        element: <AdminRoute><ChangePassword></ChangePassword></AdminRoute>,
       },
     
     ],

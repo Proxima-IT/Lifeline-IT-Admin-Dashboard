@@ -66,18 +66,18 @@ const AdminPanel = () => {
       });
   };
   return (
-    <div>
+    <div className="p-4 mt-5">
       <h1>Add Content from Admin</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center  md:flex-row gap-10 mt-3"
+        className="flex flex-col justify-center  md:flex-row gap-10 mt-3 w-full "
       >
         {/* Info Section */}
         <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-6 text-left">
           {/* total */}
 
-            <div className="">
-            <label className="block text-sm font-medium text-gray-600 mb-1">
+          <div className="">
+            <label className=" text-sm font-medium text-gray-600 mb-1">
               Total Student
             </label>
             <input
@@ -89,10 +89,10 @@ const AdminPanel = () => {
             />
           </div>
           {/* Thumbnail */}
-          <div className="mb-4">
+          <div className=" relative">
             <label
               htmlFor="banner"
-              className="block text-sm font-medium text-left text-gray-700"
+              className=" text-sm font-medium text-left text-gray-700"
             >
               Banner
             </label>
@@ -111,18 +111,16 @@ const AdminPanel = () => {
               }}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
-          </div>
-          <div></div>
-          <img
-            src={
-              banner ||
-              "https://bestmedia.lk/wp-content/uploads/2024/09/Large-Format-Flex-Banner-Print.jpg"
-            }
-            alt="banner"
-            className="w-36 h-20 object-cover border border-black shadow"
-          />
 
-        
+            <img
+              src={
+                banner ||
+                "https://bestmedia.lk/wp-content/uploads/2024/09/Large-Format-Flex-Banner-Print.jpg"
+              }
+              alt="banner"
+              className="absolute right-2 top-8 w-20 h-10 object-cover border border-black shadow"
+            />
+          </div>
 
           <div className="">
             <label className="block text-sm font-medium text-gray-600 mb-1">
@@ -191,12 +189,10 @@ const AdminPanel = () => {
             />
           </div>
 
-        
-
           <input
             type="submit"
             value="Add"
-            className="w-full col-span-2 bg-[#285599] border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
+            className="w-full lg:col-span-2 bg-[#285599] border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
           />
         </div>
       </form>

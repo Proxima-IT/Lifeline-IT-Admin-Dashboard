@@ -146,7 +146,7 @@ const AddCourses = () => {
   };
 
   return (
-    <div>
+    <div className="my-5">
       <h1 className="text-center text-xl font-fold text-blue-800 font-bold">
         Fill Up the form with Course Information
       </h1>
@@ -156,7 +156,7 @@ const AddCourses = () => {
             Please fill out all required fields.
           </div>
         )}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 p-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:p-10 p-4">
           <h1 className="text-left text-lg font-fold text-blue-800 font-bold">
             Basic Course Information
           </h1>
@@ -669,7 +669,7 @@ const AddCourses = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="bg-[#0b2a53] hover:bg-[#21579e] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 my-3 w-full"
+          className="bg-[#0b2a53] hover:bg-[#21579e] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 my-3 w-[80%] "
         >
           Add Course
         </button>

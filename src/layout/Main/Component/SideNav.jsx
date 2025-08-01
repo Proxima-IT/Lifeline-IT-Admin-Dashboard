@@ -39,6 +39,7 @@ import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { IoIosPaper, IoMdClose, IoMdLock } from "react-icons/io";
 
 import { AiOutlineMenuFold } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
 // import { toast, ToastContainer } from "react-toastify"
 
 const SideNav = () => {
@@ -55,6 +56,9 @@ const SideNav = () => {
     } else {
       document.body.style.overflow = "auto";
     }
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   const handleOpenNavMenu = (event) => {
@@ -75,22 +79,22 @@ const SideNav = () => {
   //   const { data, isLoading } = dashboardData()
   //   const { notices } = useNotice()
 
-  //   const handleLogout = async () => {
-  //     setTimeout(async () => {
-  //       await axios.get(import.meta.env.VITE_API_URL + `/api/auth/logout`, {
-  //         withCredentials: true,
-  //       })
-  //       window.location.href = import.meta.env.VITE_PUBLIC_PAGE + "/login"
-  //     }, 4000)
+   const handleLogout = async () => {
+    setTimeout(async () => {
+      await axios.get(import.meta.env.VITE_API_URL + `/api/auth/logout`, {
+        withCredentials: true,
+      })
+      window.location.href = import.meta.env.VITE_PUBLIC_PAGE
+    }, 4000)
 
-  //     toast.success(`${data?.name} is successfully logged out`, {
-  //       position: "top-center",
-  //       autoClose: 3000,
-  //       closeOnClick: true,
-  //       draggable: false,
-  //       theme: "dark",
-  //     })
-  //   }
+    toast.success(` successfully logged out`, {
+      position: "top-center",
+      autoClose: 3000,
+      closeOnClick: true,
+      draggable: false,
+      theme: "dark",
+    })
+  }
 
   // if ("isLoading")
   //   return (
@@ -105,7 +109,7 @@ const SideNav = () => {
   //     </div>
   //   )
 
-   const [notices, setNotices] = useState([]);
+  const [notices, setNotices] = useState([]);
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_API_URL}/api/dashboard/notices`)
@@ -136,10 +140,16 @@ const SideNav = () => {
           >
             <FaAngleDoubleUp />
           </div>
+          {isOpen && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-40"
+              onClick={() => setIsOpen(false)}
+            />
+          )}
 
           {/* Mobile Drawer */}
           <div
-            className={`fixed z-10 bottom-0 right-0 h-[80vh] overflow-auto lg:hidden w-full bg-blue-50 border-l border-neutral-300 shadow-lg transition-transform duration-500 ease-in-out transform ${
+            className={`fixed z-50 bottom-0 right-0 h-[80vh] overflow-auto lg:hidden w-full bg-blue-50 border-l border-neutral-300 shadow-lg transition-transform duration-500 ease-in-out transform ${
               isOpen ? "translate-y-0" : "translate-y-full"
             }`}
           >
@@ -246,7 +256,7 @@ const SideNav = () => {
                 <li>
                   <NavLink
                     to="/"
-                    //   onClick={handleLogout}
+                    onClick={handleLogout}
                     className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded-md"
                   >
                     <FaArrowRightFromBracket /> Logout
@@ -255,14 +265,7 @@ const SideNav = () => {
               </ul>
             </div>
 
-            {isOpen && (
-              <div
-                className="fixed inset-0 bg-black/40 z-40"
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-              ></div>
-            )}
+            
           </div>
         </div>
       </header>
@@ -353,7 +356,7 @@ const SideNav = () => {
               <li>
                 <NavLink
                   to="/"
-                  //   onClick={handleLogout}
+                   onClick={handleLogout}
                   className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded-md"
                 >
                   <FaArrowRightFromBracket /> Logout
@@ -370,7 +373,7 @@ const SideNav = () => {
         </div>
       </div>
 
-      {/* <ToastContainer></ToastContainer> */}
+      <ToastContainer></ToastContainer>
     </div>
   );
 };

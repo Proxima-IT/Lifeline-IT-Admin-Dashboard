@@ -42,7 +42,7 @@ const Notice = () => {
   };
 
   return (
-    <div>
+    <div className="my-5">
       <div className="flex justify-between">
         <h2 class="text-2xl font-bold mb-4 text-left text-[#0b2a53]">
           All Notice
