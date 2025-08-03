@@ -51,10 +51,33 @@ const AdminPanel = () => {
   }
 
   const onSubmit = (data) => {
-    data.bannerImage = banner;
-    console.log(data);
+    const formattedData = {
+      bannerImage: banner,
+      studentInfo: {
+        totalStudents: data.totalStudents,
+        successCount: data.successCount || "0", // or set it from an input
+        courseCompletors: data.courseCompletors || "0", // or set it from an input
+      },
+      contactInfo: [
+        {
+          number: data.contact1,
+          time: data.available1,
+        },
+        {
+          number: data.contact2,
+          time: data.available2,
+        },
+        {
+          number: data.contact3,
+          time: data.available3,
+        },
+      ],
+    };
+
+    console.log(formattedData); // Confirm the structure
+
     axios
-      .post(`${import.meta.env.VITE_API_URL}/api/general`, data)
+      .post(`${import.meta.env.VITE_API_URL}/api/general`, formattedData)
       .then((res) => {
         console.log(res.data);
         toast.success("Data added successfully", {
@@ -63,8 +86,17 @@ const AdminPanel = () => {
           theme: "dark",
         });
         reset();
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Failed to send data", {
+          position: "top-center",
+          autoClose: 3000,
+          theme: "dark",
+        });
       });
   };
+
   return (
     <div className="p-4 mt-5">
       <h1>Add Content from Admin</h1>
@@ -88,6 +120,30 @@ const AdminPanel = () => {
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
           </div>
+          <div className="">
+            <label className=" text-sm font-medium text-gray-600 mb-1">
+              Success Count
+            </label>
+            <input
+              type="text"
+              {...register("successCount", { required: true })}
+              // value={data.email}
+              placeholder="Enter your website's total success count"
+              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+            />
+          </div>
+          <div className="">
+            <label className=" text-sm font-medium text-gray-600 mb-1">
+              Course Completors
+            </label>
+            <input
+              type="text"
+              {...register("courseCompletors", { required: true })}
+              // value={data.email}
+              placeholder="Enter your website's total course completors"
+              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+            />
+          </div>
           {/* Thumbnail */}
           <div className=" relative">
             <label
@@ -101,7 +157,7 @@ const AdminPanel = () => {
               id="banner"
               type="file"
               accept="image/*"
-              {...register("bannerImage", { required: true })}
+              {...register("bannerImage")}
               placeholder="Enter Banner URL"
               onChange={(e) => {
                 const file = e.target.files[0];
@@ -129,6 +185,7 @@ const AdminPanel = () => {
             <input
               type="text"
               {...register("contact1", { required: true })}
+              placeholder="Enter contact number 1"
               // value={data.email}
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
@@ -141,6 +198,7 @@ const AdminPanel = () => {
               type="text"
               {...register("available1", { required: true })}
               // value={data.email}
+               placeholder="Availability for this contact"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
           </div>
@@ -152,6 +210,7 @@ const AdminPanel = () => {
               type="text"
               {...register("contact2", { required: true })}
               // value={data.email}
+               placeholder="Enter contact number 2"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
           </div>
@@ -163,6 +222,7 @@ const AdminPanel = () => {
               type="text"
               {...register("available2", { required: true })}
               // value={data.email}
+               placeholder="Availability for this contact"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
           </div>
@@ -174,6 +234,7 @@ const AdminPanel = () => {
               type="text"
               {...register("contact3", { required: true })}
               // value={data.email}
+               placeholder="Enter contact number 3"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
           </div>
@@ -185,6 +246,7 @@ const AdminPanel = () => {
               type="text"
               {...register("available3", { required: true })}
               // value={data.email}
+               placeholder="Availability for this contact"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
           </div>
