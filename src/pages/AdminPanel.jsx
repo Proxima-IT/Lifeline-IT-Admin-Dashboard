@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
@@ -6,6 +6,8 @@ import axios from "axios";
 
 const AdminPanel = () => {
   const [banner, setBanner] = useState("");
+  const [panelData, setpanelData] = useState({});
+
   const {
     register,
     control,
@@ -13,6 +15,15 @@ const AdminPanel = () => {
     formState: { errors },
     reset,
   } = useForm({});
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_API_URL}/api/general`).then((res) => {
+      console.log("heelo");
+      setpanelData(res.data);
+    });
+  }, []);
+
+  console.log(panelData);
 
   async function uploadImage(file, type) {
     // setLoading(true); // start loading spinner
@@ -56,8 +67,8 @@ const AdminPanel = () => {
       bannerImage: banner,
       studentInfo: {
         totalStudents: data.totalStudents,
-        successCount: data.successCount , // or set it from an input
-        courseCompletors: data.courseCompletors , // or set it from an input
+        successCount: data.successCount, // or set it from an input
+        courseCompletors: data.courseCompletors, // or set it from an input
       },
       contactInfo: [
         {
@@ -117,6 +128,7 @@ const AdminPanel = () => {
               type="text"
               {...register("totalStudents")}
               // value={data.email}
+              defaultValue={panelData?.studentInfo?.totalStudents || ""}
               placeholder="Enter your website's total student"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
@@ -128,7 +140,7 @@ const AdminPanel = () => {
             <input
               type="text"
               {...register("successCount")}
-              // value={data.email}
+              defaultValue={panelData?.studentInfo?.successCount}
               placeholder="Enter your website's total success count"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
@@ -140,7 +152,7 @@ const AdminPanel = () => {
             <input
               type="text"
               {...register("courseCompletors")}
-              // value={data.email}
+              defaultValue={panelData?.studentInfo?.courseCompletors}
               placeholder="Enter your website's total course completors"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
             />
@@ -171,7 +183,7 @@ const AdminPanel = () => {
 
             <img
               src={
-                banner ||
+                panelData?.bannerImage ||
                 "https://bestmedia.lk/wp-content/uploads/2024/09/Large-Format-Flex-Banner-Print.jpg"
               }
               alt="banner"
@@ -179,78 +191,34 @@ const AdminPanel = () => {
             />
           </div>
 
-          <div className="">
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              Contact Number 1
-            </label>
-            <input
-              type="text"
-              {...register("contact1")}
-              placeholder="Enter contact number 1"
-              // value={data.email}
-              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
-            />
-          </div>
-          <div className="">
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              Available Time
-            </label>
-            <input
-              type="text"
-              {...register("available1")}
-              // value={data.email}
-               placeholder="Availability for this contact"
-              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
-            />
-          </div>
-          <div className="">
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              Contact Number 2
-            </label>
-            <input
-              type="text"
-              {...register("contact2")}
-              // value={data.email}
-               placeholder="Enter contact number 2"
-              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
-            />
-          </div>
-          <div className="">
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              Available Time
-            </label>
-            <input
-              type="text"
-              {...register("available2")}
-              // value={data.email}
-               placeholder="Availability for this contact"
-              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
-            />
-          </div>
-          <div className="">
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              Contact Number 3
-            </label>
-            <input
-              type="text"
-              {...register("contact3")}
-              // value={data.email}
-               placeholder="Enter contact number 3"
-              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
-            />
-          </div>
-          <div className="">
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              Available Time
-            </label>
-            <input
-              type="text"
-              {...register("available3")}
-              // value={data.email}
-               placeholder="Availability for this contact"
-              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
-            />
-          </div>
+          {panelData?.contactInfo?.map((contactInfo, index) => (
+            <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-6 text-left">
+              <div className="">
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Contact Number {index + 1}
+                </label>
+                <input
+                  type="text"
+                  {...register(`contact${index + 1}`)}
+                  placeholder={`Enter contact number ${index + 1}`}
+                  defaultValue={contactInfo.number}
+                  className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+                />
+              </div>
+              <div className="">
+                <label className="block text-sm font-medium text-gray-600 mb-1">
+                  Available Time
+                </label>
+                <input
+                  type="text"
+                  {...register(`available${index + 1}`)}
+                  defaultValue={contactInfo.time}
+                  placeholder="Availability for this contact"
+                  className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+                />
+              </div>
+            </div>
+          ))}
 
           <input
             type="submit"

@@ -19,12 +19,12 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-red-50 text-red-800 text-center p-8">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50 text-blue-800 text-center p-8">
           <h1 className="text-2xl font-semibold mb-4">Something went wrong.</h1>
-          <p className="mb-2">{ "Unexpected error occurred."}</p>
+          <p className="mb-2">{ "Unexpected error occurblue."}</p>
           <button
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
             Reload Page
           </button>
