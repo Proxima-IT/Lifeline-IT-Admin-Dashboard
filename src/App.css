@@ -5,6 +5,13 @@
   text-align: center;
 }
 
+
+a.active {
+  border-left: 4px solid blueviolet; /* replace with actual color */
+  font-weight: 600; /* Tailwind's font-semibold */
+  background-color: #f7f7ff;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

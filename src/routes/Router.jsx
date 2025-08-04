@@ -15,6 +15,7 @@ import RegistrationCard from "../pages/RegistrationCard";
 import Certificate from "../pages/Certificate";
 import ChangePassword from "../pages/ChangePassword";
 import AdminRoute from "./AdminRoute";
+import NotFound from "../pages/NotFound";
 
 
 const Router = createBrowserRouter([
@@ -81,6 +82,10 @@ const Router = createBrowserRouter([
     
     ],
   },
+  {
+    path: "*",
+    element: <NotFound></NotFound>
+  }
 ]);
 
 export default Router;

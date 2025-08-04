@@ -114,7 +114,7 @@ const AdminPanel = () => {
             </label>
             <input
               type="text"
-              {...register("totalStudents", { required: true })}
+              {...register("totalStudents")}
               // value={data.email}
               placeholder="Enter your website's total student"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
@@ -126,7 +126,7 @@ const AdminPanel = () => {
             </label>
             <input
               type="text"
-              {...register("successCount", { required: true })}
+              {...register("successCount")}
               // value={data.email}
               placeholder="Enter your website's total success count"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
@@ -138,7 +138,7 @@ const AdminPanel = () => {
             </label>
             <input
               type="text"
-              {...register("courseCompletors", { required: true })}
+              {...register("courseCompletors")}
               // value={data.email}
               placeholder="Enter your website's total course completors"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
@@ -184,7 +184,7 @@ const AdminPanel = () => {
             </label>
             <input
               type="text"
-              {...register("contact1", { required: true })}
+              {...register("contact1")}
               placeholder="Enter contact number 1"
               // value={data.email}
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
@@ -196,7 +196,7 @@ const AdminPanel = () => {
             </label>
             <input
               type="text"
-              {...register("available1", { required: true })}
+              {...register("available1")}
               // value={data.email}
                placeholder="Availability for this contact"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
@@ -208,7 +208,7 @@ const AdminPanel = () => {
             </label>
             <input
               type="text"
-              {...register("contact2", { required: true })}
+              {...register("contact2")}
               // value={data.email}
                placeholder="Enter contact number 2"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
@@ -220,7 +220,7 @@ const AdminPanel = () => {
             </label>
             <input
               type="text"
-              {...register("available2", { required: true })}
+              {...register("available2")}
               // value={data.email}
                placeholder="Availability for this contact"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
@@ -232,7 +232,7 @@ const AdminPanel = () => {
             </label>
             <input
               type="text"
-              {...register("contact3", { required: true })}
+              {...register("contact3")}
               // value={data.email}
                placeholder="Enter contact number 3"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
@@ -244,7 +244,7 @@ const AdminPanel = () => {
             </label>
             <input
               type="text"
-              {...register("available3", { required: true })}
+              {...register("available3")}
               // value={data.email}
                placeholder="Availability for this contact"
               className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
