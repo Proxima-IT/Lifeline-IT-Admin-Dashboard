@@ -79,7 +79,7 @@ const SideNav = () => {
   //   const { data, isLoading } = dashboardData()
   //   const { notices } = useNotice()
 
-   const handleLogout = async () => {
+  const handleLogout = async () => {
     setTimeout(async () => {
       await axios.get(import.meta.env.VITE_API_URL + `/api/auth/logout`, {
         withCredentials: true,
@@ -87,7 +87,7 @@ const SideNav = () => {
       window.location.href = import.meta.env.VITE_PUBLIC_PAGE
     }, 4000)
 
-    toast.success(` successfully logged out`, {
+    toast.success(`Admin is successfully logged out`, {
       position: "top-center",
       autoClose: 3000,
       closeOnClick: true,
@@ -95,6 +95,7 @@ const SideNav = () => {
       theme: "dark",
     })
   }
+
 
   // if ("isLoading")
   //   return (

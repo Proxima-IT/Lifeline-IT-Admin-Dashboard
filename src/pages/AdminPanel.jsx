@@ -3,6 +3,7 @@ import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+
 const AdminPanel = () => {
   const [banner, setBanner] = useState("");
   const {
@@ -55,8 +56,8 @@ const AdminPanel = () => {
       bannerImage: banner,
       studentInfo: {
         totalStudents: data.totalStudents,
-        successCount: data.successCount || "0", // or set it from an input
-        courseCompletors: data.courseCompletors || "0", // or set it from an input
+        successCount: data.successCount , // or set it from an input
+        courseCompletors: data.courseCompletors , // or set it from an input
       },
       contactInfo: [
         {
