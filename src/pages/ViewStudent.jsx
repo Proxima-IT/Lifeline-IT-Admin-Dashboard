@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 const ViewStudent = () => {
   const [studentDetails, setStudentDetails] = useState({});
   const [totalOrders, setTotalOrders] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { sid } = useParams();
   // console.log(sid);
@@ -18,11 +18,10 @@ const ViewStudent = () => {
       .then((res) => {
         console.log(res.data.student);
         setStudentDetails(res.data.student);
-        setTotalOrders(res.data.student.totalOrders);
       });
   }, []);
 
-  console.log(studentDetails?.totalOrders);
+  console.log(totalOrders);
 
   useEffect(() => {
     if (!studentDetails?.totalOrders) return;
@@ -31,14 +30,14 @@ const ViewStudent = () => {
       const responses = await Promise.all(
         studentDetails.totalOrders.map((order) =>
           axios.get(
-            `${import.meta.env.VITE_API_URL}/api/courses/id/${order._id}`
+            `${import.meta.env.VITE_API_URL}/api/courses/id/${order.courseId}`
           )
         )
       );
 
       const ordersData = responses.map((res) => res.data);
 
-      setTotalOrders(ordersData); // ✅ now set full orders
+      setTotalOrders(ordersData);
     };
 
     fetchOrders();
@@ -153,7 +152,6 @@ const ViewStudent = () => {
               //   value={uploadedImageUrl || data?.image}
             />
           </div>
-
           {/* Info Section */}
           <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-6 text-left">
             {/* Email */}
@@ -182,9 +180,9 @@ const ViewStudent = () => {
                 className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
               />
             </div>
-            {/* phone  */}
+
             <div>
-              <label className=" block text-sm font-medium text-gray-600 mb-1">
+              <label className=" block text-sm font-medium text-left text-gray-600 mb-1">
                 Course Route
               </label>
               <input
@@ -195,22 +193,51 @@ const ViewStudent = () => {
                 className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
               />
             </div>
-
+            {/* phone  */}
             <input
+              // onClick={handleUpdate}
               type="submit"
               value="Edit"
-              className="w-full col-span-2 bg-[#285599] border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
+              className="w-full col-span-2 bg-[#285599] text-center my-2 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
             />
-            <button
-              onClick={() => {
-                handleDelete(sid);
-              }}
-              className="bg-[#b96c16] col-span-2 hover:bg-[#b96d16e0] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 w-full"
-            >
-              Delete
-            </button>
           </div>
         </form>
+
+        <div className="overflow-x-auto ">
+          <table className="w-full text-left border-separate border-spacing-y-4">
+            {/* <colgroup>
+            <col />
+
+            <col className="" />
+          </colgroup> */}
+            <thead className=" bg-gradient-to-l from-[#0B254C] via-[#266ea1] to-[#041630] text-white ">
+              <tr className="text-center text-base ">
+                <th className="p-3 text-left">Course Name</th>
+              </tr>
+            </thead>
+            <tbody className="pt-10">
+              {totalOrders.map((course) => (
+                <tr
+                  key={course._id}
+                  className=" border-b font-bold border-gray-300 pt-3"
+                >
+                  <td className="p-3 text-left mt-10 border-b border-gray-300">
+                    <p className="text-[#0B254C]">{course.title}</p>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <button
+          onClick={() => {
+            handleDelete(sid);
+          }}
+          className="bg-[#b96c16] col-span-2 hover:bg-[#b96d16e0] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 w-full"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

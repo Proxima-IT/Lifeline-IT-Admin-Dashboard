@@ -58,7 +58,7 @@ const Notice = () => {
       {notices.length > 0 ? (
         notices.map((notice) => (
           <div className="w-full rounded-xl p-4 shadow-lg text-left flex flex-col space-y-3">
-            <img src={notice.image} alt="" className="w-full " />
+            <img src={notice.image} alt="" className="w-full" />
             <h2 className="italic text-sm">Date: {notice.date}</h2>
             <h1 className="font-bold text-2xl">{notice.title}</h1>
             <p>{notice.description}</p>

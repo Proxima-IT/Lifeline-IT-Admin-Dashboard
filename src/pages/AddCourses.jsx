@@ -129,7 +129,7 @@ const AddCourses = () => {
 
   const onSubmit = (data) => {
     data.thumbnail = thumbnail;
-    data.instructor = instructor;
+    // data.instructor = instructor;
     console.log(data);
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/courses/add`, data)
@@ -274,19 +274,21 @@ const AddCourses = () => {
             </div>
           </div>
 
-          {/* Intro Video */}
+        
+
+          {/* cut Price */}
           <div className="mb-4">
             <label
-              htmlFor="introVideo"
+              htmlFor="cutPrice"
               className="block text-sm font-medium text-left text-gray-700"
             >
-              Intro Video
+              Cutoff Price
             </label>
             <input
-              type="text"
-              id="introVideo"
-              {...register("introVideo", { required: true })}
-              placeholder="Enter intro video link"
+              type="number"
+              id="price"
+              {...register("cutPrice", { required: true })}
+              placeholder="Enter cut price"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
@@ -304,6 +306,56 @@ const AddCourses = () => {
               id="price"
               {...register("price", { required: true })}
               placeholder="Enter price"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+          {/* star count */}
+          <div className="mb-4">
+            <label
+              htmlFor="starCount"
+              className="block text-sm font-medium text-left text-gray-700"
+            >
+              Star Count
+            </label>
+            <input
+              type="text"
+              id="price"
+              {...register("starCount", { required: true })}
+              placeholder="Enter star count"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+          </div>
+          {/* review count */}
+          <div className="mb-4">
+            <label
+              htmlFor="reviewCount"
+              className="block text-sm font-medium text-left text-gray-700"
+            >
+              Review Count
+            </label>
+            <input
+              type="number"
+              id="price"
+              {...register("reviewCount", { required: true })}
+              placeholder="Enter review count"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+          </div>
+
+            {/* Intro Video */}
+          <div className="mb-4">
+            <label
+              htmlFor="introVideo"
+              className="block text-sm font-medium text-left text-gray-700"
+            >
+              Intro Video
+            </label>
+            <input
+              type="text"
+              id="introVideo"
+              {...register("introVideo", { required: true })}
+              placeholder="Enter intro video link"
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
@@ -1204,3 +1256,5 @@ export default AddCourses;
 // };
 
 // export default AddCourses;
+
+

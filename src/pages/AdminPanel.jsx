@@ -111,7 +111,7 @@ const AdminPanel = () => {
 
   return (
     <div className="p-4 mt-5">
-      <h1>Add Content from Admin</h1>
+      <h1 className="text-xl font-bold text-blue-900 mb-4">Add Content from Admin Panel</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-center  md:flex-row gap-10 mt-3 w-full "
@@ -192,7 +192,7 @@ const AdminPanel = () => {
           </div>
 
           {panelData?.contactInfo?.map((contactInfo, index) => (
-            <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-6 text-left">
+            <>
               <div className="">
                 <label className="block text-sm font-medium text-gray-600 mb-1">
                   Contact Number {index + 1}
@@ -217,7 +217,7 @@ const AdminPanel = () => {
                   className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
                 />
               </div>
-            </div>
+            </>
           ))}
 
           <input

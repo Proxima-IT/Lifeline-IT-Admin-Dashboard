@@ -9,7 +9,7 @@ export const useDashboard = () => {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/dashboard`, {
         withCredentials: true, // ✅ Required for cookie-based auth
       });
-      console.log(res)
+      console.log(res.data)
       return res.data;
     },
     retry: false, // prevent retry on error
