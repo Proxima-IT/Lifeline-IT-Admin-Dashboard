@@ -1,15 +1,15 @@
-import React, { useState } from "react"
-import axios from "axios"
-import { useForm } from "react-hook-form"
-import Swal from "sweetalert2"
-import { useNavigate } from "react-router-dom"
+import React, { useState } from "react";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import { Link, useNavigate } from "react-router-dom";
 
 const Certificate = ({ data }) => {
-  const [btnLoading, setBtnLoading] = useState(false)
-  const { register, handleSubmit } = useForm()
-  const navigate = useNavigate()
+  const [btnLoading, setBtnLoading] = useState(false);
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
   const handleDownload = async (studentId, courseRoute, Grade) => {
-    setBtnLoading(true)
+    setBtnLoading(true);
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/dashboard/certificate`,
@@ -18,23 +18,23 @@ const Certificate = ({ data }) => {
           headers: { "Content-Type": "application/json" },
           responseType: "blob", // expect PDF
         }
-      )
+      );
 
-      const url = window.URL.createObjectURL(new Blob([res.data]))
-      const a = document.createElement("a")
-      a.href = url
-      a.download = `${studentId}-certificate.pdf`
-      document.body.appendChild(a)
-      a.click()
-      a.remove()
-      window.URL.revokeObjectURL(url)
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${studentId}-certificate.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
     } catch (error) {
       if (
         error.response?.status !== 200 &&
         error.response?.data instanceof Blob
       ) {
-        const text = await error.response.data.text() // Convert blob to text
-        const json = JSON.parse(text)
+        const text = await error.response.data.text(); // Convert blob to text
+        const json = JSON.parse(text);
 
         Swal.fire({
           icon: "error",
@@ -44,23 +44,28 @@ const Certificate = ({ data }) => {
           confirmButtonText: "Go to Course",
           cancelButtonText: "Cancel",
         }).then((result) => {
-          if(result.isConfirmed) navigate(`/courses/update/${courseRoute}`)
-        })
+          if (result.isConfirmed) navigate(`/courses/update/${courseRoute}`);
+        });
       }
-      console.error(error)
+      console.error(error);
     } finally {
-      setBtnLoading(false)
+      setBtnLoading(false);
     }
-  }
+  };
 
   const onSubmit = (formData) => {
-    const { sid, courseRoute, grade } = formData
-    handleDownload(sid, courseRoute, grade) // assuming courseRoute is also title
-  }
+    const { sid, courseRoute, grade } = formData;
+    handleDownload(sid, courseRoute, grade); // assuming courseRoute is also title
+  };
 
   return (
     <div className="p-4">
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Link to="/certificate-apply">
+          <button className="bg-[#0b2a53] px-2 lg:px-3 text-sm lg:text-lg py-2 rounded-md text-white flex items-center gap-3">
+            View Application
+          </button>
+        </Link>
         <h1 className="text-xl text-blue-500 font-bold text-center mb-3">
           Certificate
         </h1>
@@ -123,7 +128,7 @@ const Certificate = ({ data }) => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Certificate
+export default Certificate;

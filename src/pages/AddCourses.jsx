@@ -19,6 +19,8 @@ const AddCourses = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
+    setValue,
   } = useForm({
     defaultValues: {
       instructors: [{ name: "", about: "", image: "", sign: "" }],
@@ -119,6 +121,7 @@ const AddCourses = () => {
         }
 
         console.log("Image URL:", data.data.url);
+        return data.data.url;;
       }
     } catch (error) {
       console.error("Image upload failed:", error);
@@ -129,7 +132,7 @@ const AddCourses = () => {
 
   const onSubmit = (data) => {
     data.thumbnail = thumbnail;
-    // data.instructor = instructor;
+    data.instructor = instructor;
     console.log(data);
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/courses/add`, data)
@@ -274,8 +277,6 @@ const AddCourses = () => {
             </div>
           </div>
 
-        
-
           {/* cut Price */}
           <div className="mb-4">
             <label
@@ -326,6 +327,7 @@ const AddCourses = () => {
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
+
           {/* review count */}
           <div className="mb-4">
             <label
@@ -343,7 +345,7 @@ const AddCourses = () => {
             />
           </div>
 
-            {/* Intro Video */}
+          {/* Intro Video */}
           <div className="mb-4">
             <label
               htmlFor="introVideo"
@@ -478,7 +480,7 @@ const AddCourses = () => {
                 >
                   Image
                 </label>
-                <input
+                {/* <input
                   id="instructorImage"
                   type="file"
                   accept="image/*"
@@ -493,10 +495,35 @@ const AddCourses = () => {
                     }
                   }}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                />
+                /> */}
               </div>
-              <img
+              <input
+               id="instructorImage"
+                type="file"
+                accept="image/*"
+                {...register(`instructors.${index}.image`, {
+                    required: true,
+                  })}
+                onChange={async (e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const imageUrl = await uploadImage(file, "instructor");
+                    console.log("Uploaded Image URL:", imageUrl); // ✅ Debug here
+                    // setValue(`instructors.${index}.image`, imageUrl, {
+                    //   shouldValidate: true,
+                    // });
+                  }
+                }}
+              />
+
+              {/* <img
                 src={instructorImage}
+                alt="thumbnail"
+                className="w-36 h-20 object-cover border border-black shadow"
+              /> */}
+
+              <img
+                src={watch(`instructors.${index}.image`)} // watch the current field
                 alt="thumbnail"
                 className="w-36 h-20 object-cover border border-black shadow"
               />
@@ -1256,5 +1283,3 @@ export default AddCourses;
 // };
 
 // export default AddCourses;
-
-

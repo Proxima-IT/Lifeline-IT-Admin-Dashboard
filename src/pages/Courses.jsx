@@ -79,8 +79,8 @@ const Courses = () => {
                       </button>
                     </Link> */}
                     <Link to={`/courses/update/${course.route}`}>
-                      <button className="bg-[#0b2a53] px-5 py-2 rounded-md text-white flex items-center gap-3">
-                        View Course
+                      <button className="m-2 px-[22px] py-[8px] text-center uppercase transition-all duration-500 bg-[linear-gradient(to_right,_#249ffd_2%,_#3a7bd5_58%,_#00d2ff_100%)] bg-[length:200%_auto] text-white shadow-[0_0_15px_#fff] rounded-[10px]  hover:bg-[position:right_center] hover:text-white flex items-center  gap-3 font-bold">
+                        View Course 
                       </button>
                     </Link>
 

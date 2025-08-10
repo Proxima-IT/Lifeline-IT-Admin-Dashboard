@@ -16,6 +16,7 @@ import Certificate from "../pages/Certificate";
 import ChangePassword from "../pages/ChangePassword";
 import AdminRoute from "./AdminRoute";
 import NotFound from "../pages/NotFound";
+import CertificateApply from "../pages/CertificateApply";
 
 
 const Router = createBrowserRouter([
@@ -74,6 +75,10 @@ const Router = createBrowserRouter([
       {
         path: "/certificate",
         element: <AdminRoute><Certificate></Certificate></AdminRoute>,
+      },
+      {
+        path: "/certificate-apply",
+        element: <AdminRoute><CertificateApply></CertificateApply></AdminRoute>,
       },
       {
         path: "/password-reset",

@@ -84,7 +84,7 @@ const SideNav = () => {
       await axios.get(import.meta.env.VITE_API_URL + `/api/auth/logout`, {
         withCredentials: true,
       })
-      window.location.href = import.meta.env.VITE_PUBLIC_PAGE
+      window.location.href = import.meta.env.VITE_PUBLIC_PAGE 
     }, 4000)
 
     toast.success(`Admin is successfully logged out`, {
