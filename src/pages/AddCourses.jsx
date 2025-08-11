@@ -121,7 +121,7 @@ const AddCourses = () => {
         }
 
         console.log("Image URL:", data.data.url);
-        return data.data.url;;
+        return data.data.url;
       }
     } catch (error) {
       console.error("Image upload failed:", error);
@@ -132,7 +132,7 @@ const AddCourses = () => {
 
   const onSubmit = (data) => {
     data.thumbnail = thumbnail;
-    data.instructor = instructor;
+    // data.instructor = instructor;
     console.log(data);
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/courses/add`, data)
@@ -498,20 +498,16 @@ const AddCourses = () => {
                 /> */}
               </div>
               <input
-               id="instructorImage"
+                id="instructorImage"
                 type="file"
                 accept="image/*"
-                {...register(`instructors.${index}.image`, {
-                    required: true,
-                  })}
                 onChange={async (e) => {
                   const file = e.target.files[0];
                   if (file) {
                     const imageUrl = await uploadImage(file, "instructor");
-                    console.log("Uploaded Image URL:", imageUrl); // ✅ Debug here
-                    // setValue(`instructors.${index}.image`, imageUrl, {
-                    //   shouldValidate: true,
-                    // });
+                    setValue(`instructors.${index}.image`, imageUrl, {
+                      shouldValidate: true,
+                    });
                   }
                 }}
               />
