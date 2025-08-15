@@ -110,19 +110,21 @@ const AdminPanel = () => {
   };
 
   return (
-    <div className="p-4 mt-5">
-      <h1 className="text-xl font-bold text-blue-900 mb-4">Add Content from Admin Panel</h1>
+    <div className="p-6">
+      <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-1 mx-auto rounded-md">
+        Home Page
+      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-center  md:flex-row gap-10 mt-3 w-full "
       >
         {/* Info Section */}
-        <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-6 text-left">
+        <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-4 text-left">
           {/* total */}
 
           <div className="">
-            <label className=" text-sm font-medium text-gray-600 mb-1">
-              Total Student
+            <label className=" text-sm font-medium text-white ">
+              Marks Student
             </label>
             <input
               type="text"
@@ -130,11 +132,11 @@ const AdminPanel = () => {
               // value={data.email}
               defaultValue={panelData?.studentInfo?.totalStudents || ""}
               placeholder="Enter your website's total student"
-              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+              className="w-full bg-[#8995A3] placeholder-white  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
             />
           </div>
           <div className="">
-            <label className=" text-sm font-medium text-gray-600 mb-1">
+            <label className=" text-sm font-medium text-white ">
               Success Count
             </label>
             <input
@@ -142,11 +144,11 @@ const AdminPanel = () => {
               {...register("successCount")}
               defaultValue={panelData?.studentInfo?.successCount}
               placeholder="Enter your website's total success count"
-              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+              className="w-full bg-[#8995A3] placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
             />
           </div>
           <div className="">
-            <label className=" text-sm font-medium text-gray-600 mb-1">
+            <label className=" text-sm font-medium text-white ">
               Course Completors
             </label>
             <input
@@ -154,16 +156,29 @@ const AdminPanel = () => {
               {...register("courseCompletors")}
               defaultValue={panelData?.studentInfo?.courseCompletors}
               placeholder="Enter your website's total course completors"
-              className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+              className="w-full bg-[#8995A3] placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
             />
           </div>
+          <div className="">
+            <label className=" text-sm font-medium text-white ">
+              Intro Video Link
+            </label>
+            <input
+              type="text"
+              {...register("courseCompletors")}
+              defaultValue={panelData?.studentInfo?.courseCompletors}
+              // placeholder="Enter your website's total course completors"
+              className="w-full bg-[#8995A3]  placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+            />
+          </div>
+
           {/* Thumbnail */}
           <div className=" relative">
             <label
               htmlFor="banner"
-              className=" text-sm font-medium text-left text-gray-700"
+              className=" text-sm font-medium text-left text-white"
             >
-              Banner
+              Ads Banner Design
             </label>
 
             <input
@@ -178,7 +193,7 @@ const AdminPanel = () => {
                   uploadImage(file, "banner");
                 }
               }}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="mt-1 block w-full px-4 py-2 bg-[#C72E67] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
 
             <img
@@ -190,23 +205,52 @@ const AdminPanel = () => {
               className="absolute right-2 top-8 w-20 h-10 object-cover border border-black shadow"
             />
           </div>
+          <div className="">
+            <label className=" text-sm font-medium text-white ">
+              Join as a Mentor (Google Form Link)
+            </label>
+            <input
+              type="text"
+              {...register("courseCompletors")}
+              defaultValue={panelData?.studentInfo?.courseCompletors}
+              // placeholder="Enter your website's total course completors"
+              className="w-full bg-[#8995A3] placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+            />
+          </div>
+          <div className="">
+            <label className=" text-sm font-medium text-white ">
+              Banner Link ( If a link needs to be added in the banner)
+            </label>
+            <input
+              type="text"
+              {...register("courseCompletors")}
+              defaultValue={panelData?.studentInfo?.courseCompletors}
+              // placeholder="Enter your website's total course completors"
+              className="w-full bg-[#8995A3] placeholder-white  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+            />
+          </div>
+          <div></div>
+
+          <div className="text-2xl font-bold text-white text-center mb-4 bg-[#1398DB] w-1/4 px-3 py-1 mx-auto rounded-md col-span-2">
+            Contact
+          </div>
 
           {panelData?.contactInfo?.map((contactInfo, index) => (
             <>
               <div className="">
-                <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Contact Number {index + 1}
+                <label className="block text-sm font-medium text-white ">
+                  Contact-{index + 1}
                 </label>
                 <input
                   type="text"
                   {...register(`contact${index + 1}`)}
                   placeholder={`Enter contact number ${index + 1}`}
                   defaultValue={contactInfo.number}
-                  className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+                  className="w-full bg-[#8995A3]  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
                 />
               </div>
               <div className="">
-                <label className="block text-sm font-medium text-gray-600 mb-1">
+                <label className="block text-sm font-medium text-white ">
                   Available Time
                 </label>
                 <input
@@ -214,16 +258,15 @@ const AdminPanel = () => {
                   {...register(`available${index + 1}`)}
                   defaultValue={contactInfo.time}
                   placeholder="Availability for this contact"
-                  className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium"
+                  className="w-full bg-[#8995A3]  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
                 />
               </div>
             </>
           ))}
-
           <input
             type="submit"
-            value="Add"
-            className="w-full lg:col-span-2 bg-[#285599] border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
+            value="Change & Update"
+            className="w-1/2 mx-auto lg:col-span-2 bg-[#0052CC] mt-3 rounded-md px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
           />
         </div>
       </form>

@@ -55,11 +55,11 @@ const Courses = () => {
               </button>
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8">
             {courses.map((course) => (
               <div
                 key={course._id}
-                className="bg-white rounded-2xl shadow-md overflow-hidden max-w-sm mx-auto flex flex-col gap-6  items-center justify-center"
+                className="bg-white rounded-2xl shadow-md overflow-hidden mx-auto flex flex-col gap-6  items-center justify-center"
               >
                 <img
                   src={course.thumbnail}

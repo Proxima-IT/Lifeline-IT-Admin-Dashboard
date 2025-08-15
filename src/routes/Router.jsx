@@ -17,6 +17,10 @@ import ChangePassword from "../pages/ChangePassword";
 import AdminRoute from "./AdminRoute";
 import NotFound from "../pages/NotFound";
 import CertificateApply from "../pages/CertificateApply";
+import AddStudent from "../pages/AddStudent";
+import AddMember from "../pages/AddMember";
+import ViewMember from "../pages/ViewMember";
+
 
 
 const Router = createBrowserRouter([
@@ -53,6 +57,10 @@ const Router = createBrowserRouter([
         element: <AdminRoute><PaymentReport></PaymentReport></AdminRoute>,
       },
       {
+        path: "/add-student",
+        element: <AdminRoute><AddStudent></AddStudent></AdminRoute>,
+      },
+      {
         path: "/student",
         element: <AdminRoute><ManageStudent></ManageStudent></AdminRoute>,
       },
@@ -67,6 +75,14 @@ const Router = createBrowserRouter([
       {
         path: "/add-notice",
         element: <AdminRoute><AddNotice></AddNotice></AdminRoute>,
+      },
+      {
+        path: "/add-member",
+        element: <AdminRoute><AddMember></AddMember></AdminRoute>,
+      },
+      {
+        path: "/view-member",
+        element: <AdminRoute><ViewMember></ViewMember></AdminRoute>,
       },
       {
         path: "/registration",

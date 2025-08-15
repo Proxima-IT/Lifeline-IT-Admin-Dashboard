@@ -5,7 +5,7 @@ const MainLayout = () => {
   return (
     <div>
       <ErrorBoundary>
-        <div className="bg-[#f9f9ff] font-roboto lg:p-2">
+        <div className=" font-roboto ">
           <SideNav />
         </div>
       </ErrorBoundary>
