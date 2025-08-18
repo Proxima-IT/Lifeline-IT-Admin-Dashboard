@@ -6,7 +6,7 @@ import AddCourses from "../pages/AddCourses";
 import CourseDetails from "../pages/CourseDetails";
 import EditCourse from "../pages/EditCourse";
 import PaymentReport from "../pages/PaymentReport";
-import ManageStudent from "../pages/ManageStudent";
+
 import ViewStudent from "../pages/ViewStudent";
 import Notice from "../pages/Notice";
 import AddNotice from "../pages/AddNotice";
@@ -20,6 +20,7 @@ import CertificateApply from "../pages/CertificateApply";
 import AddStudent from "../pages/AddStudent";
 import AddMember from "../pages/AddMember";
 import ViewMember from "../pages/ViewMember";
+import ViewStudents from "../pages/ViewStudents";
 
 
 
@@ -62,10 +63,10 @@ const Router = createBrowserRouter([
       },
       {
         path: "/student",
-        element: <AdminRoute><ManageStudent></ManageStudent></AdminRoute>,
+        element: <AdminRoute><ViewStudents></ViewStudents></AdminRoute>,
       },
       {
-        path: "/student/:sid",
+        path: "/viewstudent",
         element: <AdminRoute><ViewStudent></ViewStudent></AdminRoute>,
       },
       {
