@@ -61,6 +61,7 @@ const SideNav = () => {
 
   const toggleNavbar = () => setIsOpen(!isOpen);
 
+  
   // useEffect(() => {
   //   if (isOpen) {
   //     document.body.style.overflow = "hidden";
@@ -96,7 +97,7 @@ const SideNav = () => {
         withCredentials: true,
       });
       window.location.href = import.meta.env.VITE_PUBLIC_PAGE;
-    }, 4000);
+    }, 2000);
 
     toast.success(`Admin is successfully logged out`, {
       position: "top-center",
@@ -130,16 +131,7 @@ const SideNav = () => {
       });
   }, []);
 
-  const hours = new Date().getHours();
-  let greeting = "";
 
-  if (hours < 12) {
-    greeting = "Good Morning";
-  } else if (hours < 18) {
-    greeting = "Good Afternoon";
-  } else {
-    greeting = "Good Evening";
-  }
 
   return (
     <div>
@@ -160,12 +152,12 @@ const SideNav = () => {
             {/* Navigation */}
             <div className="flex-1 bg-[#132949] text-sm  text-gray-200 flex justify-center">
               <nav className=" mx-auto flex flex-col items-start p-2 mt-5 text-base">
-                <Link
-                  className="block p-2 rounded hover:bg-[#1f2e48]"
+                <NavLink
+                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
                   to="/admin"
                 >
                   Admin Panel
-                </Link>
+                </NavLink>
 
                 {/* Students Management */}
                 <button
@@ -179,40 +171,40 @@ const SideNav = () => {
                 </button>
                 {openStudent && (
                   <div className="pl-4">
-                    <Link
-                      className="block p-2 hover:bg-[#1f2e48] rounded"
+                    <NavLink
+                      className="block p-2 hover:bg-[#1f2e48] rounded w-full "
                       to="/add-student"
                     >
                       Add Student
-                    </Link>
-                    <Link
-                      className="block p-2 hover:bg-[#1f2e48] rounded"
+                    </NavLink>
+                    <NavLink
+                      className="block p-2 hover:bg-[#1f2e48] rounded w-full "
                       to="/student"
                     >
                       View Student
-                    </Link>
-                    <Link
-                      className="block p-2 hover:bg-[#1f2e48] rounded"
+                    </NavLink>
+                    <NavLink
+                      className="block p-2 hover:bg-[#1f2e48] rounded w-full "
                       to="/certificate"
                     >
                       Certificates Manage
-                    </Link>
+                    </NavLink>
                   </div>
                 )}
 
                 {/* Other Links */}
-                <Link
-                  className="block p-2 rounded hover:bg-[#1f2e48]"
+                <NavLink
+                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
                   to="/courses"
                 >
                   Courses
-                </Link>
-                <Link
-                  className="block p-2 rounded hover:bg-[#1f2e48]"
+                </NavLink>
+                <NavLink
+                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
                   to="/payment"
                 >
                   Payment Reports
-                </Link>
+                </NavLink>
 
                 {/* Team Members */}
                 <button
@@ -226,39 +218,39 @@ const SideNav = () => {
                 </button>
                 {openTeam && (
                   <div className="pl-4">
-                    <Link
-                      className="block p-2 hover:bg-[#1f2e48] rounded"
+                    <NavLink
+                      className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
                       to="/add-member"
                     >
                       Add Member
-                    </Link>
-                    <Link
-                      className="block p-2 hover:bg-[#1f2e48] rounded"
+                    </NavLink>
+                    <NavLink
+                      className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
                       to="/view-member"
                     >
                       View Member
-                    </Link>
+                    </NavLink>
                   </div>
                 )}
 
-                <Link
-                  className="block p-2 rounded hover:bg-[#1f2e48]"
+                <NavLink
+                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
                   to="/notice"
                 >
                   Notice Board
-                </Link>
+                </NavLink>
 
                 {/* Admin */}
-                <Link
-                  className="block p-2 rounded hover:bg-[#1f2e48]"
+                <NavLink
+                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
                   to="/password-reset"
                 >
                   Change Password
-                </Link>
+                </NavLink>
                 <Link
-                 onClick={handleLogout}
-                  className="block p-2 rounded hover:bg-[#1f2e48]"
-                  to="/logout"
+                  onClick={handleLogout}
+                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
+                  to=""
                 >
                   Logout
                 </Link>
@@ -306,14 +298,8 @@ const SideNav = () => {
           </header>
 
           {/* Page Content */}
-          <main className="flex-1  overflow-y-auto w-full">
-            <div className="lg:w-[45%] mx-auto rounded-lg  text-[20px] lg:text-[32px] font-bold bg-[#0052CC] text-white my-[15px] p-3">
-              {greeting}, <strong> Admin 👋</strong>
-            </div>
-            <div className="bg-[#132949] border border-[#00B5FF] rounded-lg p-6 my-3 mx-10">
-              <Outlet />
-            </div>
-          </main>
+          <Outlet />
+         
         </div>
       </div>
 

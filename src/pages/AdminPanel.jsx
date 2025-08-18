@@ -3,11 +3,12 @@ import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const AdminPanel = () => {
   const [banner, setBanner] = useState("");
   const [panelData, setpanelData] = useState({});
-
+const location = useLocation();
   const {
     register,
     control,
@@ -108,170 +109,190 @@ const AdminPanel = () => {
         });
       });
   };
+  const hours = new Date().getHours();
+  let greeting = "";
 
+  if (hours < 12) {
+    greeting = "Good Morning";
+  } else if (hours < 18) {
+    greeting = "Good Afternoon";
+  } else {
+    greeting = "Good Evening";
+  }
   return (
-    <div className="p-6">
-      <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-1 mx-auto rounded-md">
-        Home Page
-      </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-center  md:flex-row gap-10 mt-3 w-full "
-      >
-        {/* Info Section */}
-        <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-4 text-left">
-          {/* total */}
-
-          <div className="">
-            <label className=" text-sm font-medium text-white ">
-              Marks Student
-            </label>
-            <input
-              type="text"
-              {...register("totalStudents")}
-              // value={data.email}
-              defaultValue={panelData?.studentInfo?.totalStudents || ""}
-              placeholder="Enter your website's total student"
-              className="w-full bg-[#8995A3] placeholder-white  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
-            />
-          </div>
-          <div className="">
-            <label className=" text-sm font-medium text-white ">
-              Success Count
-            </label>
-            <input
-              type="text"
-              {...register("successCount")}
-              defaultValue={panelData?.studentInfo?.successCount}
-              placeholder="Enter your website's total success count"
-              className="w-full bg-[#8995A3] placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
-            />
-          </div>
-          <div className="">
-            <label className=" text-sm font-medium text-white ">
-              Course Completors
-            </label>
-            <input
-              type="text"
-              {...register("courseCompletors")}
-              defaultValue={panelData?.studentInfo?.courseCompletors}
-              placeholder="Enter your website's total course completors"
-              className="w-full bg-[#8995A3] placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
-            />
-          </div>
-          <div className="">
-            <label className=" text-sm font-medium text-white ">
-              Intro Video Link
-            </label>
-            <input
-              type="text"
-              {...register("courseCompletors")}
-              defaultValue={panelData?.studentInfo?.courseCompletors}
-              // placeholder="Enter your website's total course completors"
-              className="w-full bg-[#8995A3]  placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
-            />
-          </div>
-
-          {/* Thumbnail */}
-          <div className=" relative">
-            <label
-              htmlFor="banner"
-              className=" text-sm font-medium text-left text-white"
-            >
-              Ads Banner Design
-            </label>
-
-            <input
-              id="banner"
-              type="file"
-              accept="image/*"
-              {...register("bannerImage")}
-              placeholder="Enter Banner URL"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  uploadImage(file, "banner");
-                }
-              }}
-              className="mt-1 block w-full px-4 py-2 bg-[#C72E67] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-            />
-
-            <img
-              src={
-                panelData?.bannerImage ||
-                "https://bestmedia.lk/wp-content/uploads/2024/09/Large-Format-Flex-Banner-Print.jpg"
-              }
-              alt="banner"
-              className="absolute right-2 top-8 w-20 h-10 object-cover border border-black shadow"
-            />
-          </div>
-          <div className="">
-            <label className=" text-sm font-medium text-white ">
-              Join as a Mentor (Google Form Link)
-            </label>
-            <input
-              type="text"
-              {...register("courseCompletors")}
-              defaultValue={panelData?.studentInfo?.courseCompletors}
-              // placeholder="Enter your website's total course completors"
-              className="w-full bg-[#8995A3] placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
-            />
-          </div>
-          <div className="">
-            <label className=" text-sm font-medium text-white ">
-              Banner Link ( If a link needs to be added in the banner)
-            </label>
-            <input
-              type="text"
-              {...register("courseCompletors")}
-              defaultValue={panelData?.studentInfo?.courseCompletors}
-              // placeholder="Enter your website's total course completors"
-              className="w-full bg-[#8995A3] placeholder-white  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
-            />
-          </div>
-          <div></div>
-
-          <div className="text-2xl font-bold text-white text-center mb-4 bg-[#1398DB] w-1/4 px-3 py-1 mx-auto rounded-md col-span-2">
-            Contact
-          </div>
-
-          {panelData?.contactInfo?.map((contactInfo, index) => (
-            <>
-              <div className="">
-                <label className="block text-sm font-medium text-white ">
-                  Contact-{index + 1}
-                </label>
-                <input
-                  type="text"
-                  {...register(`contact${index + 1}`)}
-                  placeholder={`Enter contact number ${index + 1}`}
-                  defaultValue={contactInfo.number}
-                  className="w-full bg-[#8995A3]  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
-                />
-              </div>
-              <div className="">
-                <label className="block text-sm font-medium text-white ">
-                  Available Time
-                </label>
-                <input
-                  type="text"
-                  {...register(`available${index + 1}`)}
-                  defaultValue={contactInfo.time}
-                  placeholder="Availability for this contact"
-                  className="w-full bg-[#8995A3]  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
-                />
-              </div>
-            </>
-          ))}
-          <input
-            type="submit"
-            value="Change & Update"
-            className="w-1/2 mx-auto lg:col-span-2 bg-[#0052CC] mt-3 rounded-md px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
-          />
+    <main className="flex-1  overflow-y-auto w-full">
+      {location.pathname === "/admin" && (
+        <div className="lg:w-[45%] mx-auto rounded-lg  text-[20px] lg:text-[32px] font-bold bg-[#0052CC] text-white my-[15px] p-3">
+          {greeting}, <strong> Admin 👋</strong>
         </div>
-      </form>
-      <ToastContainer></ToastContainer>
-    </div>
+      )}
+
+      <div className="bg-[#132949] border border-[#00B5FF] rounded-lg p-6 my-3 mx-10">
+        {/* // main dynamic content goes here */}
+        <div className="p-6">
+          <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-1 mx-auto rounded-md">
+            Home Page
+          </div>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col justify-center  md:flex-row gap-10 mt-3 w-full "
+          >
+            {/* Info Section */}
+            <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-4 text-left">
+              {/* total */}
+
+              <div className="">
+                <label className=" text-sm font-medium text-white ">
+                  Marks Student
+                </label>
+                <input
+                  type="text"
+                  {...register("totalStudents")}
+                  // value={data.email}
+                  defaultValue={panelData?.studentInfo?.totalStudents || ""}
+                  placeholder="Enter your website's total student"
+                  className="w-full bg-[#8995A3] placeholder-white  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+                />
+              </div>
+              <div className="">
+                <label className=" text-sm font-medium text-white ">
+                  Success Count
+                </label>
+                <input
+                  type="text"
+                  {...register("successCount")}
+                  defaultValue={panelData?.studentInfo?.successCount}
+                  placeholder="Enter your website's total success count"
+                  className="w-full bg-[#8995A3] placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+                />
+              </div>
+              <div className="">
+                <label className=" text-sm font-medium text-white ">
+                  Course Completors
+                </label>
+                <input
+                  type="text"
+                  {...register("courseCompletors")}
+                  defaultValue={panelData?.studentInfo?.courseCompletors}
+                  placeholder="Enter your website's total course completors"
+                  className="w-full bg-[#8995A3] placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+                />
+              </div>
+              <div className="">
+                <label className=" text-sm font-medium text-white ">
+                  Intro Video Link
+                </label>
+                <input
+                  type="text"
+                  {...register("courseCompletors")}
+                  defaultValue={panelData?.studentInfo?.courseCompletors}
+                  // placeholder="Enter your website's total course completors"
+                  className="w-full bg-[#8995A3]  placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+                />
+              </div>
+
+              {/* Thumbnail */}
+              <div className=" relative">
+                <label
+                  htmlFor="banner"
+                  className=" text-sm font-medium text-left text-white"
+                >
+                  Ads Banner Design
+                </label>
+
+                <input
+                  id="banner"
+                  type="file"
+                  accept="image/*"
+                  {...register("bannerImage")}
+                  placeholder="Enter Banner URL"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      uploadImage(file, "banner");
+                    }
+                  }}
+                  className="mt-1 block w-full px-4 py-2 bg-[#C72E67] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+
+                <img
+                  src={
+                    panelData?.bannerImage ||
+                    "https://bestmedia.lk/wp-content/uploads/2024/09/Large-Format-Flex-Banner-Print.jpg"
+                  }
+                  alt="banner"
+                  className="absolute right-2 top-8 w-20 h-10 object-cover border border-black shadow"
+                />
+              </div>
+              <div className="">
+                <label className=" text-sm font-medium text-white ">
+                  Join as a Mentor (Google Form Link)
+                </label>
+                <input
+                  type="text"
+                  {...register("courseCompletors")}
+                  defaultValue={panelData?.studentInfo?.courseCompletors}
+                  // placeholder="Enter your website's total course completors"
+                  className="w-full bg-[#A484FF] placeholder-white rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+                />
+              </div>
+              <div className="">
+                <label className=" text-sm font-medium text-white ">
+                  Banner Link ( If a link needs to be added in the banner)
+                </label>
+                <input
+                  type="text"
+                  {...register("courseCompletors")}
+                  defaultValue={panelData?.studentInfo?.courseCompletors}
+                  // placeholder="Enter your website's total course completors"
+                  className="w-full bg-[#8995A3] placeholder-white  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+                />
+              </div>
+              <div></div>
+
+              <div className="text-2xl font-bold text-white text-center mb-4 bg-[#1398DB] w-1/4 px-3 py-1 mx-auto rounded-md col-span-2">
+                Contact
+              </div>
+
+              {panelData?.contactInfo?.map((contactInfo, index) => (
+                <>
+                  <div className="">
+                    <label className="block text-sm font-medium text-white ">
+                      Contact-{index + 1}
+                    </label>
+                    <input
+                      type="text"
+                      {...register(`contact${index + 1}`)}
+                      placeholder={`Enter contact number ${index + 1}`}
+                      defaultValue={contactInfo.number}
+                      className="w-full bg-[#8995A3]  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+                    />
+                  </div>
+                  <div className="">
+                    <label className="block text-sm font-medium text-white ">
+                      Available Time
+                    </label>
+                    <input
+                      type="text"
+                      {...register(`available${index + 1}`)}
+                      defaultValue={contactInfo.time}
+                      placeholder="Availability for this contact"
+                      className="w-full bg-[#8995A3]  rounded-md px-4 py-2 shadow-sm text-white font-medium mt-2  focus:outline-none"
+                    />
+                  </div>
+                </>
+              ))}
+              <input
+                type="submit"
+                value="Change & Update"
+                className="w-1/2 mx-auto lg:col-span-2 bg-[#0052CC] mt-3 rounded-md px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
+              />
+            </div>
+          </form>
+          <ToastContainer></ToastContainer>
+        </div>
+      </div>
+    </main>
   );
 };
 

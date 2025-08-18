@@ -7,9 +7,9 @@
 
 
 a.active {
-  border-left: 4px solid blueviolet; /* replace with actual color */
+  border-left: 4px solid rgb(226, 141, 43); /* replace with actual color */
   font-weight: 600; /* Tailwind's font-semibold */
-  background-color: #f7f7ff;
+  background-color: #0C1B38;
 }
 
 
