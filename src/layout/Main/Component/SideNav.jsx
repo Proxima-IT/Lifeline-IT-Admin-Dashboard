@@ -61,7 +61,6 @@ const SideNav = () => {
 
   const toggleNavbar = () => setIsOpen(!isOpen);
 
-  
   // useEffect(() => {
   //   if (isOpen) {
   //     document.body.style.overflow = "hidden";
@@ -131,136 +130,136 @@ const SideNav = () => {
       });
   }, []);
 
-
-
   return (
     <div>
-      <div className="flex w-full min-h-screen bg-[#0E2035] text-white ">
+      <div className="grid lg:grid-cols-12 w-full min-h-screen bg-[#0E2035] text-white ">
         {/* Sidebar */}
-        {isOpen && (
-          <aside className="w-72 bg-[#142238] lg:flex flex-col ">
-            {/* Logo */}
-            <div className="p-4 text-lg font-bold border-b border-gray-700 bg-[#183756] h-24">
-              <Link
-                to={`${import.meta.env.VITE_PUBLIC_PAGE}`}
-                className="w-1/2 md:w-1/4"
-              >
-                <img src={logo} alt="SR DREAM IT Logo" className="w-full " />
-              </Link>
-            </div>
-
-            {/* Navigation */}
-            <div className="flex-1 bg-[#132949] text-sm  text-gray-200 flex justify-center">
-              <nav className=" mx-auto flex flex-col items-start p-2 mt-5 text-base">
-                <NavLink
-                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
-                  to="/admin"
-                >
-                  Admin Panel
-                </NavLink>
-
-                {/* Students Management */}
-                <button
-                  onClick={() => setOpenStudent(!openStudent)}
-                  className="flex justify-center gap-3 items-center w-full p-2 hover:bg-[#1f2e48] rounded"
-                >
-                  Students Management{" "}
-                  <FaChevronRight
-                    className={`transition ${openStudent ? "rotate-90" : ""}`}
-                  />
-                </button>
-                {openStudent && (
-                  <div className="pl-4">
-                    <NavLink
-                      className="block p-2 hover:bg-[#1f2e48] rounded w-full "
-                      to="/add-student"
-                    >
-                      Add Student
-                    </NavLink>
-                    <NavLink
-                      className="block p-2 hover:bg-[#1f2e48] rounded w-full "
-                      to="/student"
-                    >
-                      View Student
-                    </NavLink>
-                    <NavLink
-                      className="block p-2 hover:bg-[#1f2e48] rounded w-full "
-                      to="/certificate"
-                    >
-                      Certificates Manage
-                    </NavLink>
-                  </div>
-                )}
-
-                {/* Other Links */}
-                <NavLink
-                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
-                  to="/courses"
-                >
-                  Courses
-                </NavLink>
-                <NavLink
-                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
-                  to="/payment"
-                >
-                  Payment Reports
-                </NavLink>
-
-                {/* Team Members */}
-                <button
-                  onClick={() => setOpenTeam(!openTeam)}
-                  className="flex justify-between items-center w-full p-2 hover:bg-[#1f2e48] rounded"
-                >
-                  Team Members{" "}
-                  <FaChevronRight
-                    className={`transition ${openTeam ? "rotate-90" : ""}`}
-                  />
-                </button>
-                {openTeam && (
-                  <div className="pl-4">
-                    <NavLink
-                      className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
-                      to="/add-member"
-                    >
-                      Add Member
-                    </NavLink>
-                    <NavLink
-                      className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
-                      to="/view-member"
-                    >
-                      View Member
-                    </NavLink>
-                  </div>
-                )}
-
-                <NavLink
-                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
-                  to="/notice"
-                >
-                  Notice Board
-                </NavLink>
-
-                {/* Admin */}
-                <NavLink
-                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
-                  to="/password-reset"
-                >
-                  Change Password
-                </NavLink>
+    
+          {isOpen && (
+            <aside className="col-span-3 bg-[#142238] lg:flex flex-col ">
+              {/* Logo */}
+              <div className="p-4 text-lg font-bold border-b border-gray-700 bg-[#183756] h-24">
                 <Link
-                  onClick={handleLogout}
-                  className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
-                  to=""
+                  to={`${import.meta.env.VITE_PUBLIC_PAGE}`}
+                  className="w-1/2 md:w-1/4"
                 >
-                  Logout
+                  <img src={logo} alt="SR DREAM IT Logo" className="w-full " />
                 </Link>
-              </nav>
-            </div>
-          </aside>
-        )}
+              </div>
+
+              {/* Navigation */}
+              <div className="flex-1 bg-[#132949] text-sm  text-gray-200 flex justify-center">
+                <nav className=" mx-auto flex flex-col items-start p-2 mt-5 text-base">
+                  <NavLink
+                    className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
+                    to="/admin"
+                  >
+                    Admin Panel
+                  </NavLink>
+
+                  {/* Students Management */}
+                  <button
+                    onClick={() => setOpenStudent(!openStudent)}
+                    className="flex justify-center gap-3 items-center w-full p-2 hover:bg-[#1f2e48] rounded"
+                  >
+                    Students Management{" "}
+                    <FaChevronRight
+                      className={`transition ${openStudent ? "rotate-90" : ""}`}
+                    />
+                  </button>
+                  {openStudent && (
+                    <div className="pl-4">
+                      <NavLink
+                        className="block p-2 hover:bg-[#1f2e48] rounded w-full "
+                        to="/add-student"
+                      >
+                        Add Student
+                      </NavLink>
+                      <NavLink
+                        className="block p-2 hover:bg-[#1f2e48] rounded w-full "
+                        to="/student"
+                      >
+                        View Student
+                      </NavLink>
+                      <NavLink
+                        className="block p-2 hover:bg-[#1f2e48] rounded w-full "
+                        to="/certificate"
+                      >
+                        Certificates Manage
+                      </NavLink>
+                    </div>
+                  )}
+
+                  {/* Other Links */}
+                  <NavLink
+                    className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
+                    to="/courses"
+                  >
+                    Courses
+                  </NavLink>
+                  <NavLink
+                    className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
+                    to="/payment"
+                  >
+                    Payment Reports
+                  </NavLink>
+
+                  {/* Team Members */}
+                  <button
+                    onClick={() => setOpenTeam(!openTeam)}
+                    className="flex justify-between items-center w-full p-2 hover:bg-[#1f2e48] rounded"
+                  >
+                    Team Members{" "}
+                    <FaChevronRight
+                      className={`transition ${openTeam ? "rotate-90" : ""}`}
+                    />
+                  </button>
+                  {openTeam && (
+                    <div className="pl-4">
+                      <NavLink
+                        className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
+                        to="/add-member"
+                      >
+                        Add Member
+                      </NavLink>
+                      <NavLink
+                        className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
+                        to="/view-member"
+                      >
+                        View Member
+                      </NavLink>
+                    </div>
+                  )}
+
+                  <NavLink
+                    className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
+                    to="/notice"
+                  >
+                    Notice Board
+                  </NavLink>
+
+                  {/* Admin */}
+                  <NavLink
+                    className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
+                    to="/password-reset"
+                  >
+                    Change Password
+                  </NavLink>
+                  <Link
+                    onClick={handleLogout}
+                    className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
+                    to=""
+                  >
+                    Logout
+                  </Link>
+                </nav>
+              </div>
+            </aside>
+          )}
+      
 
         {/* Main Area */}
-        <div className="flex-1 flex flex-col ">
+        <div className="flex-1 flex flex-col col-span-9">
           {/* Header */}
           <header className="bg-[#132949] h-24  p-4 border-b border-gray-700 flex justify-between items-center">
             <div className="flex items-center gap-2 relative">
@@ -299,7 +298,6 @@ const SideNav = () => {
 
           {/* Page Content */}
           <Outlet />
-         
         </div>
       </div>
 
