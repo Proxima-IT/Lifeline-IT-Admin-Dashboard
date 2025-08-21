@@ -1,134 +1,233 @@
-import React, { useState } from "react";
 import axios from "axios";
-import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { IoMdSearch } from "react-icons/io";
+import { Link } from "react-router-dom";
 
-const Certificate = ({ data }) => {
-  const [btnLoading, setBtnLoading] = useState(false);
-  const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
-  const handleDownload = async (studentId, courseRoute, Grade) => {
-    setBtnLoading(true);
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/dashboard/certificate`,
-        { studentId, courseId: courseRoute, grade: Grade },
-        {
-          headers: { "Content-Type": "application/json" },
-          responseType: "blob", // expect PDF
-        }
-      );
+const Certificate = () => {
+  const [students, setStudents] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalStudents, setTotalStudents] = useState(0);
+  const [selected, setSelected] = useState(true);
 
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${studentId}-certificate.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      if (
-        error.response?.status !== 200 &&
-        error.response?.data instanceof Blob
-      ) {
-        const text = await error.response.data.text(); // Convert blob to text
-        const json = JSON.parse(text);
-
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: json.error,
-          showCancelButton: true,
-          confirmButtonText: "Go to Course",
-          cancelButtonText: "Cancel",
-        }).then((result) => {
-          if (result.isConfirmed) navigate(`/courses/update/${courseRoute}`);
-        });
-      }
-      console.error(error);
-    } finally {
-      setBtnLoading(false);
-    }
-  };
-
-  const onSubmit = (formData) => {
-    const { sid, courseRoute, grade } = formData;
-    handleDownload(sid, courseRoute, grade); // assuming courseRoute is also title
-  };
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/student?page=${page}&limit=10`)
+      .then((res) => {
+        console.log(res.data);
+        setStudents(res.data.getStudents);
+        setTotalPages(res.data.totalPages);
+        setTotalStudents(res.data.totalStudents);
+      });
+  }, [page]);
 
   return (
-    <div className="p-4">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Link to="/certificate-apply">
-          <button className="bg-[#0b2a53] px-2 lg:px-3 text-sm lg:text-lg py-2 rounded-md text-white flex items-center gap-3">
-            View Application
+    <div>
+      <main className="flex-1  overflow-y-auto w-full font-roboto">
+        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
+          Certificate Manage
+        </div>
+
+        <div className="h-10">
+          <button
+            onClick={() => setSelected("Offline")}
+            className={`px-5 py-1  rounded-r-none shadow-md transition-all  h-10
+            ${selected === "Offline"
+                ? " bg-[#39B54A] text-white"
+                : "bg-[#f8f8f8] border   text-[#0071BC]"
+              }`}
+          >
+            Online
           </button>
-        </Link>
-        <h1 className="text-xl text-blue-500 font-bold text-center mb-3">
-          Certificate
-        </h1>
-        {/* Course Route */}
-        <div className="mb-4">
-          <label
-            htmlFor="courseRoute"
-            className="block text-sm font-medium text-left text-gray-700"
+          <button
+            onClick={() => setSelected("Online")}
+            className={`px-5 py-1  rounded-l-none shadow-md transition-all  h-10
+            ${selected === "Online"
+                ? "bg-[#ED1E79] text-white"
+                : "bg-white border  text-[#0071BC]"
+              }`}
           >
-            Course Route
-          </label>
-          <input
-            type="text"
-            id="courseRoute"
-            {...register("courseRoute", { required: true })}
-            placeholder="Enter course route"
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-          />
+            Offline
+          </button>
         </div>
 
-        {/* Student ID */}
-        <div className="mb-4">
-          <label
-            htmlFor="sid"
-            className="block text-sm font-medium text-left text-gray-700"
-          >
-            Student ID
-          </label>
-          <input
-            type="text"
-            id="sid"
-            {...register("sid", { required: true })}
-            placeholder="Enter Student ID"
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-          />
-        </div>
-        {/* Student Grade */}
-        <div className="mb-4">
-          <label
-            htmlFor="grade"
-            className="block text-sm font-medium text-left text-gray-700"
-          >
-            Student Grade
-          </label>
-          <input
-            type="text"
-            id="grade"
-            {...register("grade", { required: true })}
-            placeholder="Enter Student Grade"
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-          />
+        <div className="flex w-full justify-end">
+          <div className="relative w-1/2 mb-3 ">
+            <input
+              type="text"
+              placeholder="Name / Student ID / Phone"
+              className="bg-[#183756] ml-4 px-2 py-2 text-xs rounded outline-none text-white placeholder-white"
+            />
+            <button className="absolute top-3 right-16 text-gray-50">
+              <IoMdSearch />
+            </button>
+          </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={btnLoading}
-          className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
-        >
-          {btnLoading ? "Downloading..." : "Download Certificate"}
-        </button>
-      </form>
+        <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-6 my-3 mx-10">
+          {/* // main dynamic content goes here */}
+          <h1>Certificate Request</h1>
+          <div className="container p-2 mx-auto sm:p-4 flex flex-col items-center ">
+            <div className="w-full overflow-x-scroll">
+              <table className=" text-center">
+                <colgroup>
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                </colgroup>
+                <thead className="bg-[#00A99D] rounded-md">
+                  <tr className="text-center lg:text-base text-sm ">
+                    <th className="p-3">#</th>
+                    <th className="p-3">Name of Student</th>
+
+                    <th className="p-3">Course Name</th>
+                    <th className="p-3">Student Details</th>
+                    <th className="p-3">Assignment & Homeworks</th>
+                    <th className="p-3">Input Result</th>
+                    <th className="p-3">Certificate Issue Date</th>
+                    <th className="p-3">Action Button</th>
+                    <th className="p-3">Certificate Download</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {students.map((student, index) => (
+                    <tr
+                      key={student._id}
+                      className="w-full border-b border-opacity-20 text-center bg-[#183756] border-gray-700 "
+                    >
+                      <td className="p-3">
+                        <p>{index + 1}</p>
+                      </td>
+
+                      <td className="p-3">
+                        <p>{student.name}</p>
+                      </td>
+
+
+                      <td className="p-3">
+                        <p>{student.sid}</p>
+                      </td>
+
+                      <td>
+                        <Link to={`/student/${student.sid}`}>
+                          <span className="px-3 py-2 font-semibold rounded-md cursor-pointer bg-[#f5f7f5] text-black">
+                            View Details
+                          </span>
+                        </Link>
+                      </td>
+
+                      <td>
+                        <Link to={`/student/${student.sid}`}>
+                          <span className="px-3 py-2 font-semibold rounded-md cursor-pointer bg-[#0071FF] text-white">
+                            View
+                          </span>
+                        </Link>
+                      </td>
+
+                      <td className="p-3">
+                        <div className="flex flex-col gap-2">
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
+                              Marks
+                            </span>
+                          </Link>
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#3FA9F5] text-white">
+                              Grade
+                            </span>
+                          </Link>
+                        </div>
+                      </td>
+
+                      <td>
+                        <Link to={`/student/${student.sid}`}>
+                          <span className="px-3 py-2 font-semibold rounded-md cursor-pointer bg-[#1c1c1d] text-white">
+                            Date Box
+                          </span>
+                        </Link>
+                      </td>
+
+                      <td className="p-3">
+                        <div className="flex flex-col gap-3">
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
+                              Approve
+                            </span>
+                          </Link>
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FF0000] text-white">
+                              Reject
+                            </span>
+                          </Link>
+                        </div>
+                      </td>
+
+
+
+
+                      <td className="p-3">
+                        <div className="flex flex-col gap-2">
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
+                              Download
+                            </span>
+                          </Link>
+
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FFFFFF] text-black">
+                              Preview
+                            </span>
+                          </Link>
+                        </div>
+                      </td>
+
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="flex justify-center mt-4 gap-2">
+              <button
+                disabled={page === 1}
+                onClick={() => setPage(page - 1)}
+                className="px-3 py-1 bg-gray-300 text-black rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i + 1)}
+                  className={`px-3 py-1 rounded ${page === i + 1
+                    ? "bg-blue-500 text-black"
+                    : "bg-gray-200 text-black"
+                    }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                disabled={page === totalPages}
+                onClick={() => setPage(page + 1)}
+                className="px-3 py-1 bg-gray-300 text-black rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
 
 export default Certificate;
+
+

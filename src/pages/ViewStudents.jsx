@@ -8,6 +8,7 @@ const ViewStudents = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalStudents, setTotalStudents] = useState(0);
+   const [selected, setSelected] = useState(true);
 
   useEffect(() => {
     axios
@@ -27,6 +28,29 @@ const ViewStudents = () => {
           View All Students
         </div>
 
+          <div className="h-10">
+          <button
+            onClick={() => setSelected("Offline")}
+            className={`px-5 py-1  rounded-r-none shadow-md transition-all  h-10
+            ${selected === "Offline"
+                ? " bg-[#39B54A] text-white"
+                : "bg-[#f8f8f8] border   text-[#0071BC]"
+              }`}
+          >
+            Online
+          </button>
+          <button
+            onClick={() => setSelected("Online")}
+            className={`px-5 py-1  rounded-l-none shadow-md transition-all  h-10
+            ${selected === "Online"
+                ? "bg-[#ED1E79] text-white"
+                : "bg-white border  text-[#0071BC]"
+              }`}
+          >
+            Offline
+          </button>
+        </div>
+
         <div className="flex w-full justify-end">
           <div className="relative w-1/2 mb-3 ">
             <input
@@ -40,7 +64,7 @@ const ViewStudents = () => {
           </div>
         </div>
 
-        <div className="bg-[#132949] border border-[#00B5FF] rounded-lg p-6 my-3 mx-10">
+        <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-6 my-3 mx-10">
           {/* // main dynamic content goes here */}
           <div className="container p-2 mx-auto sm:p-4 flex flex-col items-center ">
             <div className="w-full overflow-x-scroll">
@@ -66,7 +90,7 @@ const ViewStudents = () => {
                     <th className="p-3">Email</th>
                     <th className="p-3">Image</th>
                     <th className="p-3">Update Student Infomation</th>
-                    <th className="p-3">Registration Card</th>                 
+                    <th className="p-3">Registration Card</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -100,35 +124,40 @@ const ViewStudents = () => {
                       </td>
 
                       <td className="p-3">
-                        <img src={student.image} alt="" />
+                        <img src={student.image} alt="" className="w-20 h-14" />
                       </td>
 
-                      <td className="p-3 flex flex-col gap-2">
-                        <Link to={`/student/${student.sid}`}>
-                          <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
-                            <span>View</span>
-                          </span>
-                        </Link>
-                        <Link to={`/student/${student.sid}`}>
-                          <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#3FA9F5] text-white">
-                            <span>Edit</span>
-                          </span>
-                        </Link>
+                      <td className="p-3">
+                        <div className="flex flex-col gap-2">
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
+                              View
+                            </span>
+                          </Link>
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#3FA9F5] text-white">
+                              Edit
+                            </span>
+                          </Link>
+                        </div>
                       </td>
 
-                      <td className="p-3  flex flex-col gap-2 ">
-                        <Link to={`/student/${student.sid}`}>
-                          <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
-                            <span>Download</span>
-                          </span>
-                        </Link>
+                      <td className="p-3">
+                        <div className="flex flex-col gap-2">
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
+                              Download
+                            </span>
+                          </Link>
 
-                        <Link to={`/student/${student.sid}`}>
-                          <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FFFFFF] text-black">
-                            <span>Preview</span>
-                          </span>
-                        </Link>
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FFFFFF] text-black">
+                              Preview
+                            </span>
+                          </Link>
+                        </div>
                       </td>
+
                     </tr>
                   ))}
                 </tbody>
@@ -147,11 +176,10 @@ const ViewStudents = () => {
                 <button
                   key={i}
                   onClick={() => setPage(i + 1)}
-                  className={`px-3 py-1 rounded ${
-                    page === i + 1
-                      ? "bg-blue-500 text-black"
-                      : "bg-gray-200 text-black"
-                  }`}
+                  className={`px-3 py-1 rounded ${page === i + 1
+                    ? "bg-blue-500 text-black"
+                    : "bg-gray-200 text-black"
+                    }`}
                 >
                   {i + 1}
                 </button>

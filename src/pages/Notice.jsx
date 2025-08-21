@@ -43,41 +43,54 @@ const Notice = () => {
 
   return (
     <div className="my-5">
-      <div className="flex justify-between">
-        <h2 class="text-2xl font-bold mb-4 text-left text-[#0b2a53]">
-          All Notice
-        </h2>
-        <Link to="/add-notice">
-          <button className="bg-[#0b2a53] px-3 py-2 rounded-md text-white flex items-center gap-3">
-            <FaPlus />
-            Add New Notice
-          </button>
-        </Link>
-      </div>
 
-      {notices.length > 0 ? (
-        notices.map((notice) => (
-          <div className="w-full rounded-xl p-4 shadow-lg text-left flex flex-col space-y-3">
-            <img src={notice.image} alt="" className="w-full" />
-            <h2 className="italic text-sm">Date: {notice.date}</h2>
-            <h1 className="font-bold text-2xl">{notice.title}</h1>
-            <p>{notice.description}</p>
 
-            <button
-              onClick={() => {
-                handleDelete(notice._id);
-              }}
-              className="bg-red-700 px-3 py-2 rounded-md text-white flex self-end gap-3"
-            >
-              Delete
-            </button>
-          </div>
-        ))
-      ) : (
-        <div className="bg-blue-50 rounded-lg p-4 min-h-28">
-          <p className="text-2xl font-bold text-[#b96c16]">No Notices Found</p>
+      <main className="flex-1  overflow-y-auto w-full">
+        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
+          Notices
         </div>
-      )}
+
+        <div className="flex justify-end px-10 mb-3">
+
+          <Link to="/add-notice">
+            <button className="bg-[#ED1E79] px-2 lg:px-3 text-sm lg:text-lg py-2 rounded-md text-white flex items-center gap-3">
+              <FaPlus />
+              Add New Notice
+            </button>
+          </Link>
+        </div>
+
+        <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-6 my-3 mx-10">
+
+
+
+          {notices.length > 0 ? (
+            notices.map((notice) => (
+              <div className="w-full rounded-xl p-4 shadow-lg text-left flex flex-col space-y-3">
+                <img src={notice.image} alt="" className="w-full" />
+                <h2 className="italic text-sm">Date: {notice.date}</h2>
+                <h1 className="font-bold text-2xl">{notice.title}</h1>
+                <p>{notice.description}</p>
+
+                <button
+                  onClick={() => {
+                    handleDelete(notice._id);
+                  }}
+                  className="bg-red-700 px-3 py-2 rounded-md text-white flex self-end gap-3"
+                >
+                  Delete
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="bg-blue-50 rounded-lg p-4 min-h-28">
+              <p className="text-2xl font-bold text-[#b96c16]">No Notices Found</p>
+            </div>
+          )}
+        </div>
+      </main>
+
+
     </div>
   );
 };

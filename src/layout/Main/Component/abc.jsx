@@ -1,4 +1,5 @@
 import React from "react";
+import { AiOutlineMenuFold } from "react-icons/ai";
 
 const abc = () => {
   return (
@@ -21,7 +22,7 @@ const abc = () => {
             className="text-[#0B254C] text-2xl lg:hidden flex justify-end"
             onClick={toggleNavbar}
           >
-            <FaAngleDoubleUp />
+            <AiOutlineMenuFold/>
           </div>
           {isOpen && (
             <div
