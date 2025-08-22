@@ -24,7 +24,7 @@ const Certificate = () => {
   return (
     <div>
       <main className="flex-1  overflow-y-auto w-full font-roboto">
-        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
+        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-[80%] lg:w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
           Certificate Manage
         </div>
 
@@ -32,44 +32,47 @@ const Certificate = () => {
           <button
             onClick={() => setSelected("Offline")}
             className={`px-5 py-1  rounded-r-none shadow-md transition-all  h-10
-            ${selected === "Offline"
+            ${
+              selected === "Offline"
                 ? " bg-[#39B54A] text-white"
                 : "bg-[#f8f8f8] border   text-[#0071BC]"
-              }`}
+            }`}
           >
             Online
           </button>
           <button
             onClick={() => setSelected("Online")}
             className={`px-5 py-1  rounded-l-none shadow-md transition-all  h-10
-            ${selected === "Online"
+            ${
+              selected === "Online"
                 ? "bg-[#ED1E79] text-white"
                 : "bg-white border  text-[#0071BC]"
-              }`}
+            }`}
           >
             Offline
           </button>
         </div>
 
-        <div className="flex w-full justify-end">
-          <div className="relative w-1/2 mb-3 ">
+        {/* search bar  */}
+        <div className="flex w-full justify-center lg:justify-end">
+          <div className="relative w-[80%] lg:w-1/4 mb-3 mr-4">
             <input
               type="text"
               placeholder="Name / Student ID / Phone"
-              className="bg-[#183756] ml-4 px-2 py-2 text-xs rounded outline-none text-white placeholder-white"
+              className="bg-[#183756] w-full text-center  mt-3 px-2 py-2 text-xs rounded outline-none text-white placeholder-white"
             />
-            <button className="absolute top-3 right-16 text-gray-50">
+            <button className="absolute top-5 right-3 lg:right-5 text-gray-50">
               <IoMdSearch />
             </button>
           </div>
         </div>
 
-        <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-6 my-3 mx-10">
+        <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-3 lg:p-6 my-3 mx-4 lg:mx-10">
           {/* // main dynamic content goes here */}
           <h1>Certificate Request</h1>
           <div className="container p-2 mx-auto sm:p-4 flex flex-col items-center ">
             <div className="w-full overflow-x-scroll">
-              <table className=" text-center">
+              <table className="text-center overflow-x-scroll ">
                 <colgroup>
                   <col />
                   <col />
@@ -81,11 +84,10 @@ const Certificate = () => {
                   <col />
                   <col />
                 </colgroup>
-                <thead className="bg-[#00A99D] rounded-md">
+                <thead className="bg-[#00A99D] rounded-md whitespace-nowrap">
                   <tr className="text-center lg:text-base text-sm ">
                     <th className="p-3">#</th>
                     <th className="p-3">Name of Student</th>
-
                     <th className="p-3">Course Name</th>
                     <th className="p-3">Student Details</th>
                     <th className="p-3">Assignment & Homeworks</th>
@@ -109,14 +111,13 @@ const Certificate = () => {
                         <p>{student.name}</p>
                       </td>
 
-
                       <td className="p-3">
                         <p>{student.sid}</p>
                       </td>
 
                       <td>
                         <Link to={`/student/${student.sid}`}>
-                          <span className="px-3 py-2 font-semibold rounded-md cursor-pointer bg-[#f5f7f5] text-black">
+                          <span className="px-2 text-sm py-2 font-semibold rounded-md cursor-pointer bg-[#f5f7f5] text-black">
                             View Details
                           </span>
                         </Link>
@@ -168,9 +169,6 @@ const Certificate = () => {
                         </div>
                       </td>
 
-
-
-
                       <td className="p-3">
                         <div className="flex flex-col gap-2">
                           <Link to={`/student/${student.sid}`}>
@@ -186,7 +184,6 @@ const Certificate = () => {
                           </Link>
                         </div>
                       </td>
-
                     </tr>
                   ))}
                 </tbody>
@@ -205,10 +202,11 @@ const Certificate = () => {
                 <button
                   key={i}
                   onClick={() => setPage(i + 1)}
-                  className={`px-3 py-1 rounded ${page === i + 1
-                    ? "bg-blue-500 text-black"
-                    : "bg-gray-200 text-black"
-                    }`}
+                  className={`px-3 py-1 rounded ${
+                    page === i + 1
+                      ? "bg-blue-500 text-black"
+                      : "bg-gray-200 text-black"
+                  }`}
                 >
                   {i + 1}
                 </button>
@@ -216,7 +214,7 @@ const Certificate = () => {
               <button
                 disabled={page === totalPages}
                 onClick={() => setPage(page + 1)}
-                className="px-3 py-1 bg-gray-300 text-black rounded disabled:opacity-50"
+                className="px-2 py-1 bg-gray-300 text-black rounded disabled:opacity-50"
               >
                 Next
               </button>
@@ -229,5 +227,3 @@ const Certificate = () => {
 };
 
 export default Certificate;
-
-

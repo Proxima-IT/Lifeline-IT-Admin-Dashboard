@@ -122,15 +122,15 @@ const location = useLocation();
   return (
     <main className="flex-1  overflow-y-auto w-full">
       {location.pathname === "/admin" && (
-        <div className="lg:w-[45%] mx-auto rounded-lg  text-[20px] lg:text-[32px] font-bold bg-[#0052CC] text-white my-[15px] p-3">
+        <div className="lg:w-[45%] w-[85%] mx-auto rounded-lg  text-[20px] lg:text-[32px] font-bold bg-[#0052CC] text-white my-[15px] p-3">
           {greeting}, <strong> Admin 👋</strong>
         </div>
       )}
 
-      <div className="bg-[#132949] border border-[#00B5FF] rounded-lg p-6 my-3 mx-10">
+      <div className="bg-[#132949] border border-[#00B5FF] rounded-lg p-6 my-3 mx-5 lg:mx-10">
         {/* // main dynamic content goes here */}
-        <div className="p-6">
-          <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-1 mx-auto rounded-md">
+        <div className="p-2 lg:p-6">
+          <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-full lg:w-1/4 px-3 py-1 mx-auto rounded-md">
             Home Page
           </div>
           <form
@@ -138,7 +138,7 @@ const location = useLocation();
             className="flex flex-col justify-center  md:flex-row gap-10 mt-3 w-full "
           >
             {/* Info Section */}
-            <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-4 text-left">
+            <div className="flex-1 w-full flex flex-col lg:grid lg:grid-cols-2 gap-5 text-left">
               {/* total */}
 
               <div className="">
@@ -250,7 +250,7 @@ const location = useLocation();
               </div>
               <div></div>
 
-              <div className="text-2xl font-bold text-white text-center mb-4 bg-[#1398DB] w-1/4 px-3 py-1 mx-auto rounded-md col-span-2">
+              <div className="text-2xl font-bold text-white text-center mb-4 bg-[#1398DB] w-full lg:w-1/4 px-3 py-1 mx-auto rounded-md col-span-2">
                 Contact
               </div>
 
@@ -285,7 +285,7 @@ const location = useLocation();
               <input
                 type="submit"
                 value="Change & Update"
-                className="w-1/2 mx-auto lg:col-span-2 bg-[#0052CC] mt-3 rounded-md px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
+                className="lg:w-1/2 w-full mx-auto lg:col-span-2 bg-[#0052CC] mt-3 rounded-md px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
               />
             </div>
           </form>

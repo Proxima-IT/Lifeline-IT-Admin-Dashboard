@@ -46,7 +46,7 @@ const Notice = () => {
 
 
       <main className="flex-1  overflow-y-auto w-full">
-        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
+        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-[80%] lg:w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
           Notices
         </div>
 
@@ -60,7 +60,7 @@ const Notice = () => {
           </Link>
         </div>
 
-        <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-6 my-3 mx-10">
+        <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-3 lg:p-6 my-3 mx-4 lg:mx-10">
 
 
 

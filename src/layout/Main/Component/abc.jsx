@@ -6,7 +6,7 @@ const abc = () => {
     <div>
       {/* <!-- Navigation --> */}
       <header className="sticky top-0 z-50 bg-white shadow">
-        <div className="max-w-screen-xl mx-auto flex justify-between items-center h-16 px-4">
+        <div className=" mx-auto flex justify-between items-center h-16 px-4">
           {/* <Link
             to={`${import.meta.env.VITE_PUBLIC_PAGE}`}
             className="w-1/2 md:w-1/4"

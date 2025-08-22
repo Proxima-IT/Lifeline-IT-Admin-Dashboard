@@ -84,19 +84,19 @@ const AddStudent = () => {
   return (
     <div>
       <main className="flex-1  overflow-y-auto w-full">
-        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
+        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-[80%] lg:w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md ">
           Add New Student
         </div>
 
-        <div className="bg-[#132949] border border-[#00B5FF] rounded-lg p-6 my-3 mx-10">
+        <div className="bg-[#132949] border border-[#00B5FF] rounded-lg p-3 lg:p-6 my-3 mx-5 lg:mx-10">
           {/* // main dynamic content goes here */}
 
-          <div className="flex mt-5 justify-around w-full">
+          <div className="flex flex-col-reverse lg:flex-row mt-5 justify-around w-full">
             <div>
               {/* course details  */}
               <h2 className="text-[#00FFFF] text-xl mb-4">Course Details</h2>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="lg:grid lg:grid-cols-2 gap-3">
                   {/* Course Title */}
                   <div className="mb-2">
                     <label
@@ -282,7 +282,7 @@ const AddStudent = () => {
                 Personal Information
               </h2>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="lg:grid lg:grid-cols-2 gap-3">
                   {/* Student Name */}
                   <div className="mb-2">
                     <label
@@ -453,12 +453,12 @@ const AddStudent = () => {
                 <input
                   type="submit"
                   value="Submit"
-                  className="w-1/3 mx-auto lg:col-span-3 bg-[#0052CC] mt-3 rounded-md px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
+                  className="w-full lg:w-1/3 mx-auto lg:col-span-3 bg-[#0052CC] mt-3 rounded-md px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
                 />
               </form>
             </div>
 
-            <div className="w-4/12">
+            <div className="w-full lg:w-4/12">
               {/* Profile Picture */}
               <div className="flex-shrink-0 flex flex-col items-center">
                 <h3 className="mb-2">Photo Upload</h3>

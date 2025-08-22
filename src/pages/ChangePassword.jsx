@@ -47,14 +47,13 @@ const ChangePassword = () => {
   };
   return (
     <div>
-      <main className="flex-1  overflow-y-auto w-full">
-        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
+      <main className="flex-1  overflow-y-auto w-full mx-auto flex flex-col items-center">
+        <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-[80%] lg:w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
           Change Password
         </div>
 
-        <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-6 my-3 mx-10">
-
-          <div className="lg:w-1/2 mx-auto my-5 p-6 bg-white rounded-xl shadow-md border border-gray-200">
+        <div className="bg-[#132949] w-[90%] lg:w-[60%]  border border-[#00B5FF] rounded-2xl p-3 lg:p-6 my-3 mx-5 lg:mx-10">
+          <div>
             <div className="flex flex-col md:flex-row gap-14 ">
               {/* Profile Picture */}
               {/* <div className="flex-shrink-0">
@@ -71,50 +70,49 @@ const ChangePassword = () => {
                 {/* pass 1 */}
                 <form onSubmit={handleChangePassword} className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                       Your Old Password
                     </label>
                     <input
                       type="password"
                       name="currentpass"
                       required
-                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
+                      className="w-full bg-[#8995A3] border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
                     />
                   </div>
                   {/* pass 2 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                       Enter New Password
                     </label>
                     <input
                       type="password"
                       name="newpass"
                       required
-                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
+                      className="w-full bg-[#8995A3] border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
                     />
                   </div>
                   {/* pass 3 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                       Confirm Password
                     </label>
                     <input
                       type="password"
                       name="confirmpass"
                       required
-                      className="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
+                      className="w-full bg-[#8995A3] border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-gray-500 font-medium "
                     />
                   </div>
 
                   <input
                     type="submit"
-                    className="w-full bg-[#285599] border border-gray-300 rounded-lg px-4 py-2 shadow-sm text-white font-medium cursor-pointer"
+                    className="bg-[#0052CC] hover:bg-[#0052CC] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 my-3 w-full cursor-pointer"
                   />
                 </form>
               </div>
             </div>
           </div>
-
         </div>
       </main>
 

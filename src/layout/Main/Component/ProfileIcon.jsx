@@ -51,7 +51,7 @@ export function ProfileIcon() {
       </div>
 
       <div
-        className={`absolute lg:-left-36 p-4  w-52 rounded-md shadow-md text-black bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 transform ${
+        className={`absolute lg:-left-36 p-4 right-0 w-52 rounded-md shadow-md text-black bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 transform ${
           showDropdown
             ? "opacity-100 scale-100"
             : "opacity-0 scale-95 pointer-events-none"
