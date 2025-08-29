@@ -21,6 +21,7 @@ import AddStudent from "../pages/AddStudent";
 import AddMember from "../pages/AddMember";
 import ViewMember from "../pages/ViewMember";
 import ViewStudents from "../pages/ViewStudents";
+import UpdateStudents from "../pages/UpdateStudents";
 
 
 
@@ -60,6 +61,10 @@ const Router = createBrowserRouter([
       {
         path: "/add-student",
         element: <AdminRoute><AddStudent></AddStudent></AdminRoute>,
+      },
+      {
+        path: "/update-student/:id",
+        element: <AdminRoute><UpdateStudents></UpdateStudents></AdminRoute>,
       },
       {
         path: "/student",
