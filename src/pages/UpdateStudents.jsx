@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaUpload } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
 
 const UpdateStudents = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
@@ -11,7 +12,7 @@ const UpdateStudents = () => {
   const [mode, setMode] = useState("online"); // default online
   const {
     register,
-
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({});
@@ -28,39 +29,23 @@ const UpdateStudents = () => {
     setLoading(true);
 
     try {
-      const compressedBlob = await imageCompression(file, {
-        maxSizeMB: 0.5,
-        maxWidthOrHeight: 1024,
-        useWebWorker: true,
-      });
-
-      const originalExtension = file.name.split(".").pop();
-      const fileName = `${data.sid}-${data.name
-        .split(" ")
-        .join("_")}.${originalExtension}`;
-
-      const compressedFile = new File([compressedBlob], fileName, {
-        type: compressedBlob.type,
-      });
-
       const formData = new FormData();
-      formData.append("image", compressedFile); // ✅ now it's a File with correct name
+      formData.append("profileImage", file); // multer route এ যেই নাম দিচ্ছো সেটাই দিতে হবে
 
-      const res = await fetch(
-        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`,
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL_STUDENT}/students`, // 🔹 ধরে নিলাম তুমি upload endpoint আলাদা করে রেখেছো
+        formData,
         {
-          method: "POST",
-          body: formData,
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
 
-      const responseData = await res.json();
-
-      if (responseData?.data?.url) {
-        setUploadedImageUrl(responseData.data.url);
-        console.log("Image URL:", responseData.data.url);
+      console.log("image:", res);
+      if (res.data?.filePath || res.data?.url) {
+        setUploadedImageUrl(res.data.filePath || res.data.url);
+        console.log("Image uploaded:", res.data);
       } else {
-        console.error("Upload failed: No URL returned");
+        console.error("Upload failed: No path returned");
       }
     } catch (error) {
       console.error("Image upload failed:", error);
@@ -69,21 +54,54 @@ const UpdateStudents = () => {
     }
   }
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // axios
-    //   .post(`${import.meta.env.VITE_API_URL}/api/courses/add`, data)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     toast.success("Course added successfully", {
-    //       position: "top-center",
-    //       autoClose: 3000,
-    //       theme: "dark",
-    //     });
-    //     reset();
-    //     navigate("/courses");
-    //   });
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+
+      // Append text fields
+      Object.keys(data).forEach((key) => {
+        if (key !== "profileImage") {
+          formData.append(key, data[key]);
+        }
+      });
+
+      // Append selected mode
+      formData.append("mode", mode);
+
+      // Append file if exists
+      if (data.profileImage && data.profileImage[0]) {
+        formData.append("profileImage", data.profileImage[0]);
+      }
+
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL_STUDENT}/students`, // ✅ template string
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      toast.success("Student saved successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        theme: "dark",
+      });
+
+      reset();
+      setUploadedImageUrl("");
+      console.log("Student created:", res.data);
+    } catch (err) {
+      console.error("Error creating student:", err);
+      toast.error("Failed to save student", {
+        position: "top-center",
+        autoClose: 3000,
+        theme: "dark",
+      });
+    }
   };
+
   return (
     <div>
       <main className="flex-1  overflow-y-auto w-full">
@@ -122,7 +140,7 @@ const UpdateStudents = () => {
                   {/* father Name */}
                   <div className="mb-2">
                     <label
-                      htmlFor="father"
+                      htmlFor="fathersName"
                       className="block text-base font-medium text-left text-gray-50 mb-2"
                     >
                       Father’s Name <span className="text-red-600">*</span>
@@ -130,8 +148,8 @@ const UpdateStudents = () => {
 
                     <input
                       type="text"
-                      id="father"
-                      {...register("father", { required: true })}
+                      id="fathersName"
+                      {...register("fathersName", { required: true })}
                       placeholder="Enter Father's Name"
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     />
@@ -139,7 +157,7 @@ const UpdateStudents = () => {
                   {/* Mother's Name */}
                   <div className="mb-2">
                     <label
-                      htmlFor="mother"
+                      htmlFor="mothersName"
                       className="block text-base font-medium text-left text-gray-50 mb-2"
                     >
                       Mother’s Name <span className="text-red-600">*</span>
@@ -147,8 +165,8 @@ const UpdateStudents = () => {
 
                     <input
                       type="text"
-                      id="mother"
-                      {...register("mother", { required: true })}
+                      id="mothersName"
+                      {...register("mothersName", { required: true })}
                       placeholder="Enter Mother’s Name"
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     />
@@ -156,7 +174,7 @@ const UpdateStudents = () => {
                   {/*  Date of Birth */}
                   <div className="mb-2">
                     <label
-                      htmlFor="mother"
+                      htmlFor="dateOfBirth"
                       className="block text-base font-medium text-left text-gray-50 mb-2"
                     >
                       Date of Birth <span className="text-red-600">*</span>
@@ -164,8 +182,8 @@ const UpdateStudents = () => {
 
                     <input
                       type="date"
-                      id="mother"
-                      {...register("dob", { required: true })}
+                      id="dateOfBirth"
+                      {...register("dateOfBirth", { required: true })}
                       placeholder="Enter Date of Birth"
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     />
@@ -186,8 +204,8 @@ const UpdateStudents = () => {
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     >
                       <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
                       <option value="other">Other</option>
                     </select>
                   </div>
@@ -195,7 +213,7 @@ const UpdateStudents = () => {
                   {/* E-mail Address */}
                   <div className="mb-2">
                     <label
-                      htmlFor="mobile"
+                      htmlFor="email"
                       className="block text-base font-medium text-left text-gray-50 mb-2"
                     >
                       E-mail Address <span className="text-red-600">*</span>
@@ -213,7 +231,7 @@ const UpdateStudents = () => {
                   {/* mobile number */}
                   <div className="mb-2">
                     <label
-                      htmlFor="mobile"
+                      htmlFor="mobileNumber"
                       className="block text-base font-medium text-left text-gray-50 mb-2"
                     >
                       Mobile Number <span className="text-red-600">*</span>
@@ -221,8 +239,8 @@ const UpdateStudents = () => {
 
                     <input
                       type="text"
-                      id="mobile"
-                      {...register("mobile", { required: true })}
+                      id="mobileNumber"
+                      {...register("mobileNumber", { required: true })}
                       placeholder="Enter Mobile Number"
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     />
@@ -285,36 +303,36 @@ const UpdateStudents = () => {
                           {/* Course Name */}
                           <div className="mb-2">
                             <label
-                              htmlFor="title"
+                              htmlFor="onlineCourseName"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Course Name{" "}
                             </label>
 
                             <select
-                              {...register("courseName", { required: true })}
+                              {...register("onlineCourseName", {
+                                required: true,
+                              })}
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose a Course</option>
-                              {courses.map((course) => (
-                                <option key={course.id} value={course.title}>
-                                  {course.title}
-                                </option>
-                              ))}
+                              <option value="Dolor in nemo quidem">
+                                Dolor in nemo quidem
+                              </option>
                             </select>
                           </div>
 
                           {/* Course Duration */}
                           <div className="mb-2">
                             <label
-                              htmlFor="duration"
+                              htmlFor="onlineCourseDuration"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Course Duration
                             </label>
 
                             <select
-                              {...register("duration")}
+                              {...register("onlineCourseDuration")}
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Course Duration</option>
@@ -329,14 +347,14 @@ const UpdateStudents = () => {
                           {/* Course session */}
                           <div className="mb-2">
                             <label
-                              htmlFor="session"
+                              htmlFor="onlineSession"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Session
                             </label>
 
                             <select
-                              {...register("session")}
+                              {...register("onlineSession")}
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Session</option>
@@ -359,7 +377,7 @@ const UpdateStudents = () => {
                           {/* Course Title */}
                           <div className="mb-2">
                             <label
-                              htmlFor="title"
+                              htmlFor="offlineCourseAccess"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Offline Course Access{" "}
@@ -367,7 +385,9 @@ const UpdateStudents = () => {
                             </label>
 
                             <select
-                              {...register("courseName", { required: true })}
+                              {...register("offlineCourseAccess", {
+                                required: true,
+                              })}
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose a Course</option>
@@ -382,14 +402,14 @@ const UpdateStudents = () => {
                           {/* Course Duration */}
                           <div className="mb-2">
                             <label
-                              htmlFor="duration"
+                              htmlFor="offlineCourseDuration"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Course Duration
                             </label>
 
                             <select
-                              {...register("duration")}
+                              {...register("offlineCourseDuration")}
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Course Duration</option>
@@ -404,14 +424,14 @@ const UpdateStudents = () => {
                           {/* Course session */}
                           <div className="mb-2">
                             <label
-                              htmlFor="session"
+                              htmlFor="offlineSession"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Session
                             </label>
 
                             <select
-                              {...register("session")}
+                              {...register("offlineSession")}
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Session</option>
@@ -448,7 +468,7 @@ const UpdateStudents = () => {
                           {/* Admission Date */}
                           <div className="mb-2">
                             <label
-                              htmlFor="date"
+                              htmlFor="admissionDate"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Admission Date
@@ -456,8 +476,8 @@ const UpdateStudents = () => {
 
                             <input
                               type="date"
-                              id="date"
-                              {...register("date")}
+                              id="admissionDate"
+                              {...register("admissionDate")}
                               placeholder="Enter Admission Date"
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             />
@@ -466,7 +486,7 @@ const UpdateStudents = () => {
                           {/* Bath Number */}
                           <div className="mb-2">
                             <label
-                              htmlFor="batch"
+                              htmlFor="batchNumber"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Batch Number
@@ -474,8 +494,8 @@ const UpdateStudents = () => {
 
                             <input
                               type="text"
-                              id="batch"
-                              {...register("batch")}
+                              id="batchNumber"
+                              {...register("batchNumber")}
                               placeholder="Enter Batch Number"
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             />
@@ -484,7 +504,7 @@ const UpdateStudents = () => {
                           {/* Course Fee */}
                           <div className="mb-2">
                             <label
-                              htmlFor="fee"
+                              htmlFor="courseFee"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Course Fee <span className="text-red-600">*</span>
@@ -492,8 +512,8 @@ const UpdateStudents = () => {
 
                             <input
                               type="text"
-                              id="fee"
-                              {...register("fee", { required: true })}
+                              id="courseFee"
+                              {...register("courseFee", { required: true })}
                               placeholder=""
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             />
@@ -520,7 +540,7 @@ const UpdateStudents = () => {
                           {/* Payment Status */}
                           <div className="mb-2">
                             <label
-                              htmlFor="status"
+                              htmlFor="paymentStatus"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Payment Status
@@ -528,8 +548,8 @@ const UpdateStudents = () => {
 
                             <input
                               type="text"
-                              id="status"
-                              {...register("status")}
+                              id="paymentStatus"
+                              {...register("paymentStatus")}
                               placeholder="Auto Status Fill"
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             />
@@ -558,7 +578,7 @@ const UpdateStudents = () => {
                   {/* Marks */}
                   <div className="mb-2">
                     <label
-                      htmlFor="batch"
+                      htmlFor="marks"
                       className="block text-base font-medium text-left text-gray-50 mb-2"
                     >
                       Marks
@@ -566,8 +586,8 @@ const UpdateStudents = () => {
 
                     <input
                       type="text"
-                      id="batch"
-                      {...register("batch")}
+                      id="marks"
+                      {...register("marks")}
                       placeholder=""
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     />
@@ -576,17 +596,17 @@ const UpdateStudents = () => {
                   {/* Grade */}
                   <div className="mb-2">
                     <label
-                      htmlFor="session"
+                      htmlFor="grade"
                       className="block text-base font-medium text-left text-gray-50 mb-2"
                     >
                       Grade
                     </label>
 
                     <select
-                      {...register("session")}
+                      {...register("grade")}
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     >
-                      <option value="">Choose Session</option>
+                      <option value="">Choose Grade</option>
                       {courses.map((course) => (
                         <option key={course.id} value={course.duration}>
                           {course.duration}
@@ -598,7 +618,7 @@ const UpdateStudents = () => {
                   {/* Certificate Issue Date */}
                   <div className="mb-2">
                     <label
-                      htmlFor="batch"
+                      htmlFor="certificateIssueDate"
                       className="block text-base font-medium text-left text-gray-50 mb-2"
                     >
                       Certificate Issue Date
@@ -606,8 +626,8 @@ const UpdateStudents = () => {
 
                     <input
                       type="text"
-                      id="batch"
-                      {...register("batch")}
+                      id="certificateIssueDate"
+                      {...register("certificateIssueDate")}
                       placeholder=""
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     />
@@ -616,74 +636,72 @@ const UpdateStudents = () => {
                   {/* Status */}
                   <div className="mb-2">
                     <label
-                      htmlFor="session"
+                      htmlFor="status"
                       className="block text-base font-medium text-left text-gray-50 mb-2"
                     >
                       Status
                     </label>
 
                     <select
-                      {...register("session")}
+                      {...register("status")}
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     >
                       <option value="">Choose Status</option>
-                      {courses.map((course) => (
-                        <option key={course.id} value={course.duration}>
-                          {course.duration}
-                        </option>
-                      ))}
+
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
                     </select>
                   </div>
                 </div>
               </div>
 
               <div className="w-full lg:w-4/12">
-                {/* Profile Picture */}
-                <div className="flex-shrink-0 flex flex-col items-center">
+                {/* Profile Image */}
+                <div className="w-full  flex flex-col items-center">
                   {loading ? (
-                    // Spinner shown while uploading
-                    <div className="w-32 h-32 flex items-center justify-center rounded-full border-4 border-blue-500 shadow">
-                      <span class="loader"></span>
+                    <div className="w-32 h-32 flex items-center justify-center rounded-full border-4 border-blue-500">
+                      <span className="loader"></span>
                     </div>
                   ) : (
                     <img
-                      src={uploadedImageUrl || "https://ibb.co.com/X2LDnpf"}
-                      alt="Photo"
+                      src={
+                        uploadedImageUrl || "https://via.placeholder.com/150"
+                      }
+                      alt="Profile"
                       className="w-32 h-32 rounded-full object-cover border-4 border-white shadow"
                     />
                   )}
-                  <h3 className="mt-2">Update Photo</h3>
-
-                  <div className="mt-4">
-                    <label
-                      htmlFor="imageUpload"
-                      className=" cursor-pointer bg-gray-50 hover:bg-gray-100 text-black font-medium py-2 px-3 rounded-lg shadow transition duration-200 flex items-center gap-2"
-                    >
-                      <FaUpload /> Choose File
-                    </label>
-
-                    <input
-                      id="imageUpload"
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                          uploadImage(file);
-                        }
-                      }}
-                      className="hidden"
-                    />
-                  </div>
-                  {/* <span className="mt-2 text-xs">
+                  <h1 className="mt-3">Upload Photo</h1>
+                  <label
+                    htmlFor="profileImage"
+                    className="cursor-pointer bg-gray-50 hover:bg-gray-100 text-black font-medium py-2 px-3 mt-4 rounded-lg shadow flex items-center gap-2"
+                  >
+                    <FaUpload /> Choose File
+                  </label>
+                  <input
+                    id="profileImage"
+                    type="file"
+                    accept="image/*"
+                    {...register("profileImage")}
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files[0]) {
+                        setUploadedImageUrl(
+                          URL.createObjectURL(e.target.files[0])
+                        );
+                      }
+                    }}
+                  />
+                </div>
+                {/* <span className="mt-2 text-xs">
                          Please upload a recent passport size photo (300x300 pixels,
                          max 200 KB, JPEG/PNG).
                        </span> */}
 
-                  <input type="hidden" name="image" value={uploadedImageUrl} />
-                </div>
+                <input type="hidden" name="image" value={uploadedImageUrl} />
               </div>
             </div>
+
             <input
               type="submit"
               value="Update & Save"
@@ -692,6 +710,7 @@ const UpdateStudents = () => {
           </form>
         </div>
       </main>
+      <ToastContainer></ToastContainer>
     </div>
   );
 };

@@ -23,6 +23,7 @@ const SideNav = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openStudent, setOpenStudent] = useState(false);
   const [openTeam, setOpenTeam] = useState(false);
+  const [openRecordedClass, setOpenRecordedClass] = useState(false);
 
   const [isOpen, setIsOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -170,12 +171,12 @@ const SideNav = () => {
                 </button>
                 {openStudent && (
                   <div className="pl-4">
-                    <NavLink
+                    {/* <NavLink
                       className="block p-2 hover:bg-[#1f2e48] rounded w-full "
                       to="/add-student"
                     >
                       Add Student
-                    </NavLink>
+                    </NavLink> */}
                     <NavLink
                       className="block p-2 hover:bg-[#1f2e48] rounded w-full "
                       to="/student"
@@ -198,6 +199,33 @@ const SideNav = () => {
                 >
                   Courses
                 </NavLink>
+
+                {/* Class Management */}
+                <button
+                  onClick={() => setOpenRecordedClass(!openRecordedClass)}
+                  className="flex justify-between items-center w-full p-2 hover:bg-[#1f2e48] rounded"
+                >
+                  Class Management{" "}
+                  <FaChevronRight
+                    className={`transition ${openRecordedClass ? "rotate-90" : ""}`}
+                  />
+                </button>
+                {openRecordedClass && (
+                  <div className="pl-4">
+                    <NavLink
+                      className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
+                      to="/uploadClass"
+                    >
+                      Upload Recorded Class
+                    </NavLink>
+                    <NavLink
+                      className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
+                      to="/viewClass"
+                    >
+                      View All Recorded Class
+                    </NavLink>
+                  </div>
+                )}
                 <NavLink
                   className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
                   to="/payment"
@@ -240,6 +268,11 @@ const SideNav = () => {
                 </NavLink>
 
                 {/* Admin */}
+
+                <h1 className="text-yellow-500 mt-3  w-full text-left">
+                  Admin
+                </h1>
+
                 <NavLink
                   className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
                   to="/password-reset"

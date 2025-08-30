@@ -22,6 +22,8 @@ import AddMember from "../pages/AddMember";
 import ViewMember from "../pages/ViewMember";
 import ViewStudents from "../pages/ViewStudents";
 import UpdateStudents from "../pages/UpdateStudents";
+import UploadRecordedClass from "../pages/UploadRecordedClass";
+import ViewRecordedClass from "../pages/ViewRecordedClass";
 
 
 
@@ -57,6 +59,14 @@ const Router = createBrowserRouter([
       {
         path: "/payment",
         element: <AdminRoute><PaymentReport></PaymentReport></AdminRoute>,
+      },
+      {
+        path: "/uploadClass",
+        element: <AdminRoute><UploadRecordedClass></UploadRecordedClass></AdminRoute>,
+      },
+      {
+        path: "/viewClass",
+        element: <AdminRoute><ViewRecordedClass></ViewRecordedClass></AdminRoute>,
       },
       {
         path: "/add-student",
