@@ -7,11 +7,13 @@ import { toast, ToastContainer } from "react-toastify";
 const UpdateStudents = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [notify, setNotify] = useState(false);
 
   // online or offline mode state
   const [mode, setMode] = useState("online"); // default online
   const {
     register,
+    unregister,
     reset,
     handleSubmit,
     formState: { errors },
@@ -25,34 +27,53 @@ const UpdateStudents = () => {
     });
   }, []);
 
-  async function uploadImage(file) {
-    setLoading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("profileImage", file); // multer route এ যেই নাম দিচ্ছো সেটাই দিতে হবে
-
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL_STUDENT}/students`, // 🔹 ধরে নিলাম তুমি upload endpoint আলাদা করে রেখেছো
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-
-      console.log("image:", res);
-      if (res.data?.filePath || res.data?.url) {
-        setUploadedImageUrl(res.data.filePath || res.data.url);
-        console.log("Image uploaded:", res.data);
-      } else {
-        console.error("Upload failed: No path returned");
-      }
-    } catch (error) {
-      console.error("Image upload failed:", error);
-    } finally {
-      setLoading(false);
+  // unregister inactive fields
+  useEffect(() => {
+    if (mode === "online") {
+      unregister([
+        "offlineCourseAccess",
+        "offlineCourseDuration",
+        "offlineSession",
+        "year",
+        "admissionDate",
+        "batchNumber",
+        "courseFee",
+        "due",
+        "paymentStatus",
+      ]);
+    } else {
+      unregister(["onlineCourseName", "onlineCourseDuration", "onlineSession"]);
     }
-  }
+  }, [mode, unregister]);
+
+  // async function uploadImage(file) {
+  //   setLoading(true);
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("profileImage", file); // multer route এ যেই নাম দিচ্ছো সেটাই দিতে হবে
+
+  //     const res = await axios.post(
+  //       `${import.meta.env.VITE_API_URL_STUDENT}/students`, // 🔹 ধরে নিলাম তুমি upload endpoint আলাদা করে রেখেছো
+  //       formData,
+  //       {
+  //         headers: { "Content-Type": "multipart/form-data" },
+  //       }
+  //     );
+
+  //     console.log("image:", res);
+  //     if (res.data?.filePath || res.data?.url) {
+  //       setUploadedImageUrl(res.data.filePath || res.data.url);
+  //       console.log("Image uploaded:", res.data);
+  //     } else {
+  //       console.error("Upload failed: No path returned");
+  //     }
+  //   } catch (error) {
+  //     console.error("Image upload failed:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   const onSubmit = async (data) => {
     try {
@@ -206,7 +227,7 @@ const UpdateStudents = () => {
                       <option value="">Select Gender</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      <option value="other">Other</option>
+                      <option value="Other">Other</option>
                     </select>
                   </div>
 
@@ -316,8 +337,8 @@ const UpdateStudents = () => {
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose a Course</option>
-                              <option value="Dolor in nemo quidem">
-                                Dolor in nemo quidem
+                              <option value="Graphic Design">
+                                Graphic Design
                               </option>
                             </select>
                           </div>
@@ -336,11 +357,7 @@ const UpdateStudents = () => {
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Course Duration</option>
-                              {courses.map((course) => (
-                                <option key={course.id} value={course.duration}>
-                                  {course.duration}
-                                </option>
-                              ))}
+                              <option value="3 months">3 months</option>
                             </select>
                           </div>
 
@@ -358,11 +375,7 @@ const UpdateStudents = () => {
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Session</option>
-                              {courses.map((course) => (
-                                <option key={course.id} value={course.duration}>
-                                  {course.duration}
-                                </option>
-                              ))}
+                              <option value="Morning">Morning</option>
                             </select>
                           </div>
                         </div>
@@ -391,11 +404,7 @@ const UpdateStudents = () => {
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose a Course</option>
-                              {courses.map((course) => (
-                                <option key={course.id} value={course.title}>
-                                  {course.title}
-                                </option>
-                              ))}
+                              <option value="Lab Access">Lab Access</option>
                             </select>
                           </div>
 
@@ -413,11 +422,7 @@ const UpdateStudents = () => {
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Course Duration</option>
-                              {courses.map((course) => (
-                                <option key={course.id} value={course.duration}>
-                                  {course.duration}
-                                </option>
-                              ))}
+                              <option value="3 months">3 months</option>
                             </select>
                           </div>
 
@@ -435,11 +440,7 @@ const UpdateStudents = () => {
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Session</option>
-                              {courses.map((course) => (
-                                <option key={course.id} value={course.duration}>
-                                  {course.duration}
-                                </option>
-                              ))}
+                              <option value="Morning">Morning</option>
                             </select>
                           </div>
 
@@ -698,7 +699,7 @@ const UpdateStudents = () => {
                          max 200 KB, JPEG/PNG).
                        </span> */}
 
-                <input type="hidden" name="image" value={uploadedImageUrl} />
+                {/* <input type="hidden" name="image" value={uploadedImageUrl} /> */}
               </div>
             </div>
 
