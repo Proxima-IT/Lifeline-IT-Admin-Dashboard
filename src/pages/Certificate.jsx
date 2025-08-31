@@ -1,4 +1,5 @@
 import axios from "axios";
+import { SlidersHorizontal } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { Link } from "react-router-dom";
@@ -9,6 +10,40 @@ const Certificate = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalStudents, setTotalStudents] = useState(0);
   const [selected, setSelected] = useState(true);
+
+  const [filters, setFilters] = useState({
+    batch: [],
+    session: [],
+    year: [],
+    course: [],
+  });
+
+  const [select, setSelect] = useState({
+    batch: "All",
+    session: "All",
+    year: "All",
+    course: "All",
+  });
+
+  // 🔹 API থেকে dropdown এর data আনা
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await axios.get("https://api.example.com/filters");
+        // API response format উদাহরণ:
+        // {
+        //   batch: ["Batch 1", "Batch 2"],
+        //   session: ["Morning", "Evening"],
+        //   year: ["2023", "2024"],
+        //   course: ["CSE", "EEE", "BBA"]
+        // }
+        setFilters(res.data);
+      } catch (error) {
+        console.error("Error fetching filter data:", error);
+      }
+    };
+    fetchFilters();
+  }, []);
 
   useEffect(() => {
     axios
@@ -67,6 +102,87 @@ const Certificate = () => {
           </div>
         </div>
 
+        <div className="text-white p-4 rounded-lg flex justify-center">
+          <div className="flex flex-wrap gap-4 items-center">
+            {/* Left side */}
+            <div className="flex items-center gap-2">
+              <SlidersHorizontal size={20} />
+              <span className="font-medium">Filter</span>
+            </div>
+
+            {/* Dropdowns */}
+            <div className="flex flex-wrap gap-6 flex-1">
+              {/* Course */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Course
+                </label>
+                <select
+                  value={select.course}
+                  onChange={(e) => handleChange("course", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.course.map((c, i) => (
+                    <option key={i}>{c}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Batch */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Batch
+                </label>
+                <select
+                  value={select.batch}
+                  onChange={(e) => handleChange("batch", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.batch.map((b, i) => (
+                    <option key={i}>{b}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Session */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Session
+                </label>
+                <select
+                  value={select.session}
+                  onChange={(e) => handleChange("session", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.session.map((s, i) => (
+                    <option key={i}>{s}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Year */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Year
+                </label>
+                <select
+                  value={select.year}
+                  onChange={(e) => handleChange("year", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.year.map((y, i) => (
+                    <option key={i}>{y}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-3 lg:p-6 my-3 mx-4 lg:mx-10">
           {/* // main dynamic content goes here */}
           <h1>Certificate Request</h1>
@@ -84,15 +200,16 @@ const Certificate = () => {
                   <col />
                   <col />
                 </colgroup>
-                <thead className="bg-[#00A99D] rounded-md whitespace-nowrap">
+                <thead className="bg-[#00A99D] rounded-md ">
                   <tr className="text-center lg:text-base text-sm ">
                     <th className="p-3">#</th>
+                    <th className="p-3">Student ID & Registration No</th>
                     <th className="p-3">Name of Student</th>
                     <th className="p-3">Course Name</th>
-                    <th className="p-3">Student Details</th>
+
                     <th className="p-3">Assignment & Homeworks</th>
-                    <th className="p-3">Input Result</th>
-                    <th className="p-3">Certificate Issue Date</th>
+                    <th className="p-3">Student Details</th>
+                    <th className="p-3">Payment Status</th>
                     <th className="p-3">Action Button</th>
                     <th className="p-3">Certificate Download</th>
                   </tr>
@@ -108,19 +225,15 @@ const Certificate = () => {
                       </td>
 
                       <td className="p-3">
+                        <p>{student.sid}</p>
+                      </td>
+
+                      <td className="p-3">
                         <p>{student.name}</p>
                       </td>
 
                       <td className="p-3">
-                        <p>{student.sid}</p>
-                      </td>
-
-                      <td>
-                        <Link to={`/student/${student.sid}`}>
-                          <span className="px-2 text-sm py-2 font-semibold rounded-md cursor-pointer bg-[#f5f7f5] text-black">
-                            View Details
-                          </span>
-                        </Link>
+                        <p>{student.name}</p>
                       </td>
 
                       <td>
@@ -131,25 +244,10 @@ const Certificate = () => {
                         </Link>
                       </td>
 
-                      <td className="p-3">
-                        <div className="flex flex-col gap-2">
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
-                              Marks
-                            </span>
-                          </Link>
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#3FA9F5] text-white">
-                              Grade
-                            </span>
-                          </Link>
-                        </div>
-                      </td>
-
                       <td>
                         <Link to={`/student/${student.sid}`}>
-                          <span className="px-3 py-2 font-semibold rounded-md cursor-pointer bg-[#1c1c1d] text-white">
-                            Date Box
+                          <span className="px-2 text-sm py-2 font-semibold rounded-md cursor-pointer bg-[#f5f7f5] text-black">
+                            View
                           </span>
                         </Link>
                       </td>
@@ -158,7 +256,22 @@ const Certificate = () => {
                         <div className="flex flex-col gap-3">
                           <Link to={`/student/${student.sid}`}>
                             <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
-                              Approve
+                              Paid
+                            </span>
+                          </Link>
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FF0000] text-white">
+                              Due
+                            </span>
+                          </Link>
+                        </div>
+                      </td>
+
+                      <td className="p-3">
+                        <div className="flex flex-col gap-3">
+                          <Link to={`/student/${student.sid}`}>
+                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
+                              Accept
                             </span>
                           </Link>
                           <Link to={`/student/${student.sid}`}>
@@ -174,12 +287,6 @@ const Certificate = () => {
                           <Link to={`/student/${student.sid}`}>
                             <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
                               Download
-                            </span>
-                          </Link>
-
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FFFFFF] text-black">
-                              Preview
                             </span>
                           </Link>
                         </div>

@@ -216,7 +216,7 @@ const AddCourses = () => {
                   htmlFor="description"
                   className="block text-sm text-left font-medium text-white"
                 >
-                  Description
+                  Course Details
                 </label>
                 <textarea
                   id="description"

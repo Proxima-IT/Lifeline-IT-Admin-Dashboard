@@ -12,7 +12,7 @@ const ViewStudents = () => {
   const [totalStudents, setTotalStudents] = useState(0);
   const [selected, setSelected] = useState(true);
 
-    const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState({
     batch: [],
     session: [],
     year: [],
@@ -30,7 +30,7 @@ const ViewStudents = () => {
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const res = await axios.get("https://api.example.com/filters"); 
+        const res = await axios.get("https://api.example.com/filters");
         // API response format উদাহরণ:
         // {
         //   batch: ["Batch 1", "Batch 2"],
@@ -111,67 +111,86 @@ const ViewStudents = () => {
           </div>
         </div>
 
-
-        <div className=" text-white p-4 rounded-lg  flex justify-center">
-      <div className="flex flex-wrap gap-4 items-center">
-        {/* Left side */}
-        <div className="flex items-center gap-2">
-          <SlidersHorizontal size={20} />
-          <span className="font-medium">Filter</span>
-        </div>
-
-        {/* Dropdowns */}
-        <div className="flex flex-wrap gap-3 flex-1">
-          {/* Batch */}
-          <select
-            value={select.batch}
-            onChange={(e) => handleChange("batch", e.target.value)}
-            className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
-          >
-            <option>All</option>
-            {filters.batch.map((b, i) => (
-              <option key={i}>{b}</option>
-            ))}
-          </select>
-
-          {/* Session */}
-          <select
-            value={select.session}
-            onChange={(e) => handleChange("session", e.target.value)}
-            className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
-          >
-            <option>All</option>
-            {filters.session.map((s, i) => (
-              <option key={i}>{s}</option>
-            ))}
-          </select>
-
-          {/* Year */}
-          <select
-            value={select.year}
-            onChange={(e) => handleChange("year", e.target.value)}
-            className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
-          >
-            <option>All</option>
-            {filters.year.map((y, i) => (
-              <option key={i}>{y}</option>
-            ))}
-          </select>
-
-          {/* Course */}
-          <select
-            value={select.course}
-            onChange={(e) => handleChange("course", e.target.value)}
-            className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
-          >
-            <option>All</option>
-            {filters.course.map((c, i) => (
-              <option key={i}>{c}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-    </div>
+         <div className="text-white p-4 rounded-lg flex justify-center">
+                 <div className="flex flex-wrap gap-4 items-center">
+                   {/* Left side */}
+                   <div className="flex items-center gap-2">
+                     <SlidersHorizontal size={20} />
+                     <span className="font-medium">Filter</span>
+                   </div>
+       
+                   {/* Dropdowns */}
+                   <div className="flex flex-wrap gap-6 flex-1">
+                     {/* Course */}
+                     <div className="flex flex-col">
+                       <label className="text-sm text-left text-white mb-1">
+                         Course
+                       </label>
+                       <select
+                         value={select.course}
+                         onChange={(e) => handleChange("course", e.target.value)}
+                         className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                       >
+                         <option>All</option>
+                         {filters.course.map((c, i) => (
+                           <option key={i}>{c}</option>
+                         ))}
+                       </select>
+                     </div>
+       
+                     {/* Batch */}
+                     <div className="flex flex-col">
+                       <label className="text-sm text-left text-white mb-1">
+                         Batch
+                       </label>
+                       <select
+                         value={select.batch}
+                         onChange={(e) => handleChange("batch", e.target.value)}
+                         className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                       >
+                         <option>All</option>
+                         {filters.batch.map((b, i) => (
+                           <option key={i}>{b}</option>
+                         ))}
+                       </select>
+                     </div>
+       
+                     {/* Session */}
+                     <div className="flex flex-col">
+                       <label className="text-sm text-left text-white mb-1">
+                         Session
+                       </label>
+                       <select
+                         value={select.session}
+                         onChange={(e) => handleChange("session", e.target.value)}
+                         className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                       >
+                         <option>All</option>
+                         {filters.session.map((s, i) => (
+                           <option key={i}>{s}</option>
+                         ))}
+                       </select>
+                     </div>
+       
+                     {/* Year */}
+                     <div className="flex flex-col">
+                       <label className="text-sm text-left text-white mb-1">
+                         Year
+                       </label>
+                       <select
+                         value={select.year}
+                         onChange={(e) => handleChange("year", e.target.value)}
+                         className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                       >
+                         <option>All</option>
+                         {filters.year.map((y, i) => (
+                           <option key={i}>{y}</option>
+                         ))}
+                       </select>
+                     </div>
+                   </div>
+                 </div>
+               </div>
 
         <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-3 lg:p-6 my-3 mx-4 lg:mx-10">
           {/* // main dynamic content goes here */}
@@ -196,7 +215,7 @@ const ViewStudents = () => {
                     <th className="p-3">Student ID & Registration No</th>
                     <th className="p-3">Course Name</th>
                     <th className="p-3">Phone</th>
-                    
+
                     <th className="p-3">Image</th>
                     <th className="p-3">Update Student Infomation</th>
                     <th className="p-3">Registration Card</th>
@@ -226,7 +245,7 @@ const ViewStudents = () => {
 
                       <td className="p-3">
                         <p>{student.phone}</p>
-                      </td>                     
+                      </td>
 
                       <td className="p-3">
                         <img src={student.image} alt="" className="w-20 h-14" />
@@ -239,7 +258,6 @@ const ViewStudents = () => {
                               View
                             </span>
                           </Link>
-                          
                         </div>
                       </td>
 
@@ -250,7 +268,6 @@ const ViewStudents = () => {
                               Download
                             </span>
                           </Link>
-                         
                         </div>
                       </td>
                     </tr>
