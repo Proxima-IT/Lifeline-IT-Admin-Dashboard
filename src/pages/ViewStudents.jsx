@@ -10,7 +10,7 @@ const ViewStudents = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalStudents, setTotalStudents] = useState(0);
-  const [selected, setSelected] = useState(true);
+  const [selected, setSelected] = useState("Online");
 
   const [filters, setFilters] = useState({
     batch: [],
@@ -74,10 +74,10 @@ const ViewStudents = () => {
 
         <div className="h-10">
           <button
-            onClick={() => setSelected("Offline")}
+            onClick={() => setSelected("Online")}
             className={`px-5 py-1  rounded-r-none shadow-md transition-all  h-10
             ${
-              selected === "Offline"
+              selected === "Online"
                 ? " bg-[#39B54A] text-white"
                 : "bg-[#f8f8f8] border   text-[#0071BC]"
             }`}
@@ -85,10 +85,10 @@ const ViewStudents = () => {
             Online
           </button>
           <button
-            onClick={() => setSelected("Online")}
+            onClick={() => setSelected("Offline")}
             className={`px-5 py-1  rounded-l-none shadow-md transition-all  h-10
             ${
-              selected === "Online"
+              selected === "Offline"
                 ? "bg-[#ED1E79] text-white"
                 : "bg-white border  text-[#0071BC]"
             }`}
@@ -103,7 +103,7 @@ const ViewStudents = () => {
             <input
               type="text"
               placeholder="Name / Student ID / Phone"
-              className="bg-[#183756] w-full text-center  mt-3 px-2 py-2 text-xs rounded outline-none text-white placeholder-white"
+              className="bg-[#183756] w-full text-center  mt-3 px-2 py-2 text-xs rounded outline-none text-white placeholder-gray-300"
             />
             <button className="absolute top-5 right-3 lg:right-5 text-gray-50">
               <IoMdSearch />
@@ -111,86 +111,86 @@ const ViewStudents = () => {
           </div>
         </div>
 
-         <div className="text-white p-4 rounded-lg flex justify-center">
-                 <div className="flex flex-wrap gap-4 items-center">
-                   {/* Left side */}
-                   <div className="flex items-center gap-2">
-                     <SlidersHorizontal size={20} />
-                     <span className="font-medium">Filter</span>
-                   </div>
-       
-                   {/* Dropdowns */}
-                   <div className="flex flex-wrap gap-6 flex-1">
-                     {/* Course */}
-                     <div className="flex flex-col">
-                       <label className="text-sm text-left text-white mb-1">
-                         Course
-                       </label>
-                       <select
-                         value={select.course}
-                         onChange={(e) => handleChange("course", e.target.value)}
-                         className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
-                       >
-                         <option>All</option>
-                         {filters.course.map((c, i) => (
-                           <option key={i}>{c}</option>
-                         ))}
-                       </select>
-                     </div>
-       
-                     {/* Batch */}
-                     <div className="flex flex-col">
-                       <label className="text-sm text-left text-white mb-1">
-                         Batch
-                       </label>
-                       <select
-                         value={select.batch}
-                         onChange={(e) => handleChange("batch", e.target.value)}
-                         className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
-                       >
-                         <option>All</option>
-                         {filters.batch.map((b, i) => (
-                           <option key={i}>{b}</option>
-                         ))}
-                       </select>
-                     </div>
-       
-                     {/* Session */}
-                     <div className="flex flex-col">
-                       <label className="text-sm text-left text-white mb-1">
-                         Session
-                       </label>
-                       <select
-                         value={select.session}
-                         onChange={(e) => handleChange("session", e.target.value)}
-                         className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
-                       >
-                         <option>All</option>
-                         {filters.session.map((s, i) => (
-                           <option key={i}>{s}</option>
-                         ))}
-                       </select>
-                     </div>
-       
-                     {/* Year */}
-                     <div className="flex flex-col">
-                       <label className="text-sm text-left text-white mb-1">
-                         Year
-                       </label>
-                       <select
-                         value={select.year}
-                         onChange={(e) => handleChange("year", e.target.value)}
-                         className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
-                       >
-                         <option>All</option>
-                         {filters.year.map((y, i) => (
-                           <option key={i}>{y}</option>
-                         ))}
-                       </select>
-                     </div>
-                   </div>
-                 </div>
-               </div>
+        <div className="text-white p-4 rounded-lg flex justify-center">
+          <div className="flex flex-wrap gap-4 items-end">
+            {/* Left side */}
+            <div className="flex items-center gap-2">
+              <SlidersHorizontal size={20} />
+              <span className="font-medium">Filter</span>
+            </div>
+
+            {/* Dropdowns */}
+            <div className="flex flex-wrap gap-6 flex-1">
+              {/* Course */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Course
+                </label>
+                <select
+                  value={select.course}
+                  onChange={(e) => handleChange("course", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.course.map((c, i) => (
+                    <option key={i}>{c}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Batch */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Batch No
+                </label>
+                <select
+                  value={select.batch}
+                  onChange={(e) => handleChange("batch", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.batch.map((b, i) => (
+                    <option key={i}>{b}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Session */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Session
+                </label>
+                <select
+                  value={select.session}
+                  onChange={(e) => handleChange("session", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.session.map((s, i) => (
+                    <option key={i}>{s}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Year */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Year
+                </label>
+                <select
+                  value={select.year}
+                  onChange={(e) => handleChange("year", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.year.map((y, i) => (
+                    <option key={i}>{y}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-3 lg:p-6 my-3 mx-4 lg:mx-10">
           {/* // main dynamic content goes here */}
@@ -215,63 +215,73 @@ const ViewStudents = () => {
                     <th className="p-3">Student ID & Registration No</th>
                     <th className="p-3">Course Name</th>
                     <th className="p-3">Phone</th>
-
                     <th className="p-3">Image</th>
                     <th className="p-3">Update Student Infomation</th>
                     <th className="p-3">Registration Card</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {students.map((student, index) => (
-                    <tr
-                      key={student._id}
-                      className="w-full border-b border-opacity-20 text-center bg-[#183756] border-gray-700 "
-                    >
-                      <td className="p-3">
-                        <p>{index + 1}</p>
-                      </td>
+                  {selected === "Online" ? (
+                    students.map((student, index) => (
+                      <tr
+                        key={student._id}
+                        className="w-full border-b border-opacity-20 text-center bg-[#183756] border-gray-700 "
+                      >
+                        <td className="p-3">
+                          <p>{index + 1}</p>
+                        </td>
 
-                      <td className="p-3">
-                        <p>{student.name}</p>
-                      </td>
+                        <td className="p-3">
+                          <p>{student.name}</p>
+                        </td>
 
-                      <td className="p-3">
-                        <p>{student.sid}</p>
-                      </td>
+                        <td className="p-3">
+                          <p>{student.sid}</p>
+                        </td>
 
-                      <td className="p-3">
-                        <p>{student.sid}</p>
-                      </td>
+                        <td className="p-3">
+                          <p>Computer Office Management</p>
+                        </td>
 
-                      <td className="p-3">
-                        <p>{student.phone}</p>
-                      </td>
+                        <td className="p-3">
+                          <p>{student.phone}</p>
+                        </td>
 
-                      <td className="p-3">
-                        <img src={student.image} alt="" className="w-20 h-14" />
-                      </td>
+                        <td className="p-3">
+                          <img
+                            src={student.image}
+                            alt=""
+                            className="w-20 h-14"
+                          />
+                        </td>
 
-                      <td className="p-3">
-                        <div className="flex flex-col gap-2">
-                          <Link to={`/update-student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
-                              View
-                            </span>
-                          </Link>
-                        </div>
-                      </td>
+                        <td className="p-3">
+                          <div className="flex flex-col gap-2">
+                            <Link to={`/update-student/${student.sid}`}>
+                              <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
+                                View
+                              </span>
+                            </Link>
+                          </div>
+                        </td>
 
-                      <td className="p-3">
-                        <div className="flex flex-col gap-2">
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
-                              Download
-                            </span>
-                          </Link>
-                        </div>
-                      </td>
+                        <td className="p-3">
+                          <div className="flex flex-col gap-2">
+                            <Link to={`/student/${student.sid}`}>
+                              <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
+                                Download
+                              </span>
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      Offline students Data will be fetched from all students
+                      api based on mode equal to offline
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>

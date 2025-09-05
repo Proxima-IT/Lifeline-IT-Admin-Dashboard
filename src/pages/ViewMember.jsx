@@ -107,11 +107,6 @@ const ViewMember = () => {
                               View
                             </span>
                           </Link>
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#3FA9F5] text-white">
-                              Edit
-                            </span>
-                          </Link>
                         </div>
                       </td>
 
@@ -120,12 +115,6 @@ const ViewMember = () => {
                           <Link to={`/student/${student.sid}`}>
                             <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
                               Download
-                            </span>
-                          </Link>
-
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FFFFFF] text-black">
-                              Preview
                             </span>
                           </Link>
                         </div>

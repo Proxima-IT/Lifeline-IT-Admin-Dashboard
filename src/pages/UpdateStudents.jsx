@@ -8,6 +8,8 @@ const UpdateStudents = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [notify, setNotify] = useState(false);
+  const [showOther, setShowOther] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState("paid");
 
   // online or offline mode state
   const [mode, setMode] = useState("online"); // default online
@@ -24,6 +26,7 @@ const UpdateStudents = () => {
     axios.get(`${import.meta.env.VITE_API_URL}/api/courses`).then((res) => {
       console.log(res.data);
       setCourses(res.data);
+      setPaymentStatus("paid")
     });
   }, []);
 
@@ -76,6 +79,7 @@ const UpdateStudents = () => {
   // }
 
   const onSubmit = async (data) => {
+    console.log(data)
     try {
       const formData = new FormData();
 
@@ -361,22 +365,47 @@ const UpdateStudents = () => {
                             </select>
                           </div>
 
-                          {/* Course session */}
+                           {/* Course session */}
                           <div className="mb-2">
                             <label
-                              htmlFor="onlineSession"
+                              htmlFor="offlineSession"
                               className="block text-base font-medium text-left text-gray-50 mb-2"
                             >
                               Session
                             </label>
 
                             <select
-                              {...register("onlineSession")}
-                              className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
+                              {...register("offlineSession")}
+                              onChange={(e) =>
+                                setShowOther(e.target.value === "Others")
+                              }
+                              className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Session</option>
-                              <option value="Morning">Morning</option>
+                              <option value="January-March">
+                                January-March
+                              </option>
+                              <option value="April-June">April-June</option>
+                              <option value="January-June">January-June</option>
+                              <option value="July-October">July-October</option>
+                              <option value="September-December">
+                                September-December
+                              </option>
+                              <option value="July-December">
+                                July-December
+                              </option>
+                              <option value="Others">Others</option>
                             </select>
+
+                            {/* Extra text field for Others */}
+                            {showOther && (
+                              <input
+                                type="text"
+                                {...register("offlineSessionOther")}
+                                placeholder="Write your session..."
+                                className="mt-2 bg-[#8995A3] placeholder-white block w-full px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
@@ -422,10 +451,17 @@ const UpdateStudents = () => {
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Course Duration</option>
-                              <option value="3 months">3 months</option>
+                              <option value="3 months">1 month</option>
+                              <option value="3 months">2 month</option>
+                              <option value="3 months">3 month</option>
+                              <option value="3 months">4 month</option>
+                              <option value="3 months">5 month</option>
+                              <option value="3 months">6 month</option>
+                              <option value="3 months">1 year</option>
                             </select>
                           </div>
 
+                     
                           {/* Course session */}
                           <div className="mb-2">
                             <label
@@ -437,11 +473,36 @@ const UpdateStudents = () => {
 
                             <select
                               {...register("offlineSession")}
-                              className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
+                              onChange={(e) =>
+                                setShowOther(e.target.value === "Others")
+                              }
+                              className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             >
                               <option value="">Choose Session</option>
-                              <option value="Morning">Morning</option>
+                              <option value="January-March">
+                                January-March
+                              </option>
+                              <option value="April-June">April-June</option>
+                              <option value="January-June">January-June</option>
+                              <option value="July-October">July-October</option>
+                              <option value="September-December">
+                                September-December
+                              </option>
+                              <option value="July-December">
+                                July-December
+                              </option>
+                              <option value="Others">Others</option>
                             </select>
+
+                            {/* Extra text field for Others */}
+                            {showOther && (
+                              <input
+                                type="text"
+                                {...register("offlineSessionOther")}
+                                placeholder="Write your session..."
+                                className="mt-2 bg-[#8995A3] placeholder-white block w-full px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
+                              />
+                            )}
                           </div>
 
                           {/* Course year */}
@@ -551,6 +612,7 @@ const UpdateStudents = () => {
                               type="text"
                               id="paymentStatus"
                               {...register("paymentStatus")}
+                              defaultValue={paymentStatus === "paid" ? "paid": "due"}
                               placeholder="Auto Status Fill"
                               className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                             />
@@ -560,7 +622,7 @@ const UpdateStudents = () => {
                             <input
                               type="checkbox"
                               // checked="false"
-                              onChange={(e) => setNotify(e.target.checked)}
+                              {...register("notify")}
                               className="h-4 w-4 accent-yellow-500 border-gray-300 rounded focus:ring-yellow-400"
                             />
                             <span className="text-white">
@@ -608,11 +670,11 @@ const UpdateStudents = () => {
                       className="mt-1 bg-[#8995A3] placeholder-white block w-full px-4 py-2  rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
                     >
                       <option value="">Choose Grade</option>
-                      {courses.map((course) => (
-                        <option key={course.id} value={course.duration}>
-                          {course.duration}
-                        </option>
-                      ))}
+
+                      <option value="Morning">A+</option>
+                      <option value="Morning">A</option>
+                      <option value="Morning">A-</option>
+                      <option value="Morning">F</option>
                     </select>
                   </div>
 

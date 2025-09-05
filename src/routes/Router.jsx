@@ -24,6 +24,7 @@ import ViewStudents from "../pages/ViewStudents";
 import UpdateStudents from "../pages/UpdateStudents";
 import UploadRecordedClass from "../pages/UploadRecordedClass";
 import ViewRecordedClass from "../pages/ViewRecordedClass";
+import OnlinePaymentReq from "../pages/OnlinePaymentReq";
 
 
 
@@ -59,6 +60,10 @@ const Router = createBrowserRouter([
       {
         path: "/payment",
         element: <AdminRoute><PaymentReport></PaymentReport></AdminRoute>,
+      },
+      {
+        path: "/online-payment",
+        element: <AdminRoute><OnlinePaymentReq></OnlinePaymentReq></AdminRoute>,
       },
       {
         path: "/uploadClass",

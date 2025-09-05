@@ -2,16 +2,21 @@
 
 import axios from "axios";
 import React, { useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import imageCompression from "browser-image-compression";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
 
 const AddCourses = () => {
   const navigate = useNavigate();
 
   const [thumbnail, setThumbnail] = useState("");
   const [instructorImage, setInstructorImage] = useState("");
+  const [status, setStatus] = useState("Published");
+
+  const options = ["Draft", "Published", "Archived"];
 
   const {
     register,
@@ -61,6 +66,15 @@ const AddCourses = () => {
     fields: zoomFields,
     append: appendZoom,
     remove: removeZoom,
+  } = useFieldArray({
+    control,
+    name: "links[0].zoom",
+  });
+
+  const {
+    fields: zoomFields2,
+    append: appendZoom2,
+    remove: removeZoom2,
   } = useFieldArray({
     control,
     name: "links[0].zoom",
@@ -152,18 +166,12 @@ const AddCourses = () => {
 
   return (
     <div className="my-5">
-
       <main className="flex-1  overflow-y-auto w-full">
         <div className="text-2xl font-bold text-white mb-4 bg-[#1398DB] w-[80%] lg:w-1/4 px-3 py-2 my-[15px]  mx-auto rounded-md">
           Add Courses
         </div>
 
         <div className="bg-[#132949] border border-[#00B5FF] rounded-2xl p-3 lg:p-6 my-3 mx-4 lg:mx-10">
-
-
-          <h1 className="text-center text-xl font-fold text-[#00FFFF] font-bold">
-            Fill Up the form with Course Information
-          </h1>
           <form onSubmit={handleSubmit(onSubmit, onError)}>
             {Object.keys(errors).length > 0 && (
               <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">
@@ -182,7 +190,7 @@ const AddCourses = () => {
                   htmlFor="title"
                   className="block text-sm font-medium text-left text-white"
                 >
-                  Course Title
+                  Course Title <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -204,25 +212,80 @@ const AddCourses = () => {
                 <input
                   type="text"
                   id="subtitle"
-                  {...register("subtitle", { required: true })}
+                  {...register("subtitle")}
                   placeholder="Enter course subtitle"
                   className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
               </div>
 
-              {/* Description */}
+              {/* Thumbnail */}
               <div className="mb-4">
                 <label
-                  htmlFor="description"
+                  htmlFor="thumbnail"
+                  className="block text-sm font-medium text-left text-white"
+                >
+                  Thumbnail <span className="text-red-600">*</span>
+                </label>
+
+                <input
+                  id="thumbnail"
+                  type="file"
+                  accept="image/*"
+                  {...register("thumbnail", { required: true })}
+                  placeholder="Enter thumbnail URL"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      uploadImage(file, "thumbnail");
+                    }
+                  }}
+                  className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+              </div>
+              <img
+                src={thumbnail}
+                alt="thumbnail"
+                className="w-36 h-20 object-cover border border-[#00FFFF] shadow"
+              />
+
+              {/* Details */}
+              <div className="mb-4">
+                <label
+                  htmlFor="details"
                   className="block text-sm text-left font-medium text-white"
                 >
-                  Course Details
+                  Course Details <span className="text-red-600">*</span>
                 </label>
+                <textarea
+                  id="details"
+                  rows="4"
+                  {...register("details", { required: true })}
+                  placeholder="Enter course details"
+                  className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                ></textarea>
+              </div>
+
+              {/* Course content */}
+              <div className="mb-4">
+                <label
+                  htmlFor="route"
+                  className="block text-sm font-medium text-left text-white"
+                >
+                  Content <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="route"
+                  {...register("contentTitle", { required: true })}
+                  placeholder="Content title here"
+                  className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+                {/* Details Content */}
                 <textarea
                   id="description"
                   rows="4"
-                  {...register("description", { required: true })}
-                  placeholder="Enter course description"
+                  {...register("detailsContent")}
+                  placeholder="Details content..."
                   className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 ></textarea>
               </div>
@@ -423,114 +486,180 @@ const AddCourses = () => {
                 />
               </div>
 
-
-              {/* Thumbnail */}
-              <div className="mb-4">
-                <label
-                  htmlFor="thumbnail"
-                  className="block text-sm font-medium text-left text-white"
-                >
-                  Thumbnail
-                </label>
-
-                <input
-                  id="thumbnail"
-                  type="file"
-                  accept="image/*"
-                  {...register("thumbnail", { required: true })}
-                  placeholder="Enter thumbnail URL"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      uploadImage(file, "thumbnail");
-                    }
-                  }}
-                  className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                />
-              </div>
-              <img
-                src={thumbnail}
-                alt="thumbnail"
-                className="w-36 h-20 object-cover border border-[#00FFFF] shadow"
-              />
-
-              {/* Course Instructor */}
-              <h1 className="text-center text-lg font-fold text-[#00FFFF] font-bold ">
-                Course Instructor
-              </h1>
-
               <div></div>
+              {/* Course Instructor */}
+              <h1 className="text-left text-lg font-fold text-[#2AAAE2] font-bold ">
+                Select Course Instructor
+              </h1>
+              <div></div>
+
               {instructorFields.map((item, index) => (
                 <React.Fragment key={item.id}>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-left text-white">
-                      Name
+                      Name <span className="text-red-600">*</span>
                     </label>
                     <input
-                      {...register(`instructors.${index}.name`, { required: true })}
-                      placeholder="Enter instructor name"
+                      {...register(`instructors.${index}.name`, {
+                        required: true,
+                      })}
+                      placeholder=""
                       className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                   </div>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-left text-white">
-                      About
+                      Instructor Role <span className="text-red-600">*</span>
                     </label>
                     <input
                       {...register(`instructors.${index}.about`, {
                         required: true,
                       })}
-                      placeholder="Enter instructor about info"
+                      placeholder=""
                       className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                   </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-left text-white">
+                      About Instructor <span className="text-red-600">*</span>
+                    </label>
+                    <input
+                      {...register(`instructors.${index}.about`, {
+                        required: true,
+                      })}
+                      placeholder=""
+                      className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                  </div>
+                  <div></div>
+
+                  {/* signature upload  */}
                   <div className="mb-4">
                     <label
                       htmlFor="instructorImage"
                       className="block text-sm font-medium text-left text-white"
                     >
-                      Image
+                      Signature (300x80 - PNG Transparent, max 500KB)
                     </label>
 
                     <input
                       id="instructorImage"
                       type="file"
-                      accept="image/*"
+                      accept="image/png"
                       className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       onChange={async (e) => {
                         const file = e.target.files[0];
                         if (file) {
-                          const imageUrl = await uploadImage(file, "instructor");
-                          setValue(`instructors.${index}.image`, imageUrl, {
-                            shouldValidate: true,
-                          });
+                          // **Size check: 500KB max**
+                          const maxSize = 500 * 1024; // 500 KB
+                          if (file.size > maxSize) {
+                            alert(
+                              "File size exceeds 500KB. Please choose a smaller file."
+                            );
+                            e.target.value = null; // reset input
+                            return;
+                          }
+
+                          // **Optional: check dimensions (300x80)**
+                          const img = new Image();
+                          img.src = URL.createObjectURL(file);
+                          img.onload = async () => {
+                            if (img.width !== 300 || img.height !== 80) {
+                              alert("Image must be exactly 300x80 px.");
+                              e.target.value = null;
+                              return;
+                            }
+
+                            // Upload if all checks pass
+                            const imageUrl = await uploadImage(
+                              file,
+                              "instructor"
+                            );
+                            setValue(`instructors.${index}.image`, imageUrl, {
+                              shouldValidate: true,
+                            });
+                          };
                         }
                       }}
                     />
                   </div>
 
-                  {/* <img
-                src={instructorImage}
-                alt="thumbnail"
-                className="w-36 h-20 object-cover border border-black shadow"
-              /> */}
-
+                  {/* signature preview  */}
                   <img
                     src={watch(`instructors.${index}.image`)} // watch the current field
-                    alt="thumbnail"
+                    alt="signature"
                     className="w-36 h-20 object-cover border border-[#00FFFF] shadow"
                   />
 
+                  {/* photo upload  */}
+
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-left text-white">
-                      Signature
+                    <label
+                      htmlFor={`instructorImage-${index}`}
+                      className="block text-sm font-medium text-left text-white"
+                    >
+                      Photo (300x300) <span className="text-red-600">*</span>
                     </label>
+
                     <input
-                      {...register(`instructors.${index}.sign`, { required: true })}
-                      placeholder="Enter instructor signature"
+                      id={`instructorImage-${index}`}
+                      type="file"
+                      accept="image/png, image/jpeg"
                       className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      {...register(`instructors.${index}.image`, {
+                        required: "Image is required",
+                      })}
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+
+                        // **Size check: 500KB max**
+                        const maxSize = 500 * 1024;
+                        if (file.size > maxSize) {
+                          alert(
+                            "File size exceeds 500KB. Please choose a smaller file."
+                          );
+                          e.target.value = null;
+                          setValue(`instructors.${index}.image`, null);
+                          return;
+                        }
+
+                        // **Dimension check: 300x300**
+                        const img = new Image();
+                        img.src = URL.createObjectURL(file);
+                        img.onload = async () => {
+                          if (img.width !== 300 || img.height !== 300) {
+                            alert("Image must be exactly 300x300 px.");
+                            e.target.value = null;
+                            setValue(`instructors.${index}.image`, null);
+                            return;
+                          }
+
+                          // Upload if all checks pass
+                          const imageUrl = await uploadImage(
+                            file,
+                            "instructor"
+                          );
+                          setValue(`instructors.${index}.image`, imageUrl, {
+                            shouldValidate: true,
+                          });
+                        };
+                      }}
                     />
+                    {errors?.instructors?.[index]?.image && (
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.instructors[index].image.message}
+                      </p>
+                    )}
                   </div>
+
+                  {/* photo preview  */}
+                  <img
+                    src={watch(`instructors.${index}.image`)} // watch the current field
+                    alt="photo"
+                    className="w-36 h-20 object-cover border border-[#00FFFF] shadow"
+                  />
+
                   {/* Show Remove button only if index > 0 */}
                   {index > 0 && (
                     <button
@@ -544,25 +673,30 @@ const AddCourses = () => {
                   <button
                     type="button"
                     onClick={() =>
-                      appendInstructor({ name: "", about: "", image: "", sign: "" })
+                      appendInstructor({
+                        name: "",
+                        about: "",
+                        image: "",
+                        sign: "",
+                      })
                     }
-                    className="text-[#00FFFF]"
+                    className="text-[#F79421] text-left"
                   >
                     + Add Instructor
                   </button>
                   <div></div>
                 </React.Fragment>
               ))}
-              <div></div>
-              <h1 className="text-center text-lg font-fold text-[#00FFFF] font-bold">
-                Course Resourses
+
+              <h1 className="text-left text-lg font-fold text-[#2AAAE2] font-bold">
+                Course Essential Links
               </h1>
               <div></div>
 
               {/* 🔗 FB & Zoom Links Section */}
               <div className="mb-4">
                 <label className="block text-sm text-left font-medium text-white mb-2">
-                  Facebook Links
+                  All Secret Group Links <span className="text-red-600">*</span>
                 </label>
                 {fbFields.map((item, index) => (
                   <div key={item.id} className="mb-2">
@@ -575,7 +709,9 @@ const AddCourses = () => {
                       className="w-full px-4 py-2 border rounded-md bg-[#8995A3] placeholder-white focus:outline-none focus:ring-2 focus:ring-blue-500 mb-1"
                     />
                     <input
-                      {...register(`links[0].fb.${index}.link`, { required: true })}
+                      {...register(`links[0].fb.${index}.link`, {
+                        required: true,
+                      })}
                       type="url"
                       placeholder="FB Link URL"
                       className="w-full px-4 py-2 border rounded-md bg-[#8995A3] placeholder-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -593,7 +729,7 @@ const AddCourses = () => {
                     <button
                       type="button"
                       onClick={() => appendFb({ title: "", link: "" })}
-                      className="text-[#00FFFF] text-sm hover:underline mt-1 ml-2"
+                      className="text-[#F79421] text-left text-sm hover:underline mt-1 ml-2"
                     >
                       + Add Facebook Link
                     </button>
@@ -603,7 +739,7 @@ const AddCourses = () => {
 
               <div className="mb-4">
                 <label className="block text-sm text-left font-medium text-white mb-2">
-                  Zoom Links
+                  Zoom Support Links <span className="text-red-600">*</span>
                 </label>
                 {zoomFields.map((item, index) => (
                   <div key={item.id} className="mb-2">
@@ -637,7 +773,7 @@ const AddCourses = () => {
                     <button
                       type="button"
                       onClick={() => appendZoom({ title: "", link: "" })}
-                      className="text-[#00FFFF] text-sm hover:underline mt-1 ml-2"
+                      className="text-[#F79421] text-left text-sm hover:underline mt-1 ml-2"
                     >
                       + Add Zoom Link
                     </button>
@@ -645,7 +781,52 @@ const AddCourses = () => {
                 ))}
               </div>
 
-              <h1 className="text-center text-lg font-fold text-[#00FFFF] font-bold">
+              <div className="mb-4">
+                <label className="block text-sm text-left font-medium text-white mb-2">
+                  Zoom Live Class Links <span className="text-red-600">*</span>
+                </label>
+                {zoomFields2.map((item, index) => (
+                  <div key={item.id} className="mb-2">
+                    <input
+                      {...register(`links[0].zoom.${index}.title`, {
+                        required: true,
+                      })}
+                      type="text"
+                      placeholder="Zoom Link Title"
+                      className="w-full px-4 py-2 border rounded-md bg-[#8995A3] placeholder-white focus:outline-none focus:ring-2 focus:ring-blue-500 mb-1"
+                    />
+                    <input
+                      {...register(`links[0].zoom.${index}.link`, {
+                        required: true,
+                      })}
+                      type="url"
+                      placeholder="Zoom Link URL"
+                      className="w-full px-4 py-2 border rounded-md bg-[#8995A3] placeholder-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+
+                    {index > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => removeZoom2(index)}
+                        className="text-red-600"
+                      >
+                        Remove
+                      </button>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => appendZoom2({ title: "", link: "" })}
+                      className="text-[#F79421] text-left text-sm hover:underline mt-1 ml-2"
+                    >
+                      + Add Zoom Link
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div></div>
+
+              <h1 className="text-left text-lg font-fold text-[#2AAAE2] font-bold">
                 Course Modules
               </h1>
               <div></div>
@@ -657,7 +838,7 @@ const AddCourses = () => {
                       Module Title
                     </label>
                     <input
-                      {...register(`modules.${index}.title`, { required: true })}
+                      {...register(`modules.${index}.title`)}
                       placeholder="Enter module title"
                       className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
@@ -667,9 +848,7 @@ const AddCourses = () => {
                       Video Link
                     </label>
                     <input
-                      {...register(`modules.${index}.videoLink`, {
-                        required: true,
-                      })}
+                      {...register(`modules.${index}.videoLink`)}
                       placeholder="Enter module video link"
                       className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
@@ -679,9 +858,7 @@ const AddCourses = () => {
                       Description
                     </label>
                     <textarea
-                      {...register(`modules.${index}.description`, {
-                        required: true,
-                      })}
+                      {...register(`modules.${index}.description`)}
                       placeholder="Enter module description"
                       rows="4"
                       className="mt-1 block w-full px-4 py-2 bg-[#8995A3] placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
@@ -694,9 +871,7 @@ const AddCourses = () => {
                       Resource Title
                     </label>
                     <input
-                      {...register(`modules.${index}.resources.0.title`, {
-                        required: true,
-                      })}
+                      {...register(`modules.${index}.resources.0.title`)}
                       placeholder="Enter resource title"
                       className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
@@ -704,9 +879,7 @@ const AddCourses = () => {
                       Resource Link
                     </label>
                     <input
-                      {...register(`modules.${index}.resources.0.link`, {
-                        required: true,
-                      })}
+                      {...register(`modules.${index}.resources.0.link`)}
                       placeholder="Enter resource link"
                       className="mt-1 block w-full px-4 py-2 bg-[#8995A3] text-white placeholder-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
@@ -732,25 +905,55 @@ const AddCourses = () => {
                         resources: [{ title: "", link: "" }],
                       })
                     }
-                    className="text-[#00FFFF]"
+                    className="text-[#F79421]"
                   >
                     + Add Module
                   </button>
                 </React.Fragment>
               ))}
             </div>
+
+            <div className="p-6">
+              <label className="text-left text-lg block mb-5 text-[#2AAAE2] font-bold">
+                Course Status
+              </label>
+              <div className="flex gap-6">
+                {options.map((option) => (
+                  <label
+                    key={option}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="courseStatus"
+                      value={option}
+                      checked={status === option}
+                      onChange={() => setStatus(option)}
+                      className="accent-[#F79421] w-4 h-4"
+                    />
+                    <span
+                      className={`${
+                        status === option ? "text-[#F79421]" : "text-white"
+                      } text-sm font-medium`}
+                    >
+                      {option}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
             {/* Submit Button */}
-            <button
+            <input
               type="submit"
-              className="bg-[#0052CC] hover:bg-[#0052CC] text-white font-bold py-2  px-4 rounded-md transition-all duration-300 my-3 w-[70%] "
-            >
-              Add Course
+              value="Submit"
+              className="w-full lg:w-1/4 mx-auto lg:col-span-3 bg-[#1E489F] mt-10 rounded-md px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer"
+            />
+            <button className="w-full lg:w-1/4 mx-auto lg:col-span-3 bg-[#1E489F] mt-10 rounded-md px-4 py-2 shadow-sm text-white hover:bg-[#3a6fbf] transition-all duration-300 font-medium cursor-pointer ml-4">
+              Save & Update
             </button>
           </form>
-
         </div>
       </main>
-
 
       <ToastContainer></ToastContainer>
     </div>

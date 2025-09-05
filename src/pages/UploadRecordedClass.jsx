@@ -194,14 +194,14 @@ const UploadRecordedClass = () => {
               </div>
               <div></div>
 
-              <label className="flex items-center space-x-2 cursor-pointer col-span-2">
+              <label className="flex items-center justify-center space-x-2 cursor-pointer col-span-2">
                 <input
                   type="checkbox"
                   // checked="false"
                   onChange={(e) => setNotify(e.target.checked)}
                   className="h-4 w-4 accent-yellow-500 border-gray-300 rounded focus:ring-yellow-400"
                 />
-                <span className="text-[#F6EB16]">
+                <span className="text-[#F6EB16] ">
                   New Recorded Class has been added to your course. Please check
                   your dashboard.
                 </span>

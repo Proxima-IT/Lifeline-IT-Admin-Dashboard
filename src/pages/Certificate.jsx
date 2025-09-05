@@ -9,7 +9,7 @@ const Certificate = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalStudents, setTotalStudents] = useState(0);
-  const [selected, setSelected] = useState(true);
+  const [selected, setSelected] = useState("Online");
 
   const [filters, setFilters] = useState({
     batch: [],
@@ -65,10 +65,10 @@ const Certificate = () => {
 
         <div className="h-10">
           <button
-            onClick={() => setSelected("Offline")}
+            onClick={() => setSelected("Online")}
             className={`px-5 py-1  rounded-r-none shadow-md transition-all  h-10
             ${
-              selected === "Offline"
+              selected === "Online"
                 ? " bg-[#39B54A] text-white"
                 : "bg-[#f8f8f8] border   text-[#0071BC]"
             }`}
@@ -76,10 +76,10 @@ const Certificate = () => {
             Online
           </button>
           <button
-            onClick={() => setSelected("Online")}
+            onClick={() => setSelected("Offline")}
             className={`px-5 py-1  rounded-l-none shadow-md transition-all  h-10
             ${
-              selected === "Online"
+              selected === "Offline"
                 ? "bg-[#ED1E79] text-white"
                 : "bg-white border  text-[#0071BC]"
             }`}
@@ -94,7 +94,7 @@ const Certificate = () => {
             <input
               type="text"
               placeholder="Name / Student ID / Phone"
-              className="bg-[#183756] w-full text-center  mt-3 px-2 py-2 text-xs rounded outline-none text-white placeholder-white"
+              className="bg-[#183756] w-full text-center  mt-3 px-2 py-2 text-xs rounded outline-none text-white placeholder-gray-200"
             />
             <button className="absolute top-5 right-3 lg:right-5 text-gray-50">
               <IoMdSearch />
@@ -103,7 +103,7 @@ const Certificate = () => {
         </div>
 
         <div className="text-white p-4 rounded-lg flex justify-center">
-          <div className="flex flex-wrap gap-4 items-center">
+          <div className="flex flex-wrap gap-4 items-end">
             {/* Left side */}
             <div className="flex items-center gap-2">
               <SlidersHorizontal size={20} />
@@ -207,92 +207,187 @@ const Certificate = () => {
                     <th className="p-3">Name of Student</th>
                     <th className="p-3">Course Name</th>
 
-                    <th className="p-3">Assignment & Homeworks</th>
+                    {selected === "Online" && (
+                      <th className="p-3">Assignment & Homeworks</th>
+                    )}
+
                     <th className="p-3">Student Details</th>
-                    <th className="p-3">Payment Status</th>
-                    <th className="p-3">Action Button</th>
+                    {selected === "Offline" && (
+                      <th className="p-3">Payment Status</th>
+                    )}
+                    {selected === "Online" && (
+                      <th className="p-3">Action Button</th>
+                    )}
+
                     <th className="p-3">Certificate Download</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {students.map((student, index) => (
-                    <tr
-                      key={student._id}
-                      className="w-full border-b border-opacity-20 text-center bg-[#183756] border-gray-700 "
-                    >
-                      <td className="p-3">
-                        <p>{index + 1}</p>
-                      </td>
+                  {selected === "Online"
+                    ? students.map((student, index) => (
+                        <tr
+                          key={student._id}
+                          className="w-full border-b border-opacity-20 text-center bg-[#183756] border-gray-700 "
+                        >
+                          <td className="p-3">
+                            <p>{index + 1}</p>
+                          </td>
 
-                      <td className="p-3">
-                        <p>{student.sid}</p>
-                      </td>
+                          <td className="p-3">
+                            <p>{student.sid}</p>
+                          </td>
 
-                      <td className="p-3">
-                        <p>{student.name}</p>
-                      </td>
+                          <td className="p-3">
+                            <p>{student.name}</p>
+                          </td>
 
-                      <td className="p-3">
-                        <p>{student.name}</p>
-                      </td>
+                          <td className="p-3">
+                            <p>Computer Office Management</p>
+                          </td>
 
-                      <td>
-                        <Link to={`/student/${student.sid}`}>
-                          <span className="px-3 py-2 font-semibold rounded-md cursor-pointer bg-[#0071FF] text-white">
-                            View
-                          </span>
-                        </Link>
-                      </td>
+                          <td>
+                            <Link to={`/student/${student.sid}`}>
+                              <span className="px-3 py-2 font-semibold rounded-md cursor-pointer bg-[#0071FF] text-white">
+                                View
+                              </span>
+                            </Link>
+                          </td>
 
-                      <td>
-                        <Link to={`/student/${student.sid}`}>
-                          <span className="px-2 text-sm py-2 font-semibold rounded-md cursor-pointer bg-[#f5f7f5] text-black">
-                            View
-                          </span>
-                        </Link>
-                      </td>
+                          <td>
+                            <Link to={`/student/${student.sid}`}>
+                              <span className="px-2 text-sm py-2 font-semibold rounded-md cursor-pointer bg-[#f5f7f5] text-black">
+                                View
+                              </span>
+                            </Link>
+                          </td>
 
-                      <td className="p-3">
-                        <div className="flex flex-col gap-3">
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
-                              Paid
-                            </span>
-                          </Link>
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FF0000] text-white">
-                              Due
-                            </span>
-                          </Link>
-                        </div>
-                      </td>
+                          {selected === "Offline" && (
+                            <td className="p-3">
+                              <div className="flex flex-col gap-3">
+                                <Link to={`/student/${student.sid}`}>
+                                  <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
+                                    Paid
+                                  </span>
+                                </Link>
+                                <Link to={`/student/${student.sid}`}>
+                                  <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FF0000] text-white">
+                                    Due
+                                  </span>
+                                </Link>
+                              </div>
+                            </td>
+                          )}
 
-                      <td className="p-3">
-                        <div className="flex flex-col gap-3">
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
-                              Accept
-                            </span>
-                          </Link>
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FF0000] text-white">
-                              Reject
-                            </span>
-                          </Link>
-                        </div>
-                      </td>
+                          <td className="p-3">
+                            <div className="flex flex-col gap-3">
+                              <Link to={`/student/${student.sid}`}>
+                                <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
+                                  Accept
+                                </span>
+                              </Link>
+                              <Link to={`/student/${student.sid}`}>
+                                <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FF0000] text-white">
+                                  Reject
+                                </span>
+                              </Link>
+                            </div>
+                          </td>
 
-                      <td className="p-3">
-                        <div className="flex flex-col gap-2">
-                          <Link to={`/student/${student.sid}`}>
-                            <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
-                              Download
-                            </span>
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                          <td className="p-3">
+                            <div className="flex flex-col gap-2">
+                              <Link to={`/student/${student.sid}`}>
+                                <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
+                                  Download
+                                </span>
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    : students.map((student, index) => (
+                        <tr
+                          key={student._id}
+                          className="w-full border-b border-opacity-20 text-center bg-[#183756] border-gray-700 "
+                        >
+                          <td className="p-3">
+                            <p>{index + 1}</p>
+                          </td>
+
+                          <td className="p-3">
+                            <p>{student.sid}</p>
+                          </td>
+
+                          <td className="p-3">
+                            <p>{student.name}</p>
+                          </td>
+
+                          <td className="p-3">
+                            <p>Computer Office Management</p>
+                          </td>
+
+                          {selected === "Online" && (
+                            <td>
+                              <Link to={`/student/${student.sid}`}>
+                                <span className="px-3 py-2 font-semibold rounded-md cursor-pointer bg-[#0071FF] text-white">
+                                  View
+                                </span>
+                              </Link>
+                            </td>
+                          )}
+
+                          <td>
+                            <Link to={`/student/${student.sid}`}>
+                              <span className="px-2 text-sm py-2 font-semibold rounded-md cursor-pointer bg-[#f5f7f5] text-black">
+                                View
+                              </span>
+                            </Link>
+                          </td>
+
+                          {selected === "Offline" && (
+                            <td className="p-3">
+                              <div className="flex flex-col gap-3">
+                                <Link to={`/student/${student.sid}`}>
+                                  <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
+                                    Paid
+                                  </span>
+                                </Link>
+                                <Link to={`/student/${student.sid}`}>
+                                  <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FF0000] text-white">
+                                    Due
+                                  </span>
+                                </Link>
+                              </div>
+                            </td>
+                          )}
+
+                          {selected === "Online" && (
+                            <td className="p-3">
+                              <div className="flex flex-col gap-3">
+                                <Link to={`/student/${student.sid}`}>
+                                  <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#39B54A] text-white">
+                                    Accept
+                                  </span>
+                                </Link>
+                                <Link to={`/student/${student.sid}`}>
+                                  <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#FF0000] text-white">
+                                    Reject
+                                  </span>
+                                </Link>
+                              </div>
+                            </td>
+                          )}
+
+                          <td className="p-3">
+                            <div className="flex flex-col gap-2">
+                              <Link to={`/student/${student.sid}`}>
+                                <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15A24] text-white">
+                                  Download
+                                </span>
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                 </tbody>
               </table>
             </div>

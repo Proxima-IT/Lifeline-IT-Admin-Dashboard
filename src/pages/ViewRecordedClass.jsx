@@ -6,7 +6,7 @@ import { IoMdSearch } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const ViewRecordedClass = () => {
-  const [selected, setSelected] = useState(true);
+  const [selected, setSelected] = useState("Online");
 
   const [filters, setFilters] = useState({
     batch: [],
@@ -50,31 +50,55 @@ const ViewRecordedClass = () => {
 
         <div className="h-10">
           <button
-            onClick={() => setSelected("Offline")}
+            onClick={() => setSelected("Online")}
             className={`px-5 py-1  rounded-r-none shadow-md transition-all  h-10
-                        ${
-                          selected === "Offline"
-                            ? " bg-[#39B54A] text-white"
-                            : "bg-[#f8f8f8] border   text-[#0071BC]"
-                        }`}
+            ${
+              selected === "Online"
+                ? " bg-[#39B54A] text-white"
+                : "bg-[#f8f8f8] border   text-[#0071BC]"
+            }`}
           >
             Online
           </button>
           <button
-            onClick={() => setSelected("Online")}
+            onClick={() => setSelected("Offline")}
             className={`px-5 py-1  rounded-l-none shadow-md transition-all  h-10
-                        ${
-                          selected === "Online"
-                            ? "bg-[#ED1E79] text-white"
-                            : "bg-white border  text-[#0071BC]"
-                        }`}
+            ${
+              selected === "Offline"
+                ? "bg-[#ED1E79] text-white"
+                : "bg-white border  text-[#0071BC]"
+            }`}
           >
             Offline
           </button>
         </div>
 
-        <div className="text-white px-10 rounded-lg flex justify-between">
-          <div className="flex  gap-4 items-center">
+        <div className="flex mt-5 w-full justify-between items-center px-5 ">
+          {/* search bar  */}
+
+          <div className="relative w-[80%] lg:w-1/4 mb-3 mr-4">
+            <input
+              type="text"
+              placeholder="Name / Student ID / Phone"
+              className="bg-[#183756] w-full text-center  mt-3 px-2 py-2 text-xs rounded outline-none text-white placeholder-gray-300"
+            />
+            <button className="absolute top-5 right-3 lg:right-5 text-gray-50">
+              <IoMdSearch />
+            </button>
+          </div>
+
+          <div className="flex justify-end px-10 mb-3">
+            <Link to="/add-courses">
+              <button className="bg-[#F15B27] px-2 lg:px-3 text-sm lg:text-base py-2 rounded-md text-white flex items-center gap-3">
+                <FaPlus />
+                Upload Recorded Class
+              </button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="text-white p-4 rounded-lg flex justify-center">
+          <div className="flex flex-wrap gap-4 items-end">
             {/* Left side */}
             <div className="flex items-center gap-2">
               <SlidersHorizontal size={20} />
@@ -86,7 +110,7 @@ const ViewRecordedClass = () => {
               {/* Course */}
               <div className="flex flex-col">
                 <label className="text-sm text-left text-white mb-1">
-                  Course Name
+                  Course
                 </label>
                 <select
                   value={select.course}
@@ -99,30 +123,58 @@ const ViewRecordedClass = () => {
                   ))}
                 </select>
               </div>
-            </div>
-          </div>
 
-          {/* search bar  */}
-          <div className="flex w-full justify-center lg:justify-end">
-            <div className="relative w-[80%] lg:w-1/4 mb-3 mr-4">
-              <input
-                type="text"
-                placeholder="Name / Student ID / Phone"
-                className="bg-[#183756] w-full text-center  mt-3 px-2 py-2 text-xs rounded outline-none text-white placeholder-white"
-              />
-              <button className="absolute top-5 right-3 lg:right-5 text-gray-50">
-                <IoMdSearch />
-              </button>
-            </div>
-          </div>
+              {/* Batch */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Batch No
+                </label>
+                <select
+                  value={select.batch}
+                  onChange={(e) => handleChange("batch", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.batch.map((b, i) => (
+                    <option key={i}>{b}</option>
+                  ))}
+                </select>
+              </div>
 
-          <div className=" mb-3">
-            <Link to="/add-courses">
-              <button className="bg-[#ED1E79] px-2 lg:px-3 text-sm lg:text-base py-2 rounded-md text-white flex items-center gap-3">
-                <FaPlus />
-                Add New Course
-              </button>
-            </Link>
+              {/* Session */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Session
+                </label>
+                <select
+                  value={select.session}
+                  onChange={(e) => handleChange("session", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.session.map((s, i) => (
+                    <option key={i}>{s}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Year */}
+              <div className="flex flex-col">
+                <label className="text-sm text-left text-white mb-1">
+                  Year
+                </label>
+                <select
+                  value={select.year}
+                  onChange={(e) => handleChange("year", e.target.value)}
+                  className="bg-[#2b3042] text-gray-300 px-3 py-2 rounded-md focus:outline-none w-40"
+                >
+                  <option>All</option>
+                  {filters.year.map((y, i) => (
+                    <option key={i}>{y}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -130,21 +182,39 @@ const ViewRecordedClass = () => {
           {/* // main dynamic content goes here */}
           <div className="container p-2 mx-auto sm:p-4 flex flex-col items-center ">
             <div className="w-full overflow-x-scroll">
-              <table className=" text-center">
+              <table className=" text-left w-full">
                 <colgroup>
                   <col />
                   <col />
                   <col />
                 </colgroup>
-                <thead className="bg-[#00A99D] rounded-md ">
-                  <tr className="text-center lg:text-base text-sm ">
-                    <th className="p-3">#</th>
-                    <th className="p-3">Name of Student</th>
-                    <th className="p-3">Student ID & Registration No</th>
+                <thead className="bg-[#5D469C] rounded-md whitespace-nowrap mb-3 text-left">
+                  <tr className="text-left lg:text-base text-sm ">
+                    <th className="p-3">CL. No</th>
+                    <th className="p-3">Class Title</th>
+                    <th className="p-3">Action Button</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <td></td>
+                  {
+                    selected === "Online" ? ( <tr className="text-left text-gray-200 bg-[#193756] ">
+                    <td>1</td>
+                    <td>
+                      Website Traffic Campaign - Event Marketing - Business
+                      Manager [Friday Special Class 05]
+                    </td>
+                    <td className="p-3">
+                      <div className="flex flex-col gap-2">
+                        <Link to={""}>
+                          <span className="px-3 py-1 font-semibold rounded-md cursor-pointer bg-[#F15B27] text-white">
+                            Update
+                          </span>
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>) : "Offline Recorded Class Data"
+                  }
+                 
                 </tbody>
               </table>
             </div>
