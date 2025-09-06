@@ -355,6 +355,7 @@ const SideNav = () => {
                 >
                   <NavLink
                     onClick={handleClick}
+                    
                     className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
                     to="/admin"
                   >
@@ -401,6 +402,34 @@ const SideNav = () => {
                   >
                     Courses
                   </NavLink>
+
+
+                   {/* Class Management */}
+                <button
+                  onClick={() => setOpenRecordedClass(!openRecordedClass)}
+                  className="flex justify-between items-center w-full p-2 hover:bg-[#1f2e48] rounded"
+                >
+                  Class Management{" "}
+                  <FaChevronRight
+                    className={`transition ${openRecordedClass ? "rotate-90" : ""}`}
+                  />
+                </button>
+                {openRecordedClass && (
+                  <div className="pl-4">
+                    <NavLink
+                      className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
+                      to="/uploadClass"
+                    >
+                      Upload Recorded Class
+                    </NavLink>
+                    <NavLink
+                      className="block p-2 hover:bg-[#1f2e48] rounded w-full text-left"
+                      to="/viewClass"
+                    >
+                      View All Recorded Class
+                    </NavLink>
+                  </div>
+                )}
                   <NavLink
                     className="block p-2 rounded hover:bg-[#1f2e48] w-full text-left"
                     to="/payment"

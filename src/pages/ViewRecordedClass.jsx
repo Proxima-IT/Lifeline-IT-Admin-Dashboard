@@ -87,9 +87,9 @@ const ViewRecordedClass = () => {
             </button>
           </div>
 
-          <div className="flex justify-end px-10 mb-3">
+          <div className="flex justify-end px-2 lg:px-10 mb-3">
             <Link to="/add-courses">
-              <button className="bg-[#F15B27] px-2 lg:px-3 text-sm lg:text-base py-2 rounded-md text-white flex items-center gap-3">
+              <button className="bg-[#F15B27] px-2 lg:px-3 text-xs lg:text-base py-2 rounded-md text-white flex items-center gap-3">
                 <FaPlus />
                 Upload Recorded Class
               </button>
@@ -195,10 +195,10 @@ const ViewRecordedClass = () => {
                     <th className="p-3">Action Button</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="whitespace-nowrap ">
                   {
                     selected === "Online" ? ( <tr className="text-left text-gray-200 bg-[#193756] ">
-                    <td>1</td>
+                    <td className="text-center">1</td>
                     <td>
                       Website Traffic Campaign - Event Marketing - Business
                       Manager [Friday Special Class 05]
